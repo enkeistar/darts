@@ -2,17 +2,14 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-
 Base = declarative_base()
 
-class User(Base):
+class Player(Base):
 
-	__tablename__ = "users"
+	__tablename__ = "players"
 
 	id = Column(Integer, primary_key = True)
-	firstName = Column(String)
-	lastName = Column(String)
+	name = Column(String)
 
-	def __init__(self, firstName, lastName):
-		self.firstName = firstName
-		self.lastName = lastName
+	def __init__(self, name):
+		self.name = name

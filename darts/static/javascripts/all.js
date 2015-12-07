@@ -1,5 +1,9 @@
 $(function(){
 
+	$(".btn.delete").on("click", function(){
+		var source = $(this);
+		return confirm(source.data("message"));
+	})
 
 	var usersList = $( '.users-list' );
 	var usersForm = $( '.users-form' );

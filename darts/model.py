@@ -11,18 +11,21 @@ session = Session()
 class Model():
 
 	def select(self, model):
-		result = session.query(model)
-		return result
+		return session.query(model)
 
-	def save(self, data):
+	def selectById(self, model, id):
+		return session.query(model).filter(model.id == id).one()
+
+	def create(self, data):
 		session.add(data)
 		session.commit()
 		return data
 
-	def toJson(self, data):
-		list = []
+	def update(self, model, id, data):
+		session.query(model).filter(model.id == id).update(data)
+		session.commit()
+		return data
 
-		for row in data:
-			list.append({ "id": row.id, "firstName": row.firstName, "lastName": row.lastName })
-
-		return json.dumps(list)
+	def delete(self, model, id):
+		session.query(model).filter(model.id == id).delete()
+		session.commit()
