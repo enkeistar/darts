@@ -1,0 +1,87 @@
+{% extends "games/layout.html" %}
+
+{% block title %}Select Players{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid players">
+
+		<div class="teams">
+
+			<div class="team">
+				<div class="team-label">Team 1</div>
+				<div class="selected-container">
+					<div>
+						<label>Player 1:</label>
+						<div class="selected" data-team="1" data-player="1"></div>
+					</div>
+					{%- if game.players == 4 -%}
+						<div>
+							<label>Player 2:</label>
+							<div class="selected" data-team="1" data-player="2"></div>
+						</div>
+					{%- endif -%}
+				</div>
+			</div>
+
+			<div class="team">
+				<div class="team-label">Team 2</div>
+				<div class="selected-container">
+					<div>
+						<label>Player 1:</label>
+						<div class="selected" data-team="2" data-player="1"></div>
+					</div>
+					{%- if game.players == 4 -%}
+						<div>
+							<label>Player 2:</label>
+							<div class="selected" data-team="2" data-player="2"></div>
+						</div>
+					{%- endif -%}
+				</div>
+			</div>
+
+		</div>
+
+		<div class="instruction">
+
+			<div class="select-player-instruction">Select First Player for Team 1</div>
+			<div class="select-player-instruction" data-team="1" data-player="1">Select Second Player for Team 1</div>
+			<div class="select-player-instruction" data-team="1" data-player="2">Select First Player for Team 2</div>
+			<div class="select-player-instruction" data-team="2" data-player="1">Select Second Player for Team 2</div>
+
+		</div>
+
+		<div class="player-list">
+
+			<div>
+				{% for player in players %}
+					<div class="player" data-id="{{ player.id }}">{{ player.name }}</div>
+				{% endfor %}
+			</div>
+
+			<button class="btn btn-default add-player">Add Player</button>
+
+		</div>
+
+		<br />
+
+
+
+		<form action="/games/{{ game.id }}/" method="POST">
+
+			<input type="hidden" id="number-of-players" value="{{ game.players }}" />
+			<input type="hidden" name="team-1-player-1-id" class="value" data-team="1" data-player="1" />
+			<input type="hidden" name="team-1-player-2-id" class="value" data-team="1" data-player="2" />
+			<input type="hidden" name="team-2-player-1-id" class="value" data-team="2" data-player="1" />
+			<input type="hidden" name="team-2-player-2-id" class="value" data-team="2" data-player="2" />
+
+			<button class="btn btn-primary btn-lg btn-block done">Play</button>
+
+		</form>
+
+		<br />
+		<a class="redo btn btn-default btn-sm" href="/games/{{ game.id }}/players/">Redo</a>
+
+	</div>
+
+{% endblock %}

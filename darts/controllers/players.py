@@ -1,8 +1,7 @@
 from darts import app
-from flask import Blueprint, Response, request, render_template, redirect
+from flask import Blueprint, request, render_template, redirect
 from darts.entities import player
 from darts import model
-import json
 
 mod = Blueprint("players", __name__, url_prefix = "/players")
 
@@ -39,5 +38,3 @@ def players_update(id):
 def players_delete(id):
 	model.Model().delete(player.Player, id)
 	return redirect("/players/")
-
-

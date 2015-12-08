@@ -4,10 +4,12 @@ app = Flask(__name__)
 
 from darts.controllers import main
 from darts.controllers import players
+from darts.controllers import games
 from darts import HttpMethod
 
 app.register_blueprint(main.mod)
 app.register_blueprint(players.mod)
+app.register_blueprint(games.mod)
 
 # app.wsgi_app = HttpMethod.HttpMethod(app.wsgi_app)
 

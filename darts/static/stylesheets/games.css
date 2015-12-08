@@ -1,0 +1,90 @@
+header {
+	display: none;
+}
+
+.games form {
+	float: left;
+	width: 50%;
+	padding: 0 4px;
+}
+
+.games .number-of-players {
+	width: 100%;
+	height: 100px;
+	font-size: 40px;
+}
+
+.players .teams {
+	overflow: hidden;
+	margin-top: 20px;
+}
+
+.players .team {
+	float: left;
+	width: 48%;
+	margin: 0 1%;
+	border: solid 1px #ccc;
+	padding: 8px;
+	border-radius: 4px;
+}
+
+.players .team .team-label {
+	font-size: 20px;
+	text-align: center;
+}
+
+.players .select-player-instruction {
+	display: none;
+}
+.players .select-player-instruction:first-child {
+	display: block;
+}
+
+.players .selected-container {
+
+}
+
+.players .selected-container .selected {
+	display: inline-block;
+	font-weight: bold;
+	color: #333;
+}
+
+.players .instruction {
+	margin-top: 20px;
+	font-size: 24px;
+	text-align: center;
+}
+
+.players .player-list {
+	margin-top: 20px;
+}
+
+.players .player-list .player {
+	border: solid 1px #ccc;
+	border-bottom: none;
+	padding: 8px 16px;
+	font-size: 20px;
+}
+
+.players .player-list .player:last-child {
+	border-bottom: solid 1px #ccc;
+}
+
+.players .player-list .player:active {
+	background: #ccc;
+	color: #eee;
+}
+
+.players .redo {
+	margin-top: 20px;
+}
+
+.players .redo,
+.players .done {
+	display: none;
+}
+
+.players .add-player {
+	margin-top: 8px;
+}

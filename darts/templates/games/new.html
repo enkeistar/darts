@@ -1,0 +1,23 @@
+{% extends "games/layout.html" %}
+
+{% block title %}Select Number of Players{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid games">
+
+		<h1>Select Number of Players</h1>
+
+		<form action="/games/" method="POST">
+			<input type="hidden" name="players" value="2" />
+			<button class="btn btn-default number-of-players">2</button>
+		</form>
+
+		<form action="/games/" method="POST">
+			<input type="hidden" name="players" value="4" />
+			<button class="btn btn-default number-of-players">4</button>
+		</form>
+
+	</div>
+
+{% endblock %}
