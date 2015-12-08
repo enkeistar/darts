@@ -1,15 +1,75 @@
 from darts import app
-from flask import Blueprint, render_template, redirect, request
+from flask import Blueprint, Response, render_template, redirect, request
 from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, score as scoreModel
 from darts import model
 from datetime import datetime
+from sqlalchemy import desc
+import operator
+import json
 
 import pprint
 
 mod = Blueprint("games", __name__, url_prefix = "/games")
 
+@mod.route("/", methods = ["GET"])
+def games_index():
+
+	data = []
+
+	games = model.Model().select(gameModel.Game).order_by(desc("createdAt"))
+
+	for game in games:
+
+		gameData = {
+			"id": game.id,
+			"date": "{:%b %d, %Y} ".format(game.createdAt),
+			"time": "{:%I:%M %p}".format(game.createdAt).lower(),
+			"teams": []
+		}
+
+		teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
+
+		for team in teams:
+			teamData = {
+				"id": team.id,
+				"score": 0,
+				"players": []
+			}
+
+			players = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id)
+
+			for player in players:
+				user = model.Model().selectById(playerModel.Player, player.playerId)
+				teamData["players"].append(user.name)
+
+			scores = model.Model().select(scoreModel.Score).filter_by(gameId = game.id, teamId = team.id)
+
+			for score in scores:
+				if score.twenty:
+					teamData["score"] += 20
+				elif score.nineteen:
+					teamData["score"] += 19
+				elif score.eighteen:
+					teamData["score"] += 18
+				elif score.seventeen:
+					teamData["score"] += 17
+				elif score.sixteen:
+					teamData["score"] += 16
+				elif score.fifteen:
+					teamData["score"] += 15
+				elif score.bullseye:
+					teamData["score"] += 25
+
+			gameData["teams"].append(teamData)
+
+		data.append(gameData)
+
+		gameData["teams"].sort(key = operator.itemgetter("score"), reverse = True)
+
+	return render_template("games/index.html", games = data)
+
 @mod.route("/<int:id>/", methods = ["GET"])
-def games_index(id):
+def games_board(id):
 	game = model.Model().selectById(gameModel.Game, id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
 
@@ -22,23 +82,50 @@ def games_index(id):
 
 		newTeam = {
 			"id": team.id,
-			"players": []
+			"players": [],
+			"scores": {
+				20: 0,
+				19: 0,
+				18: 0,
+				17: 0,
+				16: 0,
+				15: 0,
+				25: 0
+			}
 		}
 
 		players = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id)
 
 		for player in players:
 
-			user = model.Model().selectById(playerModel.Player, int(player.playerId))
+			user = model.Model().selectById(playerModel.Player, player.playerId)
 
 			newTeam["players"].append({
-				"id": int(user.id),
+				"id": user.id,
 				"name": user.name
 			})
 
+		scores = model.Model().select(scoreModel.Score).filter_by(gameId = game.id, teamId = team.id)
+
+		for score in scores:
+			if score.twenty:
+				newTeam["scores"][20] += 1
+			elif score.nineteen:
+				newTeam["scores"][19] += 1
+			elif score.eighteen:
+				newTeam["scores"][18] += 1
+			elif score.seventeen:
+				newTeam["scores"][17] += 1
+			elif score.sixteen:
+				newTeam["scores"][16] += 1
+			elif score.fifteen:
+				newTeam["scores"][15] += 1
+			elif score.bullseye:
+				newTeam["scores"][25] += 1
+
 		data["teams"].append(newTeam)
 
-	return render_template("games/index.html", game = data)
+	return render_template("games/board.html", game = data)
 
 @mod.route("/new/", methods = ["GET"])
 def games_new():
@@ -110,6 +197,4 @@ def games_score(id):
 
 	model.Model().create(newScore)
 
-	return str({
-		"id": int(newScore.id)
-	})
+	return Response(json.dumps({ "id": int(newScore.id) }), status = 200, mimetype = "application/json")

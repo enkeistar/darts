@@ -85,3 +85,8 @@
 	</div>
 
 {% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	<script src="{{ url_for('static', filename='javascripts/games.js') }}"></script>
+{% endblock %}

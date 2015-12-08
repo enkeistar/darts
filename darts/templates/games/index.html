@@ -1,88 +1,46 @@
 {% extends "games/layout.html" %}
 
-{% block title %}Score Board{% endblock %}
+{% block title %}Games{% endblock %}
 
 {% block head %}
 	{{ super() }}
-	<link href="{{ url_for('static', filename='stylesheets/score-board.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='stylesheets/game-list.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
 
-	<div class="score-board">
+	<div class="game-list">
 
-		<div class="teams">
-			<div class="rows">
-				<div class="game-option target undo">
-					<div>Remove</div>
-					<div>Score</div>
+		<h1>Games</h1>
+
+		{% for game in games %}
+
+			<div class="game">
+
+				<div class="name">
+					<a href="/games/{{ game["id"] }}/">Game {{ game["id"] }}</a>
 				</div>
 
-				{% for team in game["teams"] %}
+				<div class="date">
+					{{ game["date"] }}<br />
+					{{ game["time"] }}
+				</div>
 
-					<div class="players">
-
-						{% for player in team["players"] %}
-
-							<div class="player target col-xs-6" data-player="{{ player.id }}">
-								<span class="initial">{{ player.name[:1] }}</span>
-								<span class="name">{{ player.name }}</span>
-							</div>
-
-						{% endfor %}
-
-					</div>
-
-				{% endfor %}
-
-			</div>
-
-		</div>
-
-		{% for i in range(20, 14, -1) %}
-
-			<div class="points">
-				<div class="rows">
-					<div class="point-value" data-points="{{ i }}">{{ i }}</div>
-
+				<div class="teams">
 					{% for team in game["teams"] %}
-						<div class="target awarded" data-team="{{ team.id }}" data-points="{{ i }}" data-hits="0"></div>
+						<div class="team">
+							{% for player in team["players"] %}
+								<div class="player">{{ player }}</div>
+							{% endfor %}
+						</div>
+						<div class="vs">vs</div>
 					{% endfor %}
-
 				</div>
+
 			</div>
 
 		{% endfor %}
 
-		<div class="points">
-			<div class="rows">
-				<div class="point-value" data-points="25">B</div>
-				{% for team in game["teams"] %}
-					<div class="target awarded" data-team="{{ team.id }}" data-points="25" data-hits="0"></div>
-				{% endfor %}
-			</div>
-		</div>
-
-		<div class="scores">
-			<div class="rows">
-				<div class="game-option target new-game">
-					<div>New</div>
-					<div>Game</div>
-				</div>
-
-				{% for team in game["teams"] %}
-					<div class="score" data-team="{{ team.id }}" data-score="0">0</div>
-				{% endfor %}
-			</div>
-		</div>
-
 	</div>
 
-	<input type="hidden" name="gameId" value="{{ game.id }}" />
-
-{% endblock %}
-
-{% block footer %}
-	{{ super() }}
-	<script src="{{ url_for('static', filename='javascripts/score-board.js') }}"></script>
 {% endblock %}
