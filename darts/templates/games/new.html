@@ -6,11 +6,11 @@
 
 	<div class="container-fluid games">
 
-		<h1>Select Number of Players</h1>
+		<h1 class="select-num-players">Select Number of Players</h1>
 
 		<form action="/games/" method="POST">
 			<input type="hidden" name="players" value="2" />
-			<button class="btn btn-default number-of-players">2</button>
+			<button class="btn btn-default number-of-players" disabled>2</button>
 		</form>
 
 		<form action="/games/" method="POST">

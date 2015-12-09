@@ -10,8 +10,10 @@ class Game(Base):
 
 	id = Column(Integer, primary_key = True)
 	players = Column(Integer)
+	round = Column(Integer)
 	createdAt = Column(DateTime)
 
-	def __init__(self, players, createdAt):
+	def __init__(self, players, round, createdAt):
 		self.players = players
+		self.round = round
 		self.createdAt = createdAt

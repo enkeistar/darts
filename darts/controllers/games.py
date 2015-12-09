@@ -30,10 +30,12 @@ def games_index():
 		teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
 
 		for team in teams:
+
 			teamData = {
 				"id": team.id,
 				"score": 0,
-				"players": []
+				"players": [],
+				"points": 0
 			}
 
 			players = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id)
@@ -75,10 +77,22 @@ def games_board(id):
 
 	data = {
 		"id": int(game.id),
+		"round": game.round,
 		"teams": []
 	}
 
 	for team in teams:
+
+		scored = {
+			"twenty": 0,
+			"nineteen": 0,
+			"eighteen": 0,
+			"seventeen": 0,
+			"sixteen": 0,
+			"fifteen": 0,
+			"bullseye": 0
+		}
+		pointsScored = 0
 
 		newTeam = {
 			"id": team.id,
@@ -91,7 +105,8 @@ def games_board(id):
 				16: 0,
 				15: 0,
 				25: 0
-			}
+			},
+			"points": 0
 		}
 
 		players = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id)
@@ -105,23 +120,46 @@ def games_board(id):
 				"name": user.name
 			})
 
-		scores = model.Model().select(scoreModel.Score).filter_by(gameId = game.id, teamId = team.id)
+		scores = model.Model().select(scoreModel.Score).filter_by(gameId = game.id, teamId = team.id, round = game.round)
 
 		for score in scores:
 			if score.twenty:
 				newTeam["scores"][20] += 1
+				scored["twenty"] += 1
+				if scored["twenty"] > 3:
+					pointsScored += 20
 			elif score.nineteen:
 				newTeam["scores"][19] += 1
+				scored["nineteen"] += 1
+				if scored["nineteen"] > 3:
+					pointsScored += 19
 			elif score.eighteen:
 				newTeam["scores"][18] += 1
+				scored["eighteen"] += 1
+				if scored["eighteen"] > 3:
+					pointsScored += 18
 			elif score.seventeen:
 				newTeam["scores"][17] += 1
+				scored["seventeen"] += 1
+				if scored["seventeen"] > 3:
+					pointsScored += 17
 			elif score.sixteen:
 				newTeam["scores"][16] += 1
+				scored["sixteen"] += 1
+				if scored["sixteen"] > 3:
+					pointsScored += 16
 			elif score.fifteen:
 				newTeam["scores"][15] += 1
+				scored["fifteen"] += 1
+				if scored["fifteen"] > 3:
+					pointsScored += 15
 			elif score.bullseye:
 				newTeam["scores"][25] += 1
+				scored["bullseye"] += 1
+				if scored["bullseye"] > 3:
+					pointsScored += 25
+
+		newTeam["points"] = pointsScored
 
 		data["teams"].append(newTeam)
 
@@ -133,7 +171,7 @@ def games_new():
 
 @mod.route("/", methods = ["POST"])
 def games_create():
-	newGame = gameModel.Game(request.form["players"], datetime.now())
+	newGame = gameModel.Game(request.form["players"], 1, datetime.now())
 	model.Model().create(newGame)
 	return redirect("/games/%d/players/" % newGame.id)
 
@@ -167,6 +205,11 @@ def games_start(id):
 		model.Model().create(team2Player2)
 
 	return redirect("/games/%d/" % id)
+
+@mod.route("/<int:id>/round", methods = ["POST"])
+def games_round(id):
+	model.Model().update(gameModel.Game, id, request.form)
+	return request.form["round"]
 
 @mod.route("/<int:id>/score", methods = ["POST"])
 def games_score(id):

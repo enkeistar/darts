@@ -64,14 +64,28 @@
 			</div>
 
 			{% for team in game["teams"] %}
-				<div class="score" data-team="{{ team.id }}" data-score="0">0</div>
+				<div class="score" data-team="{{ team.id }}" data-score="{{ team["points"] }}">{{ team["points"] }}</div>
 			{% endfor %}
 		</div>
 
 	</div>
 
 	<input type="hidden" name="gameId" value="{{ game.id }}" />
-	<input type="hidden" name="round" value="1" />
+	<input type="hidden" name="round" value="{{ game.round }}" />
+
+	<div class="modal-box modal-next-round">
+		<h1>Team 1 Wins!!</h1>
+		<button class="btn btn-warning btn-lg btn-block btn-next-round">Round <span class="round-number">2</span></button>
+	</div>
+
+	<div class="modal-box modal-new-game">
+		<h1>
+			Are you sure you want<br />
+			to quit this game?
+		</h1>
+		<button class="btn btn-warning btn-lg btn-block new-game-yes">Yes</button>
+		<button class="btn btn-info btn-lg btn-block new-game-no">No</button>
+	</div>
 
 {% endblock %}
 

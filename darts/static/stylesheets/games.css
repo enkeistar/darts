@@ -31,14 +31,14 @@
 
 .players .select-player-instruction {
 	display: none;
+	font-size: 6vw;
+	margin-top: 20px;
 }
 .players .select-player-instruction:first-child {
 	display: block;
 }
 
-.players .selected-container {
-
-}
+.players .selected-container {}
 
 .players .selected-container .selected {
 	display: inline-block;
@@ -47,7 +47,6 @@
 }
 
 .players .instruction {
-	margin-top: 20px;
 	font-size: 24px;
 	text-align: center;
 }
