@@ -241,3 +241,21 @@ def games_score(id):
 	model.Model().create(newScore)
 
 	return Response(json.dumps({ "id": int(newScore.id) }), status = 200, mimetype = "application/json")
+
+@mod.route("/<int:id>/undo", methods = ["POST"])
+def games_undo(id):
+
+	gameId = id
+	teamId = request.form["teamId"]
+	playerId = request.form["playerId"]
+	round = request.form["round"]
+	id = 0
+
+	scores = model.Model().select(scoreModel.Score).filter_by(gameId = gameId, teamId = teamId, playerId = playerId, round = round)
+
+	if scores.count() > 0:
+		id = scores[scores.count() - 1].id
+		model.Model().delete(scoreModel.Score, id)
+
+	return Response(json.dumps({ "id": id }), status = 200, mimetype = "application/json")
+

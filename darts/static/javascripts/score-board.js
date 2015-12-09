@@ -38,10 +38,21 @@ $(function(){
 		var point = source.data("points");
 		var closed = $(".awarded[data-points=" + point + "]:not([data-team=" + teamId + "])").attr("data-hits") >= 3;
 
+		var data =  {
+			teamId: teamId,
+			playerId: playerId,
+			points: point,
+			round: round.val()
+		};
+
 		if( undo ){
 
 			if( hits > 0 ){
 				source.attr("data-hits", hits - 1 );
+
+				$.post("/games/" + gameId + "/undo", data, function(data){
+					console.log(data);
+				});
 			}
 
 			if( hits > 3 ){
@@ -56,15 +67,8 @@ $(function(){
 
 				source.attr("data-hits", hits + 1 );
 
-				var data =  {
-					teamId: teamId,
-					playerId: playerId,
-					points: point,
-					round: round.val()
-				};
-
 				$.post("/games/" + gameId + "/score", data, function(data){
-					// console.log(data);
+					console.log(data);
 				});
 
 			}
