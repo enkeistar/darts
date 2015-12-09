@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}Player Details{% endblock %}
+
+{% block head %}
+	{{ super() }}
+	<link href="{{ url_for('static', filename='stylesheets/players.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid player-details">
+
+		<h1>{{ player.name }}</h1>
+
+		<dl>
+
+			<dt>Games Played:</dt>
+			<dd>{{ teams.count() }}</dd>
+
+			<dt>Darts Hit:</dt>
+			<dd>{{ scores.count() }}</dd>
+
+			<dt>Points Scored:</dt>
+			<dd>{{ scores.count() }}</dd>
+
+		</dl>
+
+	</div>
+
+{% endblock %}
