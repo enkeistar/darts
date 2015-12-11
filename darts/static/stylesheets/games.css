@@ -10,6 +10,10 @@
 	font-size: 40px;
 }
 
+.players {
+	margin-bottom: 8px;
+}
+
 .players .teams {
 	overflow: hidden;
 	margin-top: 20px;
@@ -34,11 +38,29 @@
 	font-size: 6vw;
 	margin-top: 20px;
 }
-.players .select-player-instruction:first-child {
-	display: block;
+
+.players .team-players {}
+
+.players .team-players .team-player {
+	border: solid 1px #f0f0f0 ;
+	padding: 4px 8px;
+	overflow: hidden;
 }
 
-.players .selected-container {}
+.players .team-players .team-player.active {
+	border: solid 1px #999;
+	border-radius: 2px;
+}
+.players .team-players .team-player.active .selected::before {
+	content: "select";
+	color: #aaa;
+	padding-left: 8px;
+}
+
+.players .team-players .team-player label {
+	margin: 0 8px 0 0;
+	float: left;
+}
 
 .players .selected-container .selected {
 	display: inline-block;

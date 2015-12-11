@@ -1,35 +1,46 @@
 $(function(){
 
-	var currentPlayer = 1;
-	var numberOfPlayers = parseInt($("#number-of-players").val());
+	var current = -1;
+	var gameId = $("#gameId").val();
+	var instructions = $(".select-player-instruction")
+	var teamPlayers = $(".team-player");
+	var existingPlayers = $(".existing-players");
+
+	next();
 
 	$(".player").on("click", function(){
 		var source = $(this);
 
-		var player = (currentPlayer + 1) % 2 + 1;
-		var team = Math.floor((currentPlayer - 1) / 2) % 2 + 1;
+		var data = {
+			teamId: teamPlayers.eq(current).data("teamid"),
+			playerId: source.data("playerid")
+		};
 
-		$('.value[data-team="' + team + '"][data-player="' + player + '"]').val(source.data("id"));
-		$('.selected[data-team="' + team + '"][data-player="' + player + '"]').html(source.html());
-
-		source.remove();
-
-		$(".select-player-instruction").hide();
-		$('.select-player-instruction[data-team="' + team + '"][data-player="' + player + '"]').show();
-
-		currentPlayer++;
-
-		if(currentPlayer > numberOfPlayers){
-			$(".select-player-instruction").hide();
-			$(".player-list").hide();
-			$(".done, .redo").show();
-		}
-	});
-
-	$(".add-player").on("click", function(){
-
-		console.log("click");
+		$.post("/games/" + gameId + "/players/", data, function(data){
+			selectPlayer(source);
+		});
 
 	});
+
+	existingPlayers.each(function(){
+		var playerId = $(this).val();
+		selectPlayer($(".player[data-playerid=" + playerId + "]"));
+	});
+
+	function selectPlayer(player){
+		player.remove();
+		teamPlayers.eq(current).find(".selected").html(player.html());
+		next();
+	}
+
+	function next(){
+		current++;
+
+		teamPlayers.removeClass("active");
+		teamPlayers.eq(current).addClass("active");
+
+		instructions.hide();
+		instructions.eq(current).show();
+	}
 
 });

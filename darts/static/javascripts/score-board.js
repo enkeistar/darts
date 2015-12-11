@@ -8,11 +8,11 @@ $(function(){
 	var newGameModal = $(".modal-new-game");
 	var round = $("input[name=round]");
 
-	$(".game-option.new-game").on( 'click', function(){
+	$(".game-option.new-game").on("click", function(){
 		newGameModal.show();
 	});
 	$(".new-game-yes").on("click", function(){
-		window.location = "/games/new/";
+		window.location = "/";
 	});
 	$(".new-game-no").on("click", function(){
 		newGameModal.hide();

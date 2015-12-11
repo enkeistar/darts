@@ -173,35 +173,48 @@ def games_new():
 def games_create():
 	newGame = gameModel.Game(request.form["players"], 1, datetime.now())
 	model.Model().create(newGame)
+
+	for i in range(1,3):
+		newTeam = teamModel.Team(newGame.id)
+		model.Model().create(newTeam)
+
 	return redirect("/games/%d/players/" % newGame.id)
 
 @mod.route("/<int:id>/players/", methods = ["GET"])
 def games_players(id):
 	game = model.Model().selectById(gameModel.Game, id)
+	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
 	players = model.Model().select(playerModel.Player)
-	return render_template("games/players.html", players = players, game = game)
+
+	teamIds = []
+	for team in teams:
+		teamIds.append(team.id)
+
+	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter(teamPlayerModel.TeamPlayer.teamId.in_(teamIds))
+
+	return render_template("games/players.html", game = game, teams = teams, players = players, teamPlayers = teamPlayers)
+
+@mod.route("/<int:id>/players/", methods = ["POST"])
+def games_players_create(id):
+	teamPlayer = teamPlayerModel.TeamPlayer(request.form["teamId"], request.form["playerId"])
+	model.Model().create(teamPlayer)
+	return Response(json.dumps({ "id": int(teamPlayer.id) }), status = 200, mimetype = "application/json")
 
 @mod.route("/<int:id>/", methods = ["POST"])
 def games_start(id):
 	game = model.Model().selectById(gameModel.Game, id)
 
-	newTeam1 = teamModel.Team(id);
-	model.Model().create(newTeam1)
-
-	newTeam2 = teamModel.Team(id);
-	model.Model().create(newTeam2)
-
-	team1Player1 = teamPlayerModel.TeamPlayer(newTeam1.id, request.form["team-1-player-1-id"]);
+	team1Player1 = teamPlayerModel.TeamPlayer(newTeam1.id, request.form["team-1-player-1-id"])
 	model.Model().create(team1Player1)
 
-	team2Player1 = teamPlayerModel.TeamPlayer(newTeam2.id, request.form["team-2-player-1-id"]);
+	team2Player1 = teamPlayerModel.TeamPlayer(newTeam2.id, request.form["team-2-player-1-id"])
 	model.Model().create(team2Player1)
 
 	if game.players == 4:
-		team1Player2 = teamPlayerModel.TeamPlayer(newTeam1.id, request.form["team-1-player-2-id"]);
+		team1Player2 = teamPlayerModel.TeamPlayer(newTeam1.id, request.form["team-1-player-2-id"])
 		model.Model().create(team1Player2)
 
-		team2Player2 = teamPlayerModel.TeamPlayer(newTeam2.id, request.form["team-2-player-2-id"]);
+		team2Player2 = teamPlayerModel.TeamPlayer(newTeam2.id, request.form["team-2-player-2-id"])
 		model.Model().create(team2Player2)
 
 	return redirect("/games/%d/" % id)
