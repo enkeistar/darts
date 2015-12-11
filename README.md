@@ -2,8 +2,6 @@
 
 
 # TODO
-* save player to team when selected so page can be reloaded
-* ability to add player from team screen, redirect to add player with game id so it can be redirected back
 * better way to delete players from manage players screen, only admins?
 * more stats
 * determine game winner after 2 or 3 rounds

@@ -9,27 +9,6 @@ header {
 	font-family: digital;
 }
 
-.darts ul {
-	width: 60%;
-	margin: auto;
-}
-
-.darts li {
-	border: solid 1px #333;
-	border-bottom: none;
-}
-
-.darts li:first-child {
-	border-top-left-radius: 6px;
-	border-top-right-radius: 6px;
-}
-
-.darts li:last-child {
-	border-bottom: solid 1px #333;
-	border-bottom-left-radius: 6px;
-	border-bottom-right-radius: 6px;
-}
-
 .darts a {
 	display: block;
 	text-align: center;
