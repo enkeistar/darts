@@ -132,6 +132,8 @@ $(function(){
 		source.addClass("active");
 		turnTeam = parseInt(source.parent(".players").data("order"));
 		turnPlayer = parseInt(source.data("order"));
+
+		clearTimeout(turnTimeout);
 	});
 
 	function isClosed(teamId){
