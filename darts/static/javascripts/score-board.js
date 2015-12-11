@@ -8,6 +8,12 @@ $(function(){
 	var newGameModal = $(".modal-new-game");
 	var round = $("input[name=round]");
 
+	var turnTeam = 0;
+	var turnPlayer = 0;
+	var turnTimeout;
+
+	setActivePlayer();
+
 	$(".game-option.new-game").on("click", function(){
 		newGameModal.show();
 	});
@@ -34,7 +40,7 @@ $(function(){
 		var hits = parseInt(source.attr("data-hits"));
 
 		var teamId = source.data("team");
-		var playerId = $(".player").first().data("player");
+		var playerId = $(".player.active").data("playerid");
 		var point = source.data("points");
 		var closed = $(".awarded[data-points=" + point + "]:not([data-team=" + teamId + "])").attr("data-hits") >= 3;
 
@@ -101,6 +107,9 @@ $(function(){
 			nextRoundModal.find(".round-number").html(nextRound);
 		}
 
+		clearTimeout(turnTimeout);
+		turnTimeout = setTimeout(nextPlayer, 5000);
+
 	});
 
 	$(".btn-next-round").on("click", function(){
@@ -115,8 +124,12 @@ $(function(){
 	});
 
 	$(".player").on("click", function(){
+		var source = $(this);
 		$(".player").removeClass("active");
-		$(this).addClass("active");
+
+		source.addClass("active");
+		turnTeam = parseInt(source.parent(".players").data("order"));
+		turnPlayer = parseInt(source.data("order"));
 	});
 
 	function isClosed(teamId){
@@ -135,7 +148,19 @@ $(function(){
 
 	function setActivePlayer(){
 		$(".player").removeClass("active");
-		$(".player").eq(round.val() == 1 ? 0 : round.val() == 2 ? 2 : 1).addClass("active");
+		$(".players").eq(turnTeam).find(".player").eq(turnPlayer).addClass("active");
+		// $(".player").removeClass("active");
+		// $(".player").eq(round.val() == 1 ? 0 : round.val() == 2 ? 2 : 1).addClass("active");
+	}
+
+	function nextPlayer(){
+		if(turnTeam == 1){
+			turnPlayer = turnPlayer == 1 ? 0 : 1;
+		}
+
+		turnTeam = turnTeam == 1 ? 0 : 1;
+
+		setActivePlayer();
 	}
 
 });

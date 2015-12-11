@@ -18,21 +18,25 @@
 				<div>Score</div>
 			</div>
 
+			{% set teamOrder = 0 %}
 			{% for team in game["teams"] %}
 
-				<div class="players">
+				<div class="players" data-order="{{ teamOrder }}">
 
+					{% set playerOrder = 0 %}
 					{% for player in team["players"] %}
 
-						<div class="player target col-xs-6" data-player="{{ player.id }}">
+						<div class="player target col-xs-6" data-playerid="{{ player.id }}" data-order="{{ playerOrder }}">
 							<div class="initial">{{ player.name[:1] }}</div>
 							<div class="name">{{ player.name }}</div>
 						</div>
 
+						{% set playerOrder = playerOrder + 1 %}
 					{% endfor %}
 
 				</div>
 
+				{% set teamOrder = teamOrder + 1 %}
 			{% endfor %}
 
 		</div>
