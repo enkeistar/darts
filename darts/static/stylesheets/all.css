@@ -83,8 +83,7 @@ header a:focus {
 }
 
 .modal-box h1 {
-	margin-top: 100px;
-	margin-bottom: 16px;
+	margin: 100px 24px 16px 24px;
 	font-size: 9vw;
 	color: ;
 }

@@ -25,7 +25,7 @@ def players_create():
 
 	gameId = request.form["gameId"]
 
-	if gameId == 0:
+	if gameId == "0":
 		return redirect("/players/")
 	else:
 		return redirect("/games/" + str(gameId) + "/players/")
