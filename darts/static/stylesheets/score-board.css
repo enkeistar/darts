@@ -152,18 +152,19 @@ header {
 	border-left: solid 1px #e0e0e0;
 	border-right: solid 1px #fff;
 	border-top: solid 1px #fff;
-	vertical-align: middle;
 }
 
 .score-row {
-	display: table-row;
+	display: table;
+	height: 100%;
+	width: 100%;
 }
 
 .round-scores {
 	display: table-cell;
-	float: left;
-	width: 48px;
-	padding-left: 8px;
+	padding: 0 8px;
+	height: 100%;
+	vertical-align: middle;
 }
 
 .round-score {
@@ -177,23 +178,7 @@ header {
 .current-round-points {
 	display: table-cell;
 	font-size: 15vh;
-	line-height: 0.7em;
-}
-
-/*
-.round-scores {
-	float: left;
+	line-height: 0;
 	vertical-align: middle;
+	height: 100%;
 }
-.round-score {
-	font-size: 12px;
-}
-.current-round-points {
-	float: left;
-	font-size: 15vh;
-	line-height: 1em;
-	text-align: center;
-	display: table-cell;
-	vertical-align: middle;
-}
-*/
