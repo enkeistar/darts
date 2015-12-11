@@ -239,17 +239,17 @@ def games_round(id):
 	model.Model().update(gameModel.Game, id, request.form)
 	return request.form["round"]
 
-@mod.route("/<int:id>/score", methods = ["POST"])
-def games_score(id):
+@mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/rounds/<int:round>/score/<int:score>/", methods = ["POST"])
+def games_score(gameId, teamId, playerId, round, score):
 
 	newScore = scoreModel.Score()
-	newScore.gameId = id
-	newScore.teamId = request.form["teamId"]
-	newScore.playerId = request.form["playerId"]
-	newScore.round = request.form["round"]
+	newScore.gameId = gameId
+	newScore.teamId = teamId
+	newScore.playerId = playerId
+	newScore.round = round
 	newScore.createdAt = datetime.now()
 
-	points = int(request.form["points"])
+	points = int(score)
 
 	if points == 20:
 		newScore.twenty = 1
@@ -270,13 +270,9 @@ def games_score(id):
 
 	return Response(json.dumps({ "id": int(newScore.id) }), status = 200, mimetype = "application/json")
 
-@mod.route("/<int:id>/undo", methods = ["POST"])
-def games_undo(id):
+@mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/rounds/<int:round>/undo/", methods = ["POST"])
+def games_undo(gameId, teamId, playerId, round):
 
-	gameId = id
-	teamId = request.form["teamId"]
-	playerId = request.form["playerId"]
-	round = request.form["round"]
 	id = 0
 
 	scores = model.Model().select(scoreModel.Score).filter_by(gameId = gameId, teamId = teamId, playerId = playerId, round = round)

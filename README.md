@@ -14,4 +14,3 @@
 	* Small font next to actual score?
 * Settings?
 	* turn delay
-* change team and player post data to url

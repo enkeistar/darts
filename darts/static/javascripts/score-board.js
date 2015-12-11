@@ -46,21 +46,11 @@ $(function(){
 		var point = source.data("points");
 		var closed = $(".awarded[data-points=" + point + "]:not([data-team=" + teamId + "])").attr("data-hits") >= 3;
 
-		var data =  {
-			teamId: teamId,
-			playerId: playerId,
-			points: point,
-			round: round.val()
-		};
-
 		if( undo ){
 
 			if( hits > 0 ){
 				source.attr("data-hits", hits - 1 );
-
-				$.post("/games/" + gameId + "/undo", data, function(data){
-					console.log(data);
-				});
+				$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/rounds/" + round.val() + "/undo/");
 			}
 
 			if( hits > 3 ){
@@ -72,13 +62,8 @@ $(function(){
 		} else {
 
 			if( hits < 3 || !closed ){
-
 				source.attr("data-hits", hits + 1 );
-
-				$.post("/games/" + gameId + "/score", data, function(data){
-					console.log(data);
-				});
-
+				$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/rounds/" + round.val() + "/score/" + point + "/");
 			}
 
 			if( hits >= 3 && !closed ){
