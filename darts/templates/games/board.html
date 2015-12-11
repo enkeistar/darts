@@ -47,7 +47,7 @@
 				<div class="point-value" data-points="{{ i }}">{{ i }}</div>
 
 				{% for team in game["teams"] %}
-					<div class="target awarded" data-team="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["scores"][i] }}"></div>
+					<div class="target awarded" data-team="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["scores"][game.round - 1][i] }}"></div>
 				{% endfor %}
 
 			</div>
@@ -57,7 +57,7 @@
 		<div class="points">
 			<div class="point-value" data-points="25">B</div>
 			{% for team in game["teams"] %}
-				<div class="target awarded" data-team="{{ team.id }}" data-points="25" data-hits="{{ team["scores"][25] }}"></div>
+				<div class="target awarded" data-team="{{ team.id }}" data-points="25" data-hits="{{ team["scores"][game.round - 1][25] }}"></div>
 			{% endfor %}
 		</div>
 
@@ -67,21 +67,21 @@
 			</div>
 
 			{% for team in game["teams"] %}
-				<div class="score" data-team="{{ team.id }}" data-score="{{ team["points"] }}">
+				<div class="score" data-team="{{ team.id }}" data-score="{{ team["scores"][game.round-1]["points"] }}">
 
 					<div class="score-row">
 						<span class="round-scores">
 							<span class="round-score">
 								<label>R1:</label>
-								153
+								{{ team["scores"][0]["points"] }}
 							</span>
 							<span class="round-score">
 								<label>R2:</label>
-								153
+								{{ team["scores"][1]["points"] }}
 							</span>
 						</span>
 						<span class="current-round-points">
-							{{ team["points"] }}
+							{{ team["scores"][game.round-1]["points"] }}
 						</span>
 					</div>
 
