@@ -234,10 +234,15 @@ def games_players_redo(id):
 
 	return redirect("/games/%d/players/" % id)
 
-@mod.route("/<int:id>/round", methods = ["POST"])
-def games_round(id):
-	model.Model().update(gameModel.Game, id, request.form)
-	return request.form["round"]
+@mod.route("/<int:id>/next/", methods = ["POST"])
+def games_next(id):
+	game = model.Model().selectById(gameModel.Game, id)
+
+	if game.round < 3:
+		model.Model().update(gameModel.Game, game.id, { "round": game.round + 1 })
+		return redirect("/games/%d/" % game.id)
+	else:
+		return redirect("/")
 
 @mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/rounds/<int:round>/score/<int:score>/", methods = ["POST"])
 def games_score(gameId, teamId, playerId, round, score):

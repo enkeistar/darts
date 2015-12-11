@@ -75,7 +75,7 @@ $(function(){
 		if(!closed){
 			var current = $('.score[data-team="' + teamId + '"]');
 			current.data("score", current.data("score") + points );
-			current.html(current.data("score"));
+			current.find(".current-round-points").html(current.data("score"));
 		}
 
 		var team1Closed = isClosed(team1Id);
@@ -87,27 +87,14 @@ $(function(){
 		if(team1Closed && team1Score >= team2Score){
 			nextRoundModal.show();
 			nextRoundModal.find("h1").html("Team 1 Wins Round " + round.val() + "!!");
-			nextRoundModal.find(".round-number").html(nextRound);
 		} else if(team2Closed && team2Score >= team1Score){
 			nextRoundModal.show();
 			nextRoundModal.find("h1").html("Team 2 Wins Round " + round.val() + "!!");
-			nextRoundModal.find(".round-number").html(nextRound);
 		}
 
 		clearTimeout(turnTimeout);
 		turnTimeout = setTimeout(nextPlayer, turnDelay);
 
-	});
-
-	$(".btn-next-round").on("click", function(){
-		var nextRound = parseInt(round.val()) + 1;
-		$.post("/games/" + gameId + "/round", { round: nextRound }, function(data){
-			nextRoundModal.hide();
-			$(".awarded").attr("data-hits", 0).attr("data-points", 0);
-			$(".score").attr("data-score", 0).html(0);
-			round.val(nextRound);
-			setActivePlayer();
-		});
 	});
 
 	$(".player").on("click", function(){

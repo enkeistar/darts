@@ -148,14 +148,52 @@ header {
 
 .score {
 	font-family: digital;
-	text-align: center;
-	font-size: 15vh;
-	line-height: 1em;
 	display: table-cell;
-	width: 38%;
-
 	border-left: solid 1px #e0e0e0;
 	border-right: solid 1px #fff;
 	border-top: solid 1px #fff;
-
+	vertical-align: middle;
 }
+
+.score-row {
+	display: table-row;
+}
+
+.round-scores {
+	display: table-cell;
+	float: left;
+	width: 48px;
+	padding-left: 8px;
+}
+
+.round-score {
+	display: block;
+}
+.round-score label {
+	width: 16px;
+	margin: 0;
+}
+
+.current-round-points {
+	display: table-cell;
+	font-size: 15vh;
+	line-height: 0.7em;
+}
+
+/*
+.round-scores {
+	float: left;
+	vertical-align: middle;
+}
+.round-score {
+	font-size: 12px;
+}
+.current-round-points {
+	float: left;
+	font-size: 15vh;
+	line-height: 1em;
+	text-align: center;
+	display: table-cell;
+	vertical-align: middle;
+}
+*/

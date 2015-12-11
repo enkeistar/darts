@@ -67,7 +67,25 @@
 			</div>
 
 			{% for team in game["teams"] %}
-				<div class="score" data-team="{{ team.id }}" data-score="{{ team["points"] }}">{{ team["points"] }}</div>
+				<div class="score" data-team="{{ team.id }}" data-score="{{ team["points"] }}">
+
+					<div class="score-row">
+						<span class="round-scores">
+							<span class="round-score">
+								<label>R1:</label>
+								153
+							</span>
+							<span class="round-score">
+								<label>R2:</label>
+								153
+							</span>
+						</span>
+						<span class="current-round-points">
+							{{ team["points"] }}
+						</span>
+					</div>
+
+				</div>
 			{% endfor %}
 		</div>
 
@@ -77,15 +95,19 @@
 	<input type="hidden" name="round" value="{{ game.round }}" />
 
 	<div class="modal-box modal-next-round">
-		<h1>Team 1 Wins!!</h1>
-		<button class="btn btn-warning btn-lg btn-block btn-next-round">Round <span class="round-number">2</span></button>
+		<h1>{message}</h1>
+
+		<div class="button-group">
+			<form action="/games/{{ game.id }}/next/" method="POST">
+				<button class="btn btn-default btn-lg btn-block btn-next-round">
+					Next Round
+				</button>
+			</form>
+		</div>
 	</div>
 
 	<div class="modal-box modal-new-game">
-		<h1>
-			Are you sure you want<br />
-			to quit this game?
-		</h1>
+		<h1>Are you sure you want to quit this game?</h1>
 
 		<div class="button-group">
 			<a class="btn btn-default btn-lg new-game-yes">Yes</a>
