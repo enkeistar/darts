@@ -30,11 +30,19 @@ header {
 	font-size: 3vh;
 	vertical-align: middle;
 	cursor: pointer;
+	border-bottom: solid 1px #e0e0e0;
+	border-right: solid 1px #fff;
+}
+
+.game-option.new-game {
+	border-top: solid 1px #fff;
+	border-bottom: solid 1px #e0e0e0;
 }
 
 .target:active,
 .target.active {
-	background-color: #eaeaea;
+	background-color: #ddd;
+	color: #888;
 }
 
 .teams {
@@ -44,17 +52,15 @@ header {
 	display: table-row;
 }
 
-.players {}
+.players {
+	border-bottom: solid 1px #e0e0e0;
+}
 
 .player {
-	color: #ccc;
+	color: #aaa;
 	text-align: center;
-	border: solid 1px rgba(0,0,0,0);
 	padding: 0 3px;
-}
-.player.active,
-.player:active {
-	border: solid 1px #ccc;
+	height: 100%;
 }
 
 .player .initial {
@@ -74,16 +80,18 @@ header {
 
 .points {
 	height: 10%;
-	border-top: solid 1px #fff;
-	border-bottom: solid 1px #e0e0e0;
 	width: 100%;
 	display: table-row;
 }
 
+.teams {
 
+}
 .teams .players {
 	display: table-cell;
 	width: 38%;
+	border-left: solid 1px #e0e0e0;
+	border-right: solid 1px #fff;
 }
 
 .point-value {
@@ -95,6 +103,8 @@ header {
 	display: table-cell;
 	float: none;
 	width: 24%;
+	border-top: solid 1px #fff;
+	border-bottom: solid 1px #e0e0e0;
 }
 
 .awarded {
@@ -105,6 +115,8 @@ header {
 	display: table-cell;
 	float: none;
 	width: 38%;
+	border-top: solid 1px #fff;
+	border-bottom: solid 1px #e0e0e0;
 }
 
 .awarded:last-child {
@@ -141,4 +153,9 @@ header {
 	line-height: 1em;
 	display: table-cell;
 	width: 38%;
+
+	border-left: solid 1px #e0e0e0;
+	border-right: solid 1px #fff;
+	border-top: solid 1px #fff;
+
 }
