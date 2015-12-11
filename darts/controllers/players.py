@@ -12,13 +12,23 @@ def players_index():
 
 @mod.route("/new/", methods = ["GET"])
 def players_new():
-	return render_template("players/new.html")
+	return render_template("players/new.html", gameId = 0)
+
+@mod.route("/games/<int:gameId>/new/", methods = ["GET"])
+def players_new_game(gameId):
+	return render_template("players/new.html", gameId = gameId)
 
 @mod.route("/", methods = ["POST"])
 def players_create():
 	newPlayer = playerModel.Player(request.form["name"])
 	model.Model().create(newPlayer)
-	return redirect("/players/")
+
+	gameId = request.form["gameId"]
+
+	if gameId == 0:
+		return redirect("/players/")
+	else:
+		return redirect("/games/" + str(gameId) + "/players/")
 
 @mod.route("/<int:id>/", methods = ["GET"])
 def players_details(id):

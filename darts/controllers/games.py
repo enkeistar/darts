@@ -219,6 +219,21 @@ def games_start(id):
 
 	return redirect("/games/%d/" % id)
 
+@mod.route("/<int:id>/players/redo/", methods = ["POST"])
+def games_players_redo(id):
+	teams = model.Model().select(teamModel.Team).filter_by(gameId = id)
+
+	teamIds = []
+	for team in teams:
+		teamIds.append(team.id)
+
+	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter(teamPlayerModel.TeamPlayer.teamId.in_(teamIds))
+
+	for teamPlayer in teamPlayers:
+		model.Model().delete(teamPlayerModel.TeamPlayer, teamPlayer.id)
+
+	return redirect("/games/%d/players/" % id)
+
 @mod.route("/<int:id>/round", methods = ["POST"])
 def games_round(id):
 	model.Model().update(gameModel.Game, id, request.form)

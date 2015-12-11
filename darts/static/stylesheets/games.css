@@ -93,12 +93,9 @@
 	color: #eee;
 }
 
-.players .redo {
-	margin-top: 20px;
-}
-
 .players .redo,
-.players .done {
+.players .play {
+	margin-top: 8px;
 	display: none;
 }
 

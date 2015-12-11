@@ -15,6 +15,8 @@
 
 		<form action="/players/" method="POST">
 
+			<input type="hidden" name="gameId" value="{{ gameId }}" />
+
 			<div class="form-group">
 
 				<input type="text" name="name" class="form-control" placeholder="Name..." autocomplete="off" maxlength="255" required />

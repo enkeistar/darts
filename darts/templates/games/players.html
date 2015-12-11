@@ -56,14 +56,15 @@
 				{% endfor %}
 			</div>
 
-			<a class="btn btn-default add-player" href="/games/{{ game.id }}/players/new/">Add Player</a>
-
 		</div>
 
+		<button class="btn btn-primary btn-lg btn-block play">Play</button>
 
-		<button class="btn btn-primary btn-lg btn-block done">Play</button>
+		<a class="btn btn-default add-player" href="/players/games/{{ game.id }}/new/">Add Player</a>
 
-		<a class="redo btn btn-default btn-sm" href="/games/{{ game.id }}/players/redo">Redo</a>
+		<form action="/games/{{ game.id }}/players/redo/" method="POST">
+			<button class="redo btn btn-default btn-block">Redo</button>
+		</form>
 
 	</div>
 
