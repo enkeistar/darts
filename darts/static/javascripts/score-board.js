@@ -8,11 +8,15 @@ $(function(){
 	var newGameModal = $(".modal-new-game");
 	var round = $("input[name=round]");
 
+	var undo = false;
+
 	var turnTeam = 0;
 	var turnPlayer = 0;
 	var turnTimeout;
+	var turnDelay = 5000;
 
 	setActivePlayer();
+	setPlayerForRound();
 
 	$(".game-option.new-game").on("click", function(){
 		newGameModal.show();
@@ -23,8 +27,6 @@ $(function(){
 	$(".new-game-no").on("click", function(){
 		newGameModal.hide();
 	});
-
-	var undo = false;
 
 	$(".game-option.undo").on("click", function(){
 		var source = $( this );
@@ -108,7 +110,7 @@ $(function(){
 		}
 
 		clearTimeout(turnTimeout);
-		turnTimeout = setTimeout(nextPlayer, 5000);
+		turnTimeout = setTimeout(nextPlayer, turnDelay);
 
 	});
 
@@ -149,8 +151,6 @@ $(function(){
 	function setActivePlayer(){
 		$(".player").removeClass("active");
 		$(".players").eq(turnTeam).find(".player").eq(turnPlayer).addClass("active");
-		// $(".player").removeClass("active");
-		// $(".player").eq(round.val() == 1 ? 0 : round.val() == 2 ? 2 : 1).addClass("active");
 	}
 
 	function nextPlayer(){
@@ -161,6 +161,17 @@ $(function(){
 		turnTeam = turnTeam == 1 ? 0 : 1;
 
 		setActivePlayer();
+	}
+
+	function setPlayerForRound(){
+		var thisRound = parseInt(round.val());
+
+		if(thisRound >= 2){
+			nextPlayer();
+		}
+		if(thisRound == 3){
+			nextPlayer();
+		}
 	}
 
 });
