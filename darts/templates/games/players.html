@@ -20,12 +20,12 @@
 							<div class="selected" data-team="{{ team.id }}"></div>
 						</div>
 
-						{%- if game.players == 4 -%}
+						{% if game.players == 4 %}
 							<div class="team-player" data-teamid="{{ team.id }}">
 								<label>Player 2:</label>
 								<div class="selected" data-team="{{ team.id }}"></div>
 							</div>
-						{%- endif -%}
+						{% endif %}
 					</div>
 				</div>
 
@@ -37,14 +37,14 @@
 		<div class="instruction">
 
 			<div class="select-player-instruction">Select First Player for Team 1</div>
-			{%- if game.players == 4 -%}
+			{% if game.players == 4 %}
 				<div class="select-player-instruction">Select Second Player for Team 1</div>
-			{%- endif -%}
+			{% endif %}
 
 			<div class="select-player-instruction">Select First Player for Team 2</div>
-			{%- if game.players == 4 -%}
+			{% if game.players == 4 %}
 				<div class="select-player-instruction">Select Second Player for Team 2</div>
-			{%- endif -%}
+			{% endif %}
 
 		</div>
 
