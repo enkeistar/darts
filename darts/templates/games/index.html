@@ -28,14 +28,22 @@
 						{{ game["time"] }}
 					</span>
 
-					{% for team in game["teams"] %}
-						<span class="game-item">
-							{% for player in team["players"] %}
-								<span class="player">{{ player }}</span>
+					<span class="game-item">
+
+						<span class="players">
+
+							{% for team in game["teams"] %}
+								<span class="player-group">
+									{% for player in team["players"] %}
+										<span class="player">{{ player }}</span>
+									{% endfor %}
+								</span>
+								<span class="player-group-seperator">vs</span>
 							{% endfor %}
+
 						</span>
-						<span class="game-item">vs</span>
-					{% endfor %}
+
+					</span>
 
 				</a>
 

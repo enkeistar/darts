@@ -26,10 +26,26 @@
 	border-bottom: solid 1px #ccc;
 }
 
+.game-list .game:last-child .players {
+	display: table;
+	width: 100%;
+}
+
+.game-list .game .game-item .player-group {
+	display: table-cell;
+}
+
 .game-list .game .game-item .player {
 	display: block;
 }
 
-.game-list .game .game-item:last-child {
+.game-list .game .game-item .player-group-seperator {
+	display: table-cell;
+	padding: 0 5px;
+	vertical-align: middle;
+	color: #888;
+}
+
+.game-list .game .game-item .player-group-seperator:last-child {
 	display: none;
 }

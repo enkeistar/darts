@@ -193,7 +193,12 @@ def games_create():
 	newGame = gameModel.Game(request.form["players"], 1, False, datetime.now())
 	model.Model().create(newGame)
 
-	for i in range(1,3):
+	teams = 2
+
+	if newGame.players == 3:
+		teams = 3
+
+	for i in range(0, teams):
 		newTeam = teamModel.Team(newGame.id)
 		model.Model().create(newTeam)
 

@@ -22,18 +22,22 @@
 			{% for team in game["teams"] %}
 
 				<div class="players" data-order="{{ teamOrder }}">
+					<div class="player-table">
+						<div class="player-row">
 
-					{% set playerOrder = 0 %}
-					{% for player in team["players"] %}
+							{% set playerOrder = 0 %}
+							{% for player in team["players"] %}
 
-						<div class="player target {% if game.players == 4 %}col-xs-6{% else %}col-xs-12{% endif %}" data-playerid="{{ player.id }}" data-order="{{ playerOrder }}">
-							<div class="initial">{{ player.name[:1] }}</div>
-							<div class="name">{{ player.name }}</div>
+								<div class="player target" data-playerid="{{ player.id }}" data-order="{{ playerOrder }}">
+									<div class="initial">{{ player.name[:1] }}</div>
+									<div class="name">{{ player.name }}</div>
+								</div>
+
+								{% set playerOrder = playerOrder + 1 %}
+							{% endfor %}
+
 						</div>
-
-						{% set playerOrder = playerOrder + 1 %}
-					{% endfor %}
-
+					</div>
 				</div>
 
 				{% set teamOrder = teamOrder + 1 %}

@@ -8,15 +8,14 @@
 
 		<h1 class="select-num-players">Select Number of Players</h1>
 
-		<form action="/games/" method="POST">
-			<input type="hidden" name="players" value="2" />
-			<button class="btn btn-default number-of-players">2</button>
-		</form>
+		{% for i in range(4, 1, -1) %}
 
-		<form action="/games/" method="POST">
-			<input type="hidden" name="players" value="4" />
-			<button class="btn btn-default number-of-players">4</button>
-		</form>
+			<form action="/games/" method="POST">
+				<input type="hidden" name="players" value="{{ i }}" />
+				<button class="btn btn-default number-of-players">{{ i }}</button>
+			</form>
+
+		{% endfor %}
 
 	</div>
 
