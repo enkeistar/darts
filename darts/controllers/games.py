@@ -16,7 +16,7 @@ def games_index():
 
 	data = []
 
-	games = model.Model().select(gameModel.Game).order_by(desc("createdAt"))
+	games = model.Model().select(gameModel.Game).filter_by(ready = True).order_by(desc("createdAt"))
 
 	for game in games:
 
@@ -191,7 +191,7 @@ def games_new():
 
 @mod.route("/", methods = ["POST"])
 def games_create():
-	newGame = gameModel.Game(request.form["players"], 1, datetime.now())
+	newGame = gameModel.Game(request.form["players"], 1, False, datetime.now())
 	model.Model().create(newGame)
 
 	for i in range(1,3):
@@ -199,6 +199,12 @@ def games_create():
 		model.Model().create(newTeam)
 
 	return redirect("/games/%d/players/" % newGame.id)
+
+@mod.route("/<int:id>/play/", methods = ["POST"])
+def games_play(id):
+	game = model.Model().selectById(gameModel.Game, id)
+	model.Model().update(gameModel.Game, game.id, { "ready": True })
+	return redirect("/games/%d/" % id)
 
 @mod.route("/<int:id>/players/", methods = ["GET"])
 def games_players(id):
