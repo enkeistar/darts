@@ -26,7 +26,7 @@
 					{% set playerOrder = 0 %}
 					{% for player in team["players"] %}
 
-						<div class="player target col-xs-6" data-playerid="{{ player.id }}" data-order="{{ playerOrder }}">
+						<div class="player target {% if game.players == 4 %}col-xs-6{% else %}col-xs-12{% endif %}" data-playerid="{{ player.id }}" data-order="{{ playerOrder }}">
 							<div class="initial">{{ player.name[:1] }}</div>
 							<div class="name">{{ player.name }}</div>
 						</div>
@@ -93,6 +93,7 @@
 
 	<input type="hidden" name="gameId" value="{{ game.id }}" />
 	<input type="hidden" name="round" value="{{ game.round }}" />
+	<input type="hidden" name="players" value="{{ game.players }}" />
 
 	<div class="modal-box modal-next-round">
 		<h1>{message}</h1>
@@ -113,7 +114,6 @@
 			<a class="btn btn-default btn-lg new-game-yes">Yes</a>
 			<a class="btn btn-default btn-lg new-game-no">No</a>
 		</div>
-
 	</div>
 
 {% endblock %}

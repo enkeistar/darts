@@ -7,6 +7,7 @@ $(function(){
 	var nextRoundModal = $(".modal-next-round");
 	var newGameModal = $(".modal-new-game");
 	var round = $("input[name=round]");
+	var numPlayers = parseInt($("input[name=players]").val());
 
 	var undo = false;
 
@@ -128,7 +129,7 @@ $(function(){
 	}
 
 	function nextPlayer(){
-		if(turnTeam == 1){
+		if(numPlayers == 4 && turnTeam == 1){
 			turnPlayer = turnPlayer == 1 ? 0 : 1;
 		}
 
@@ -140,11 +141,11 @@ $(function(){
 	function setPlayerForRound(){
 		var thisRound = parseInt(round.val());
 
-		if(thisRound >= 2){
+		if(thisRound > 1){
 			nextPlayer();
-		}
-		if(thisRound == 3){
-			nextPlayer();
+			if(thisRound > 2){
+				nextPlayer();
+			}
 		}
 	}
 

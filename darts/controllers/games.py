@@ -76,6 +76,7 @@ def games_board(id):
 	data = {
 		"id": int(game.id),
 		"round": game.round,
+		"players": game.players,
 		"teams": []
 	}
 
