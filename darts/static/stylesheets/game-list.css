@@ -1,38 +1,35 @@
-.game-list h1 {
-	padding: 0 16px 8px;
-	border-bottom: solid 1px #ccc;
+.game-list .game-container {
+	display: table;
+	width: 100%;
 }
 
 .game-list .game {
-	padding: 0 16px 8px;
-	margin-bottom: 8px;
+	display: table-row;
+	overflow: hidden;
+	color: #333;
+	text-decoration: none;
+}
+
+.game-list .game:active {
+	background: #ccc;
+}
+
+.game-list .game .game-item {
+	border-top: solid 1px #ccc;
+	display: table-cell;
+	padding: 8px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.game-list .game:last-child .game-item {
 	border-bottom: solid 1px #ccc;
-	overflow: hidden;
 }
 
-.game-list .name,
-.game-list .date {
-	float: left;
-	white-space: nowrap;
-	margin-right: 20px;
-	min-width: 15%;
+.game-list .game .game-item .player {
+	display: block;
 }
 
-.game-list .team {
-	position: relative;
-	overflow: hidden;
-	float: left;
-}
-
-.game-list .player {
-}
-
-.game-list .vs {
-	float: left;
-	margin: 0 16px;
-	padding-top: 10px;
-}
-
-.game-list .vs:last-child {
+.game-list .game .game-item:last-child {
 	display: none;
 }

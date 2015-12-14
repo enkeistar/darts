@@ -13,33 +13,35 @@
 
 		<h1>Games</h1>
 
-		{% for game in games %}
+		<div class="game-container">
 
-			<div class="game">
+			{% for game in games %}
 
-				<div class="name">
-					<a href="/games/{{ game["id"] }}/">Game {{ game["id"] }}</a>
-				</div>
+				<a class="game" href="/games/{{ game["id"] }}/">
 
-				<div class="date">
-					{{ game["date"] }}<br />
-					{{ game["time"] }}
-				</div>
+					<span class="game-item name">
+						Game: {{ game["id"] }}
+					</span>
 
-				<div class="teams">
+					<span class="game-item date">
+						{{ game["date"] }}<br />
+						{{ game["time"] }}
+					</span>
+
 					{% for team in game["teams"] %}
-						<div class="team">
+						<span class="game-item">
 							{% for player in team["players"] %}
-								<div class="player">{{ player }}</div>
+								<span class="player">{{ player }}</span>
 							{% endfor %}
-						</div>
-						<div class="vs">vs</div>
+						</span>
+						<span class="game-item">vs</span>
 					{% endfor %}
-				</div>
 
-			</div>
+				</a>
 
-		{% endfor %}
+			{% endfor %}
+
+		</div>
 
 	</div>
 
