@@ -7,8 +7,6 @@ from sqlalchemy import desc
 import operator
 import json
 
-import pprint
-
 mod = Blueprint("games", __name__, url_prefix = "/games")
 
 @mod.route("/", methods = ["GET"])

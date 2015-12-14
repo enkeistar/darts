@@ -5,10 +5,11 @@ $(function(){
 	var instructions = $(".select-player-instruction")
 	var teamPlayers = $(".team-player");
 	var existingPlayers = $(".existing-players");
+	var players = $(".player");
 
 	next();
 
-	$(".player").on("click", function(){
+	players.on("click", function(){
 		var source = $(this);
 
 		var data = {
@@ -16,8 +17,11 @@ $(function(){
 			playerId: source.data("playerid")
 		};
 
+		players.prop("disabled", true);
+
 		$.post("/games/" + gameId + "/players/", data, function(data){
 			selectPlayer(source);
+			players.prop("disabled", false);
 		});
 
 	});

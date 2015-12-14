@@ -1,6 +1,5 @@
 # darts
 
-
 # TODO
 * better way to delete players from manage players screen, only admins, only if no stats?
 * more better stats
