@@ -13,10 +13,7 @@
 
 		<div class="teams">
 
-			<div class="game-option target undo">
-				<div>Remove</div>
-				<div>Score</div>
-			</div>
+			<div class="game-option target undo">Remove Score</div>
 
 			{% set teamOrder = 0 %}
 			{% for team in game["teams"] %}
@@ -28,7 +25,7 @@
 							{% set playerOrder = 0 %}
 							{% for player in team["players"] %}
 
-								<div class="player target" data-playerid="{{ player.id }}" data-order="{{ playerOrder }}">
+								<div class="player target" data-playerid="{{ player.id }}" data-teamid="{{ team.id }}" data-order="{{ playerOrder }}">
 									<div class="initial">{{ player.name[:1] }}</div>
 									<div class="name">{{ player.name }}</div>
 								</div>
@@ -66,9 +63,7 @@
 		</div>
 
 		<div class="scores">
-			<div class="game-option target new-game">
-				<div>Home</div>
-			</div>
+			<div class="game-option target new-game">Home</div>
 
 			{% for team in game["teams"] %}
 				<div class="score" data-team="{{ team.id }}" data-score="{{ team["scores"][game.round-1]["points"] }}">
