@@ -52,90 +52,59 @@ $(function(){
 			return;
 		}
 
-		if(numPlayers == 3){
 
-			source.attr("data-hits", hits + 1);
+		var points = 0;
+		var closed = $(".awarded[data-points=" + point + "]:not([data-team=" + teamId + "])").attr("data-hits") >= 3;
 
-			var closed = 0;
+		if( undo ){
 
-			if(hits >= 3){
-
-				$(".awarded[data-points=" + point + "]:not([data-team=" + teamId + "])").each(function(){
-
-					var thisTeam = $(this);
-					var teamClosed = parseInt(thisTeam.attr("data-hits")) >= 3;
-
-					if(!teamClosed){
-						var current = $('.score[data-team="' + thisTeam.data("team") + '"]');
-						current.data("score", current.data("score") + point);
-						current.find(".current-round-points").html(current.data("score"));
-					} else {
-						closed++;
-					}
-
-				});
-
+			if( hits > 0 ){
+				source.attr("data-hits", hits - 1);
+				$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/rounds/" + round.val() + "/undo/");
 			}
 
-			if(closed < 2){
-				$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/rounds/" + round.val() + "/score/" + point + "/");
+			if( hits > 3 ){
+				points -= source.data("points");
 			}
+
+			$(".game-option.undo").click().html("Remove<br />Score");
 
 		} else {
 
-			var points = 0;
-			var closed = $(".awarded[data-points=" + point + "]:not([data-team=" + teamId + "])").attr("data-hits") >= 3;
-
-			if( undo ){
-
-				if( hits > 0 ){
-					source.attr("data-hits", hits - 1);
-					$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/rounds/" + round.val() + "/undo/");
-				}
-
-				if( hits > 3 ){
-					points -= source.data("points");
-				}
-
-				$(".game-option.undo").click().html("Remove<br />Score");
-
-			} else {
-
-				if( hits < 3 || !closed ){
-					source.attr("data-hits", hits + 1);
-					$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/rounds/" + round.val() + "/score/" + point + "/");
-				}
-
-				if( hits >= 3 && !closed ){
-					points += source.data("points");
-				}
-
+			if( hits < 3 || !closed ){
+				source.attr("data-hits", hits + 1);
+				$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/rounds/" + round.val() + "/score/" + point + "/");
 			}
 
-			if(!closed){
-				var current = $('.score[data-team="' + teamId + '"]');
-				current.data("score", current.data("score") + points);
-				current.find(".current-round-points").html(current.data("score"));
+			if( hits >= 3 && !closed ){
+				points += source.data("points");
 			}
-
-			var team1Closed = isClosed(team1Id);
-			var team2Closed = isClosed(team2Id);
-			var team1Score = getScore(team1Id);
-			var team2Score = getScore(team2Id);
-			var nextRound = parseInt(round.val()) + 1;
-
-			if(team1Closed && team1Score >= team2Score){
-				nextRoundModal.show();
-				nextRoundModal.find("h1").html("Team 1 Wins Round " + round.val() + "!!");
-			} else if(team2Closed && team2Score >= team1Score){
-				nextRoundModal.show();
-				nextRoundModal.find("h1").html("Team 2 Wins Round " + round.val() + "!!");
-			}
-
-			clearTimeout(turnTimeout);
-			turnTimeout = setTimeout(nextPlayer, turnDelay);
 
 		}
+
+		if(!closed){
+			var current = $('.score[data-team="' + teamId + '"]');
+			current.data("score", current.data("score") + points);
+			current.find(".current-round-points").html(current.data("score"));
+		}
+
+		var team1Closed = isClosed(team1Id);
+		var team2Closed = isClosed(team2Id);
+		var team1Score = getScore(team1Id);
+		var team2Score = getScore(team2Id);
+		var nextRound = parseInt(round.val()) + 1;
+
+		if(team1Closed && team1Score >= team2Score){
+			nextRoundModal.show();
+			nextRoundModal.find("h1").html("Team 1 Wins Round " + round.val() + "!!");
+		} else if(team2Closed && team2Score >= team1Score){
+			nextRoundModal.show();
+			nextRoundModal.find("h1").html("Team 2 Wins Round " + round.val() + "!!");
+		}
+
+		clearTimeout(turnTimeout);
+		turnTimeout = setTimeout(nextPlayer, turnDelay);
+
 
 	});
 
