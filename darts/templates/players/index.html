@@ -20,9 +20,11 @@
 				{% for player in players %}
 
 					<tr>
+
 						<td style="vertical-align: middle;">
 							<a href="/players/{{ player.id }}/">{{ player.name }}</a>
 						</td>
+
 						<td class="text-right">
 							<form id="delete-player-form-{{ player.id }}" action="/players/{{ player.id }}/delete/" method="POST">
 
@@ -36,12 +38,21 @@
 										Delete
 									</button>
 								</div>
+
 							</form>
 						</td>
 
 					</tr>
 
 				{% endfor %}
+
+				{% if players.count() == 0 %}
+
+					<tr>
+						<td class="text-center">No players have been added.<td>
+					</td>
+
+				{% endif %}
 
 			</tbody>
 

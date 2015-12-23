@@ -49,6 +49,12 @@
 
 			{% endfor %}
 
+			{% if games.count(self) == 0 %}
+
+				<p class="text-center">No games have been played.<p>
+
+			{% endif %}
+
 		</div>
 
 	</div>
