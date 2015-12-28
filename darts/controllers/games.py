@@ -75,6 +75,7 @@ def games_board(id):
 
 	data = {
 		"id": int(game.id),
+		"game": game.game,
 		"round": game.round,
 		"players": game.players,
 		"teams": []
@@ -190,7 +191,7 @@ def games_new():
 
 @mod.route("/", methods = ["POST"])
 def games_create():
-	newGame = gameModel.Game(request.form["players"], 1, False, datetime.now())
+	newGame = gameModel.Game(request.form["players"], 1, 1, False, datetime.now())
 	model.Model().create(newGame)
 
 	teams = 2
@@ -268,42 +269,43 @@ def games_players_redo(id):
 def games_next(id):
 	game = model.Model().selectById(gameModel.Game, id)
 
-	if game.round < 3:
-		model.Model().update(gameModel.Game, game.id, { "round": game.round + 1 })
+	if game.game < 3:
+		model.Model().update(gameModel.Game, game.id, { "game": game.game + 1, "round": 1 })
 		return redirect("/games/%d/" % game.id)
 	else:
 		return redirect("/")
 
-@mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/rounds/<int:round>/score/<int:score>/", methods = ["POST"])
-def games_score(gameId, teamId, playerId, round, score):
+@mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/games/<int:game>/rounds/<int:round>/marks/<int:mark>/", methods = ["POST"])
+def games_score(gameId, teamId, playerId, game, round, mark):
 
-	newScore = markModel.Score()
-	newScore.gameId = gameId
-	newScore.teamId = teamId
-	newScore.playerId = playerId
-	newScore.round = round
-	newScore.createdAt = datetime.now()
+	newMark = markModel.Mark()
+	newMark.gameId = gameId
+	newMark.teamId = teamId
+	newMark.playerId = playerId
+	newMark.game = game
+	newMark.round = round
+	newMark.createdAt = datetime.now()
 
-	points = int(score)
+	points = int(mark)
 
 	if points == 20:
-		newScore.twenty = 1
+		newMark.twenty = 1
 	elif points == 19:
-		newScore.nineteen = 1
+		newMark.nineteen = 1
 	elif points == 18:
-		newScore.eighteen = 1
+		newMark.eighteen = 1
 	elif points == 17:
-		newScore.seventeen = 1
+		newMark.seventeen = 1
 	elif points == 16:
-		newScore.sixteen = 1
+		newMark.sixteen = 1
 	elif points == 15:
-		newScore.fifteen = 1
+		newMark.fifteen = 1
 	elif points == 25:
-		newScore.bullseye = 1
+		newMark.bullseye = 1
 
-	model.Model().create(newScore)
+	model.Model().create(newMark)
 
-	return Response(json.dumps({ "id": int(newScore.id) }), status = 200, mimetype = "application/json")
+	return Response(json.dumps({ "id": int(newMark.id) }), status = 200, mimetype = "application/json")
 
 @mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/rounds/<int:round>/undo/", methods = ["POST"])
 def games_undo(gameId, teamId, playerId, round):

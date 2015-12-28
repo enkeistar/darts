@@ -39,7 +39,7 @@ header {
 }
 
 .target:active,
-.target.active {
+.player.active {
 	background-color: #ddd;
 	color: #888;
 }

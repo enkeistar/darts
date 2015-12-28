@@ -12,6 +12,7 @@ class Mark(Base):
 	gameId = Column(Integer)
 	teamId = Column(Integer)
 	playerId = Column(Integer)
+	game = Column(Integer)
 	round = Column(Integer)
 	twenty = Column(TINYINT, default = 0)
 	nineteen = Column(TINYINT, default = 0)

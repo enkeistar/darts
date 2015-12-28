@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS `games` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `players` int(11) DEFAULT NULL,
-  `round` int(11) DEFAULT NULL,
+  `game` int(11) DEFAULT NULL,
   `ready` tinyint(4) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `marks` (
   `gameId` int(11) DEFAULT NULL,
   `teamId` int(11) DEFAULT NULL,
   `playerId` int(11) DEFAULT NULL,
+  `game` int(11) DEFAULT NULL,
   `round` int(11) DEFAULT NULL,
   `twenty` tinyint(4) DEFAULT NULL,
   `nineteen` tinyint(4) DEFAULT NULL,

@@ -25,7 +25,7 @@
 							{% set playerOrder = 0 %}
 							{% for player in team["players"] %}
 
-								<div class="player target" data-playerid="{{ player.id }}" data-teamid="{{ team.id }}" data-order="{{ playerOrder }}">
+								<div class="player" data-playerid="{{ player.id }}" data-teamid="{{ team.id }}" data-order="{{ playerOrder }}">
 									<div class="initial">{{ player.name[:1] }}</div>
 									<div class="name">{{ player.name }}</div>
 								</div>
@@ -48,7 +48,7 @@
 				<div class="point-value" data-points="{{ i }}">{{ i }}</div>
 
 				{% for team in game["teams"] %}
-					<div class="target awarded" data-team="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["marks"][game.round - 1][i] }}"></div>
+					<div class="target awarded" data-team="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["marks"][game.game - 1][i] }}"></div>
 				{% endfor %}
 
 			</div>
@@ -58,7 +58,7 @@
 		<div class="points">
 			<div class="point-value" data-points="25">B</div>
 			{% for team in game["teams"] %}
-				<div class="target awarded" data-team="{{ team.id }}" data-points="25" data-hits="{{ team["marks"][game.round - 1][25] }}"></div>
+				<div class="target awarded" data-team="{{ team.id }}" data-points="25" data-hits="{{ team["marks"][game.game - 1][25] }}"></div>
 			{% endfor %}
 		</div>
 
@@ -66,7 +66,7 @@
 			<div class="game-option target new-game">Home</div>
 
 			{% for team in game["teams"] %}
-				<div class="score" data-team="{{ team.id }}" data-score="{{ team["marks"][game.round-1]["points"] }}">
+				<div class="score" data-team="{{ team.id }}" data-score="{{ team["marks"][game.game-1]["points"] }}">
 
 					<div class="score-row">
 						<span class="round-scores">
@@ -80,7 +80,7 @@
 							</span>
 						</span>
 						<span class="current-round-points">
-							{{ team["marks"][game.round-1]["points"] }}
+							{{ team["marks"][game.game-1]["points"] }}
 						</span>
 					</div>
 
@@ -91,6 +91,7 @@
 	</div>
 
 	<input type="hidden" name="gameId" value="{{ game.id }}" />
+	<input type="hidden" name="game" value="{{ game.game }}" />
 	<input type="hidden" name="round" value="{{ game.round }}" />
 	<input type="hidden" name="players" value="{{ game.players }}" />
 
