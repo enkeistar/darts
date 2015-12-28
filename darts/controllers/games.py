@@ -1,6 +1,6 @@
 from darts import app
 from flask import Blueprint, Response, render_template, redirect, request
-from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, score as scoreModel
+from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, mark as markModel
 from darts import model
 from datetime import datetime
 from sqlalchemy import desc
@@ -31,7 +31,7 @@ def games_index():
 
 			teamData = {
 				"id": team.id,
-				"score": 0,
+				"mark": 0,
 				"players": [],
 				"points": 0
 			}
@@ -42,29 +42,29 @@ def games_index():
 				user = model.Model().selectById(playerModel.Player, player.playerId)
 				teamData["players"].append(user.name)
 
-			scores = model.Model().select(scoreModel.Score).filter_by(gameId = game.id, teamId = team.id)
+			marks = model.Model().select(markModel.Mark).filter_by(gameId = game.id, teamId = team.id)
 
-			for score in scores:
-				if score.twenty:
-					teamData["score"] += 20
-				elif score.nineteen:
-					teamData["score"] += 19
-				elif score.eighteen:
-					teamData["score"] += 18
-				elif score.seventeen:
-					teamData["score"] += 17
-				elif score.sixteen:
-					teamData["score"] += 16
-				elif score.fifteen:
-					teamData["score"] += 15
-				elif score.bullseye:
-					teamData["score"] += 25
+			for mark in marks:
+				if mark.twenty:
+					teamData["mark"] += 20
+				elif mark.nineteen:
+					teamData["mark"] += 19
+				elif mark.eighteen:
+					teamData["mark"] += 18
+				elif mark.seventeen:
+					teamData["mark"] += 17
+				elif mark.sixteen:
+					teamData["mark"] += 16
+				elif mark.fifteen:
+					teamData["mark"] += 15
+				elif mark.bullseye:
+					teamData["mark"] += 25
 
 			gameData["teams"].append(teamData)
 
 		data.append(gameData)
 
-		gameData["teams"].sort(key = operator.itemgetter("score"), reverse = True)
+		gameData["teams"].sort(key = operator.itemgetter("mark"), reverse = True)
 
 	return render_template("games/index.html", games = data)
 
@@ -85,7 +85,7 @@ def games_board(id):
 		teamData = {
 			"id": team.id,
 			"players": [],
-			"scores": [{
+			"marks": [{
 				20: 0,
 				19: 0,
 				18: 0,
@@ -139,46 +139,46 @@ def games_board(id):
 			}
 			pointsScored = 0
 
-			scores = model.Model().select(scoreModel.Score).filter_by(gameId = game.id, teamId = team.id, round = i + 1)
+			marks = model.Model().select(markModel.Mark).filter_by(gameId = game.id, teamId = team.id, round = i + 1)
 
-			for score in scores:
-				if score.twenty:
-					teamData["scores"][i][20] += 1
+			for mark in marks:
+				if mark.twenty:
+					teamData["marks"][i][20] += 1
 					scored["twenty"] += 1
 					if scored["twenty"] > 3:
 						pointsScored += 20
-				elif score.nineteen:
-					teamData["scores"][i][19] += 1
+				elif mark.nineteen:
+					teamData["marks"][i][19] += 1
 					scored["nineteen"] += 1
 					if scored["nineteen"] > 3:
 						pointsScored += 19
-				elif score.eighteen:
-					teamData["scores"][i][18] += 1
+				elif mark.eighteen:
+					teamData["marks"][i][18] += 1
 					scored["eighteen"] += 1
 					if scored["eighteen"] > 3:
 						pointsScored += 18
-				elif score.seventeen:
-					teamData["scores"][i][17] += 1
+				elif mark.seventeen:
+					teamData["marks"][i][17] += 1
 					scored["seventeen"] += 1
 					if scored["seventeen"] > 3:
 						pointsScored += 17
-				elif score.sixteen:
-					teamData["scores"][i][16] += 1
+				elif mark.sixteen:
+					teamData["marks"][i][16] += 1
 					scored["sixteen"] += 1
 					if scored["sixteen"] > 3:
 						pointsScored += 16
-				elif score.fifteen:
-					teamData["scores"][i][15] += 1
+				elif mark.fifteen:
+					teamData["marks"][i][15] += 1
 					scored["fifteen"] += 1
 					if scored["fifteen"] > 3:
 						pointsScored += 15
-				elif score.bullseye:
-					teamData["scores"][i][25] += 1
+				elif mark.bullseye:
+					teamData["marks"][i][25] += 1
 					scored["bullseye"] += 1
 					if scored["bullseye"] > 3:
 						pointsScored += 25
 
-			teamData["scores"][i]["points"] = pointsScored
+			teamData["marks"][i]["points"] = pointsScored
 
 		data["teams"].append(teamData)
 
@@ -277,7 +277,7 @@ def games_next(id):
 @mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/rounds/<int:round>/score/<int:score>/", methods = ["POST"])
 def games_score(gameId, teamId, playerId, round, score):
 
-	newScore = scoreModel.Score()
+	newScore = markModel.Score()
 	newScore.gameId = gameId
 	newScore.teamId = teamId
 	newScore.playerId = playerId
@@ -310,11 +310,11 @@ def games_undo(gameId, teamId, playerId, round):
 
 	id = 0
 
-	scores = model.Model().select(scoreModel.Score).filter_by(gameId = gameId, teamId = teamId, playerId = playerId, round = round)
+	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId, teamId = teamId, playerId = playerId, round = round)
 
-	if scores.count() > 0:
-		id = scores[scores.count() - 1].id
-		model.Model().delete(scoreModel.Score, id)
+	if marks.count() > 0:
+		id = marks[marks.count() - 1].id
+		model.Model().delete(markModel.Mark, id)
 
 	return Response(json.dumps({ "id": id }), status = 200, mimetype = "application/json")
 

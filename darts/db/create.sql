@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `teams` (
   CONSTRAINT `fk_teams_games` FOREIGN KEY (`gameId`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `scores` (
+CREATE TABLE IF NOT EXISTS `marks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `gameId` int(11) DEFAULT NULL,
   `teamId` int(11) DEFAULT NULL,
@@ -37,12 +37,12 @@ CREATE TABLE IF NOT EXISTS `scores` (
   `bullseye` tinyint(4) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_scores_games` (`gameId`),
-  KEY `fk_scores_teams` (`teamId`),
-  KEY `fk_scores_players` (`playerId`),
-  CONSTRAINT `fk_scores_games` FOREIGN KEY (`gameId`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_scores_players` FOREIGN KEY (`playerId`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_scores_teams` FOREIGN KEY (`teamId`) REFERENCES `teams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `fk_marks_games` (`gameId`),
+  KEY `fk_marks_teams` (`teamId`),
+  KEY `fk_marks_players` (`playerId`),
+  CONSTRAINT `fk_marks_games` FOREIGN KEY (`gameId`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_marks_players` FOREIGN KEY (`playerId`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_marks_teams` FOREIGN KEY (`teamId`) REFERENCES `teams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `teams_players` (

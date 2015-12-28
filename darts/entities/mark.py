@@ -4,9 +4,9 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class Score(Base):
+class Mark(Base):
 
-	__tablename__ = "scores"
+	__tablename__ = "marks"
 
 	id = Column(Integer, primary_key = True)
 	gameId = Column(Integer)

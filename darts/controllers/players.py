@@ -1,6 +1,6 @@
 from darts import app
 from flask import Blueprint, request, render_template, redirect
-from darts.entities import player as playerModel, game as gameModel, team_player as teamPlayerModel, score as scoreModel
+from darts.entities import player as playerModel, game as gameModel, team_player as teamPlayerModel, mark as markModel
 from darts import model
 
 mod = Blueprint("players", __name__, url_prefix = "/players")
@@ -34,7 +34,7 @@ def players_create():
 def players_details(id):
 	player = model.Model().selectById(playerModel.Player, id)
 	teams = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(playerId = id)
-	scores = model.Model().select(scoreModel.Score).filter_by(playerId = id)
+	scores = model.Model().select(markModel.Mark).filter_by(playerId = id)
 	return render_template("players/details.html", player = player, teams = teams, scores = scores)
 
 @mod.route("/<int:id>/edit/", methods = ["GET"])

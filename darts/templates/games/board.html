@@ -13,7 +13,7 @@
 
 		<div class="teams">
 
-			<div class="game-option target undo">Remove Score</div>
+			<div class="game-option target undo">Undo</div>
 
 			{% set teamOrder = 0 %}
 			{% for team in game["teams"] %}
@@ -48,7 +48,7 @@
 				<div class="point-value" data-points="{{ i }}">{{ i }}</div>
 
 				{% for team in game["teams"] %}
-					<div class="target awarded" data-team="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["scores"][game.round - 1][i] }}"></div>
+					<div class="target awarded" data-team="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["marks"][game.round - 1][i] }}"></div>
 				{% endfor %}
 
 			</div>
@@ -58,7 +58,7 @@
 		<div class="points">
 			<div class="point-value" data-points="25">B</div>
 			{% for team in game["teams"] %}
-				<div class="target awarded" data-team="{{ team.id }}" data-points="25" data-hits="{{ team["scores"][game.round - 1][25] }}"></div>
+				<div class="target awarded" data-team="{{ team.id }}" data-points="25" data-hits="{{ team["marks"][game.round - 1][25] }}"></div>
 			{% endfor %}
 		</div>
 
@@ -66,21 +66,21 @@
 			<div class="game-option target new-game">Home</div>
 
 			{% for team in game["teams"] %}
-				<div class="score" data-team="{{ team.id }}" data-score="{{ team["scores"][game.round-1]["points"] }}">
+				<div class="score" data-team="{{ team.id }}" data-score="{{ team["marks"][game.round-1]["points"] }}">
 
 					<div class="score-row">
 						<span class="round-scores">
 							<span class="round-score">
 								<label>R1:</label>
-								{{ team["scores"][0]["points"] }}
+								{{ team["marks"][0]["points"] }}
 							</span>
 							<span class="round-score">
 								<label>R2:</label>
-								{{ team["scores"][1]["points"] }}
+								{{ team["marks"][1]["points"] }}
 							</span>
 						</span>
 						<span class="current-round-points">
-							{{ team["scores"][game.round-1]["points"] }}
+							{{ team["marks"][game.round-1]["points"] }}
 						</span>
 					</div>
 
