@@ -47,15 +47,54 @@ h1.with-action {
 	text-align: left;
 }
 
-header a {
-	font-size: 50px;
+header {
 	display: block;
 	border-bottom: solid 1px #333;
 	color: #333;
+}
+
+header .home {
+	position: absolute;
+	overflow: hidden;
+}
+
+header .home .arrow {
+	display: block;
+	float: left;
+	border-top: solid 1px #ccc;
+	border-left: solid 1px #ccc;
+	width: 22px;
+	height: 22px;
+	background: #fff;
+	position: relative;
+	top: 6px;
+	left: 12px;
+	transform: rotate(-45deg);
+	z-index: -1;
+}
+
+header .home .body {
+	display: block;
+	float: left;
+	background: #fff;
+	color: #333;
+	border: solid 1px #ccc;
+	border-left: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+}
+
+header .home:active .arrow,
+header .home:active .body {
+	background: #e6e6e6;
+	border-color: #adadad;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.125) inset;
+}
+
+header h1 {
+	font-size: 50px;
 	font-family: digital;
-	padding: 0 16px;
 	line-height: 33px;
-	padding: 12px 0;
 	text-align: center;
 }
 
