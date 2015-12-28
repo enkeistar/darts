@@ -6,9 +6,9 @@ $(function(){
 	var team2Id = $(".score").last().data("team");
 	var nextRoundModal = $(".modal-next-round");
 	var newGameModal = $(".modal-new-game");
-	var game = $("input[name=game]");
+	var game = parseInt($("input[name=game]").val());
 	var numPlayers = parseInt($("input[name=players]").val());
-	var round = $("input[name=round]");
+	var round = parseInt($("input[name=round]").val());
 
 	var undo = false;
 
@@ -54,7 +54,7 @@ $(function(){
 
 		if( hits < 3 || !closed ){
 			source.attr("data-hits", hits + 1);
-			$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/games/" + game.val() + "/rounds/" + round.val() + "/marks/" + point + "/");
+			$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/" + point + "/");
 		}
 
 		if( hits >= 3 && !closed ){
@@ -71,14 +71,14 @@ $(function(){
 		var team2Closed = isClosed(team2Id);
 		var team1Score = getScore(team1Id);
 		var team2Score = getScore(team2Id);
-		var nextRound = parseInt(game.val()) + 1;
+		var nextRound = game + 1;
 
 		if(team1Closed && team1Score >= team2Score){
 			nextRoundModal.show();
-			nextRoundModal.find("h1").html("Team 1 Wins Game " + game.val() + "!!");
+			nextRoundModal.find("h1").html("Team 1 Wins Game " + game + "!!");
 		} else if(team2Closed && team2Score >= team1Score){
 			nextRoundModal.show();
-			nextRoundModal.find("h1").html("Team 2 Wins Game " + game.val() + "!!");
+			nextRoundModal.find("h1").html("Team 2 Wins Game " + game + "!!");
 		}
 
 		clearTimeout(turnTimeout);
@@ -114,14 +114,16 @@ $(function(){
 		turnTeam = turnTeam == 1 ? 0 : 1;
 
 		setActivePlayer();
+
+		if(turnTeam == 0 && turnPlayer == 0){
+			round++;
+		}
 	}
 
 	function setPlayerForGame(){
-		var thisGame = parseInt(game.val());
-
-		if(thisGame > 1){
+		if(game > 1){
 			nextPlayer();
-			if(thisGame > 2){
+			if(game > 2){
 				nextPlayer();
 			}
 		}

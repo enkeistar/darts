@@ -140,7 +140,7 @@ def games_board(id):
 			}
 			pointsScored = 0
 
-			marks = model.Model().select(markModel.Mark).filter_by(gameId = game.id, teamId = team.id, round = i + 1)
+			marks = model.Model().select(markModel.Mark).filter_by(gameId = game.id, teamId = team.id, game = i + 1)
 
 			for mark in marks:
 				if mark.twenty:
@@ -278,6 +278,8 @@ def games_next(id):
 @mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/games/<int:game>/rounds/<int:round>/marks/<int:mark>/", methods = ["POST"])
 def games_score(gameId, teamId, playerId, game, round, mark):
 
+	model.Model().update(gameModel.Game, gameId, { "round": round })
+
 	newMark = markModel.Mark()
 	newMark.gameId = gameId
 	newMark.teamId = teamId
@@ -307,12 +309,12 @@ def games_score(gameId, teamId, playerId, game, round, mark):
 
 	return Response(json.dumps({ "id": int(newMark.id) }), status = 200, mimetype = "application/json")
 
-@mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/rounds/<int:round>/undo/", methods = ["POST"])
-def games_undo(gameId, teamId, playerId, round):
+@mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/games/<int:game>/undo/", methods = ["POST"])
+def games_undo(gameId, teamId, playerId, game):
 
 	id = 0
 
-	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId, teamId = teamId, playerId = playerId, round = round)
+	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId, teamId = teamId, playerId = playerId, game = game)
 
 	if marks.count() > 0:
 		id = marks[marks.count() - 1].id
