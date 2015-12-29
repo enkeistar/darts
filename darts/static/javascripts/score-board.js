@@ -1,6 +1,6 @@
 $(function(){
 
-	var player;
+	var player = $(".player.active");
 	var gameId = $("input[name=gameId]").val();
 	var team1Id = $(".score").first().data("team");
 	var team2Id = $(".score").last().data("team");
@@ -10,10 +10,8 @@ $(function(){
 	var numPlayers = parseInt($("input[name=players]").val());
 	var round = parseInt($("input[name=round]").val());
 
-	var undo = false;
-
-	var turnTeam = 0;
-	var turnPlayer = 0;
+	var turnTeam = player.parents(".players").data("order");
+	var turnPlayer = parseInt(player.data("order"));
 	var turnTimeout;
 	var turnDelay = 5000;
 
@@ -122,15 +120,6 @@ $(function(){
 		if(turnTeam == 0 && turnPlayer == 0){
 			round++;
 		}
-	}
-
-	function setPlayerForGame(){
-		/*if(game > 1){
-			nextPlayer();
-			if(game > 2){
-				nextPlayer();
-			}
-		}*/
 	}
 
 });
