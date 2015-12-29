@@ -15,12 +15,15 @@
 
 		<div class="game-container">
 
+			{% set num = games|length %}
+
 			{% for game in games %}
 
 				<a class="game" href="/games/{{ game["id"] }}/">
 
 					<span class="game-item name">
-						Game: {{ game["id"] }}
+						Game: {{ num }}
+						{% set num = num - 1 %}
 					</span>
 
 					<span class="game-item date">

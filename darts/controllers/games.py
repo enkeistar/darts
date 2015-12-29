@@ -78,6 +78,7 @@ def games_board(id):
 		"game": game.game,
 		"round": game.round,
 		"players": game.players,
+		"turn": game.turn,
 		"teams": []
 	}
 
@@ -207,8 +208,10 @@ def games_create():
 
 @mod.route("/<int:id>/play/", methods = ["POST"])
 def games_play(id):
+	team = model.Model().select(teamModel.Team).filter_by(gameId = id).first()
+	teamPlayer = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id).first()
 	game = model.Model().selectById(gameModel.Game, id)
-	model.Model().update(gameModel.Game, game.id, { "ready": True })
+	model.Model().update(gameModel.Game, game.id, { "ready": True, "turn": teamPlayer.playerId })
 	return redirect("/games/%d/" % id)
 
 @mod.route("/<int:id>/players/", methods = ["GET"])
@@ -309,16 +312,18 @@ def games_score(gameId, teamId, playerId, game, round, mark):
 
 	return Response(json.dumps({ "id": int(newMark.id) }), status = 200, mimetype = "application/json")
 
-@mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/games/<int:game>/undo/", methods = ["POST"])
-def games_undo(gameId, teamId, playerId, game):
-
-	id = 0
-
-	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId, teamId = teamId, playerId = playerId, game = game)
+@mod.route("/<int:gameId>/undo/", methods = ["GET"])
+def games_undo(gameId):
+	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId).order_by(markModel.Mark.id.desc())
 
 	if marks.count() > 0:
-		id = marks[marks.count() - 1].id
-		model.Model().delete(markModel.Mark, id)
+		mark = marks.first()
+		model.Model().update(gameModel.Game, gameId, { "turn": mark.playerId })
+		model.Model().delete(markModel.Mark, mark.id)
 
-	return Response(json.dumps({ "id": id }), status = 200, mimetype = "application/json")
+	return redirect("/games/%d/" % gameId)
 
+@mod.route("/<int:gameId>/players/<int:playerId>/turn/", methods = ["POST"])
+def games_turn(gameId, playerId):
+	model.Model().update(gameModel.Game, gameId, { "turn": playerId })
+	return Response(json.dumps({ "id": gameId }), status = 200, mimetype = "application/json")

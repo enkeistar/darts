@@ -17,9 +17,6 @@ $(function(){
 	var turnTimeout;
 	var turnDelay = 5000;
 
-	setActivePlayer();
-	setPlayerForGame();
-
 	$(".game-option.new-game").on("click", function(){
 		newGameModal.show();
 	});
@@ -30,11 +27,11 @@ $(function(){
 		newGameModal.hide();
 	});
 
-	$(".game-option.undo").on("click", function(){
-
-		console.log("UNDO");
-
+	$(".game-option .undo").on("click", function(){
+		window.location = "/games/" + gameId + "/undo/";
 	});
+
+	$(".game-option .miss").on("click", nextTurn);
 
 	$(".awarded").on("click", function(){
 
@@ -82,8 +79,7 @@ $(function(){
 		}
 
 		clearTimeout(turnTimeout);
-		turnTimeout = setTimeout(nextPlayer, turnDelay);
-
+		turnTimeout = setTimeout(nextTurn, turnDelay);
 
 	});
 
@@ -106,7 +102,11 @@ $(function(){
 		$(".players").eq(turnTeam).find(".player").eq(turnPlayer).addClass("active");
 	}
 
-	function nextPlayer(){
+	function getActivePlayer(){
+		return parseInt($(".players").find(".active").data("playerid"));
+	}
+
+	function nextTurn(){
 		if(numPlayers == 4 && turnTeam == 1){
 			turnPlayer = turnPlayer == 1 ? 0 : 1;
 		}
@@ -115,18 +115,22 @@ $(function(){
 
 		setActivePlayer();
 
+		var playerId = getActivePlayer();
+
+		$.post("/games/" + gameId + "/players/" + playerId + "/turn/");
+
 		if(turnTeam == 0 && turnPlayer == 0){
 			round++;
 		}
 	}
 
 	function setPlayerForGame(){
-		if(game > 1){
+		/*if(game > 1){
 			nextPlayer();
 			if(game > 2){
 				nextPlayer();
 			}
-		}
+		}*/
 	}
 
 });

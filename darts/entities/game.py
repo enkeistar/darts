@@ -13,6 +13,7 @@ class Game(Base):
 	game = Column(Integer)
 	round = Column(Integer)
 	ready = Column(Integer)
+	turn = Column(Integer)
 	createdAt = Column(DateTime)
 
 	def __init__(self, players, game, round, ready, createdAt):

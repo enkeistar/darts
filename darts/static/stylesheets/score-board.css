@@ -38,6 +38,12 @@ header {
 	border-bottom: solid 1px #e0e0e0;
 }
 
+.game-option .miss,
+.game-option .undo {
+	height: 50%;
+	line-height: 7vh;
+}
+
 .target:active,
 .player.active {
 	background-color: #ddd;

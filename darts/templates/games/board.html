@@ -13,7 +13,10 @@
 
 		<div class="teams">
 
-			<div class="game-option target undo">Undo</div>
+			<div class="game-option">
+				<div class="target miss">Miss</div>
+				<div class="target undo">Undo</div>
+			</div>
 
 			{% set teamOrder = 0 %}
 			{% for team in game["teams"] %}
@@ -25,7 +28,7 @@
 							{% set playerOrder = 0 %}
 							{% for player in team["players"] %}
 
-								<div class="player" data-playerid="{{ player.id }}" data-teamid="{{ team.id }}" data-order="{{ playerOrder }}">
+								<div class="player {% if player.id == game.turn %}active{% endif %}" data-playerid="{{ player.id }}" data-teamid="{{ team.id }}" data-order="{{ playerOrder }}">
 									<div class="initial">{{ player.name[:1] }}</div>
 									<div class="name">{{ player.name }}</div>
 								</div>
@@ -94,6 +97,7 @@
 	<input type="hidden" name="game" value="{{ game.game }}" />
 	<input type="hidden" name="round" value="{{ game.round }}" />
 	<input type="hidden" name="players" value="{{ game.players }}" />
+	<input type="hidden" name="turn" value="{{ game.turn }}" />
 
 	<div class="modal-box modal-next-round">
 		<h1>{message}</h1>
