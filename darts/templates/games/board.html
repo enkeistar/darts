@@ -21,7 +21,7 @@
 			{% set teamOrder = 0 %}
 			{% for team in game["teams"] %}
 
-				<div class="players" data-order="{{ teamOrder }}">
+				<div class="players" data-teamid="{{ team.id }}" data-wins="" data-order="{{ teamOrder }}">
 					<div class="player-table">
 						<div class="player-row">
 
@@ -98,6 +98,14 @@
 	<input type="hidden" name="round" value="{{ game.round }}" />
 	<input type="hidden" name="players" value="{{ game.players }}" />
 	<input type="hidden" name="turn" value="{{ game.turn }}" />
+
+	{% for result in game["results"] %}
+		<input type="hidden" name="result-teamid" value="{{ result.teamId }}" />
+		<input type="hidden" name="result-game" value="{{ result.game }}" />
+		<input type="hidden" name="result-score" value="{{ result.score }}" />
+		<input type="hidden" name="result-win" value="{{ result.win }}" />
+		<input type="hidden" name="result-loss" value="{{ result.loss }}" />
+	{% endfor %}
 
 	<div class="modal-box modal-next-round">
 		<h1>{message}</h1>

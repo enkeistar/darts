@@ -38,6 +38,13 @@ header {
 	border-bottom: solid 1px #e0e0e0;
 }
 
+.game-option .miss {
+	border-bottom: 1px solid #e0e0e0;
+}
+.game-option .undo {
+	border-top: 1px solid #fff;
+}
+
 .game-option .miss,
 .game-option .undo {
 	height: 50%;

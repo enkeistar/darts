@@ -66,14 +66,17 @@ $(function(){
 		var team2Closed = isClosed(team2Id);
 		var team1Score = getScore(team1Id);
 		var team2Score = getScore(team2Id);
-		var nextRound = game + 1;
 
 		if(team1Closed && team1Score >= team2Score){
 			nextRoundModal.show();
-			nextRoundModal.find("h1").html("Team 1 Wins Game " + game + "!!");
+			nextRoundModal.find("h1").html("Team 1 Wins!");
+			$.post("/games/" + gameId + "/teams/" + team1Id + "/game/" + game + "/score/" + team1Score + "/win/")
+			$.post("/games/" + gameId + "/teams/" + team2Id + "/game/" + game + "/score/" + team2Score + "/loss/")
 		} else if(team2Closed && team2Score >= team1Score){
 			nextRoundModal.show();
-			nextRoundModal.find("h1").html("Team 2 Wins Game " + game + "!!");
+			nextRoundModal.find("h1").html("Team 2 Wins!");
+			$.post("/games/" + gameId + "/teams/" + team1Id + "/game/" + game + "/score/" + team1Score + "/loss/")
+			$.post("/games/" + gameId + "/teams/" + team2Id + "/game/" + game + "/score/" + team2Score + "/win/")
 		}
 
 		clearTimeout(turnTimeout);

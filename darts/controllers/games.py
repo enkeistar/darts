@@ -1,6 +1,6 @@
 from darts import app
 from flask import Blueprint, Response, render_template, redirect, request
-from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, mark as markModel
+from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, mark as markModel, result as resultModel
 from darts import model
 from datetime import datetime
 from sqlalchemy import desc
@@ -72,6 +72,7 @@ def games_index():
 def games_board(id):
 	game = model.Model().selectById(gameModel.Game, id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
+	results = model.Model().select(resultModel.Result).filter_by(gameId = game.id)
 
 	data = {
 		"id": int(game.id),
@@ -79,7 +80,8 @@ def games_board(id):
 		"round": game.round,
 		"players": game.players,
 		"turn": game.turn,
-		"teams": []
+		"teams": [],
+		"results": results
 	}
 
 	for team in teams:
@@ -217,14 +219,9 @@ def games_play(id):
 @mod.route("/<int:id>/players/", methods = ["GET"])
 def games_players(id):
 	game = model.Model().selectById(gameModel.Game, id)
+	teamPlayers = getTeamPlayersByGameId(game.id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
 	players = model.Model().select(playerModel.Player)
-
-	teamIds = []
-	for team in teams:
-		teamIds.append(team.id)
-
-	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter(teamPlayerModel.TeamPlayer.teamId.in_(teamIds))
 
 	return render_template("games/players.html", game = game, teams = teams, players = players, teamPlayers = teamPlayers)
 
@@ -255,13 +252,7 @@ def games_start(id):
 
 @mod.route("/<int:id>/players/redo/", methods = ["POST"])
 def games_players_redo(id):
-	teams = model.Model().select(teamModel.Team).filter_by(gameId = id)
-
-	teamIds = []
-	for team in teams:
-		teamIds.append(team.id)
-
-	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter(teamPlayerModel.TeamPlayer.teamId.in_(teamIds))
+	teamPlayers = getTeamPlayersByGameId(id)
 
 	for teamPlayer in teamPlayers:
 		model.Model().delete(teamPlayerModel.TeamPlayer, teamPlayer.id)
@@ -272,8 +263,21 @@ def games_players_redo(id):
 def games_next(id):
 	game = model.Model().selectById(gameModel.Game, id)
 
+	teamPlayers = getTeamPlayersByGameId(game.id)
+
+	if game.players == 4:
+		if game.game == 2:
+			turn = teamPlayers[1].playerId
+		else:
+			turn = teamPlayers[2].playerId
+	else:
+		if game.game == 2:
+			turn = teamPlayers[1].playerId
+		else:
+			turn = teamPlayers[0].playerId
+
 	if game.game < 3:
-		model.Model().update(gameModel.Game, game.id, { "game": game.game + 1, "round": 1 })
+		model.Model().update(gameModel.Game, game.id, { "game": game.game + 1, "round": 1, "turn": turn })
 		return redirect("/games/%d/" % game.id)
 	else:
 		return redirect("/")
@@ -327,3 +331,28 @@ def games_undo(gameId):
 def games_turn(gameId, playerId):
 	model.Model().update(gameModel.Game, gameId, { "turn": playerId })
 	return Response(json.dumps({ "id": gameId }), status = 200, mimetype = "application/json")
+
+@mod.route("/<int:gameId>/teams/<int:teamId>/game/<int:game>/score/<int:score>/win/", methods = ["POST"])
+def games_win(gameId, teamId, game, score):
+	return result(gameId, teamId, game, score, 1, 0)
+
+@mod.route("/<int:gameId>/teams/<int:teamId>/game/<int:game>/score/<int:score>/loss/", methods = ["POST"])
+def games_loss(gameId, teamId, game, score):
+	return result(gameId, teamId, game, score, 0, 1)
+
+def result(gameId, teamId, game, score, win, loss):
+	newResult = resultModel.Result(gameId, teamId, game, score, win, loss, datetime.now())
+	model.Model().create(newResult)
+	return Response(json.dumps({ "id": gameId }), status = 200, mimetype = "application/json")
+
+def getTeamPlayersByGameId(gameId):
+	teams = model.Model().select(teamModel.Team).filter_by(gameId = gameId)
+
+	teamIds = []
+	for team in teams:
+		teamIds.append(team.id)
+
+	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter(teamPlayerModel.TeamPlayer.teamId.in_(teamIds))
+
+	return teamPlayers
+
