@@ -243,23 +243,25 @@ def games_players_redo(id):
 def games_next(id):
 	game = model.Model().selectById(gameModel.Game, id)
 
+	gameNum = game.game + 1
+
 	if game.complete:
 		return redirect("/")
 
 	teamPlayers = getTeamPlayersByGameId(game.id)
 
 	if game.players == 4:
-		if game.game == 2:
-			turn = teamPlayers[1].playerId
-		else:
+		if gameNum == 2:
 			turn = teamPlayers[2].playerId
+		else:
+			turn = teamPlayers[1].playerId
 	else:
-		if game.game == 2:
+		if gameNum == 2:
 			turn = teamPlayers[1].playerId
 		else:
 			turn = teamPlayers[0].playerId
 
-	model.Model().update(gameModel.Game, game.id, { "game": game.game + 1, "round": 1, "turn": turn })
+	model.Model().update(gameModel.Game, game.id, { "game": gameNum, "round": 1, "turn": turn })
 
 	return redirect("/games/%d/" % game.id)
 
@@ -347,7 +349,7 @@ def getTeamPlayersByGameId(gameId):
 	for team in teams:
 		teamIds.append(team.id)
 
-	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter(teamPlayerModel.TeamPlayer.teamId.in_(teamIds))
+	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter(teamPlayerModel.TeamPlayer.teamId.in_(teamIds)).order_by("id")
 
 	return teamPlayers
 
