@@ -9,6 +9,8 @@ class Team(Base):
 
 	id = Column(Integer, primary_key = True)
 	gameId = Column(Integer)
+	win = Column(Integer)
+	loss = Column(Integer)
 
 	def __init__(self, gameId):
 		self.gameId = gameId

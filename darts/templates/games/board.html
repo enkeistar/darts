@@ -104,11 +104,15 @@
 	<input type="hidden" name="turn" value="{{ game.turn }}" />
 
 	{% for result in game["results"] %}
-		<input type="hidden" name="result-teamid" value="{{ result.teamId }}" />
-		<input type="hidden" name="result-game" value="{{ result.game }}" />
-		<input type="hidden" name="result-score" value="{{ result.score }}" />
-		<input type="hidden" name="result-win" value="{{ result.win }}" />
-		<input type="hidden" name="result-loss" value="{{ result.loss }}" />
+		<input
+			type="hidden"
+			name="result"
+			data-game="{{ result.game }}"
+			data-teamid="{{ result.teamId }}"
+			data-score="{{ result.score }}"
+			data-win="{{ result.win }}"
+			data-loss="{{ result.loss }}"
+		/>
 	{% endfor %}
 
 	<div class="modal-box modal-next-round">

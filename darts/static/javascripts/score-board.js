@@ -68,15 +68,13 @@ $(function(){
 		var team2Score = getScore(team2Id);
 
 		if(team1Closed && team1Score >= team2Score){
-			nextRoundModal.show();
-			nextRoundModal.find("h1").html("Team 1 Wins!");
-			$.post("/games/" + gameId + "/teams/" + team1Id + "/game/" + game + "/score/" + team1Score + "/win/")
-			$.post("/games/" + gameId + "/teams/" + team2Id + "/game/" + game + "/score/" + team2Score + "/loss/")
+			win(team1Id);
+			loss(team2Id);
+			nextRound(1, team1Id, team2Id);
 		} else if(team2Closed && team2Score >= team1Score){
-			nextRoundModal.show();
-			nextRoundModal.find("h1").html("Team 2 Wins!");
-			$.post("/games/" + gameId + "/teams/" + team1Id + "/game/" + game + "/score/" + team1Score + "/loss/")
-			$.post("/games/" + gameId + "/teams/" + team2Id + "/game/" + game + "/score/" + team2Score + "/win/")
+			win(team2Id);
+			loss(team1Id);
+			nextRound(2, team2Id, team1Id);
 		}
 
 		clearTimeout(turnTimeout);
@@ -123,6 +121,36 @@ $(function(){
 		if(turnTeam == 0 && turnPlayer == 0){
 			round++;
 		}
+	}
+
+	function win(id){
+		$.post("/games/" + gameId + "/teams/" + id + "/game/" + game + "/score/" + getScore(id) + "/win/");
+	}
+
+	function loss(id){
+		$.post("/games/" + gameId + "/teams/" + id + "/game/" + game + "/score/" + getScore(id) + "/loss/");
+	}
+
+	function gameWin(id){
+		$.post("/games/" + gameId + "/teams/" + id + "/win/");
+	}
+
+	function gameLoss(id){
+		$.post("/games/" + gameId + "/teams/" + id + "/loss/");
+	}
+
+	function nextRound(num, winnerId, loserId){
+
+		nextRoundModal.show();
+
+		if($("input[name=result][data-win=1][data-teamid=" + winnerId + "]").length >= 1){
+			nextRoundModal.find("h1").html("Team " + num + " Wins The Game!");
+			gameWin(winnerId);
+			gameLoss(loserId);
+		} else {
+			nextRoundModal.find("h1").html("Team " + num + " Wins Round " + game + "!");
+		}
+
 	}
 
 });

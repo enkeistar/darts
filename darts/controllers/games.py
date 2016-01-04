@@ -53,6 +53,7 @@ def games_index():
 @mod.route("/<int:id>/", methods = ["GET"])
 def games_board(id):
 	game = model.Model().selectById(gameModel.Game, id)
+	results = model.Model().select(resultModel.Result).filter_by(gameId = game.id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
 
 
@@ -62,7 +63,8 @@ def games_board(id):
 		"round": game.round,
 		"players": game.players,
 		"turn": game.turn,
-		"teams": []
+		"teams": [],
+		"results": results
 	}
 
 	for team in teams:
@@ -318,10 +320,22 @@ def games_win(gameId, teamId, game, score):
 def games_loss(gameId, teamId, game, score):
 	return result(gameId, teamId, game, score, 0, 1)
 
+@mod.route("/<int:gameId>/teams/<int:teamId>/win/", methods = ["POST"])
+def games_gameWin(gameId, teamId):
+	return gameResult(teamId, 1, 0)
+
+@mod.route("/<int:gameId>/teams/<int:teamId>/loss/", methods = ["POST"])
+def games_gameLoss(gameId, teamId):
+	return gameResult(teamId, 0, 1)
+
 def result(gameId, teamId, game, score, win, loss):
 	newResult = resultModel.Result(gameId, teamId, game, score, win, loss, datetime.now())
 	model.Model().create(newResult)
 	return Response(json.dumps({ "id": gameId }), status = 200, mimetype = "application/json")
+
+def gameResult(teamId, win, loss):
+	model.Model().update(teamModel.Team, teamId, { "win": win, "loss": loss })
+	return Response(json.dumps({ "id": teamId }), status = 200, mimetype = "application/json")
 
 def getTeamPlayersByGameId(gameId):
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = gameId)

@@ -14,7 +14,7 @@ class Result(Base):
 	game = Column(Integer)
 	score = Column(Integer)
 	win = Column(Integer)
-	loss = Column(DateTime)
+	loss = Column(Integer)
 	createdAt = Column(DateTime)
 
 	def __init__(self, gameId, teamId, game, score, win, loss, createdAt):

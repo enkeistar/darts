@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS `results` (
 CREATE TABLE IF NOT EXISTS `teams` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `gameId` int(11) DEFAULT NULL,
+  `win` tinyint(1) DEFAULT NULL,
+  `loss` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_teams_games` (`gameId`),
   CONSTRAINT `fk_teams_games` FOREIGN KEY (`gameId`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -67,8 +69,6 @@ CREATE TABLE IF NOT EXISTS `teams_players` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `teamId` int(11) DEFAULT NULL,
   `playerId` int(11) DEFAULT NULL,
-  `win` tinyint(1) DEFAULT NULL,
-  `loss` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_teams_players_players` (`teamId`),
   KEY `fk_teams_players_teams` (`playerId`),
