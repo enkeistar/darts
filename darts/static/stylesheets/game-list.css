@@ -33,6 +33,7 @@
 
 .game-list .game .game-item .player-group {
 	display: table-cell;
+	width: 45%;
 }
 
 .game-list .game .game-item .player {
@@ -48,4 +49,10 @@
 
 .game-list .game .game-item .player-group-seperator:last-child {
 	display: none;
+}
+
+.game-list .players {
+	display: table;
+	width: 100%;
+	margin: 0;
 }
