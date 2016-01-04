@@ -174,7 +174,7 @@ def games_new():
 
 @mod.route("/", methods = ["POST"])
 def games_create():
-	newGame = gameModel.Game(request.form["players"], 1, 1, False, datetime.now())
+	newGame = gameModel.Game(request.form["players"], 1, 1, False, 0, datetime.now())
 	model.Model().create(newGame)
 
 	teams = 2
@@ -243,6 +243,9 @@ def games_players_redo(id):
 def games_next(id):
 	game = model.Model().selectById(gameModel.Game, id)
 
+	if game.complete:
+		return redirect("/")
+
 	teamPlayers = getTeamPlayersByGameId(game.id)
 
 	if game.players == 4:
@@ -256,11 +259,9 @@ def games_next(id):
 		else:
 			turn = teamPlayers[0].playerId
 
-	if game.game < 3:
-		model.Model().update(gameModel.Game, game.id, { "game": game.game + 1, "round": 1, "turn": turn })
-		return redirect("/games/%d/" % game.id)
-	else:
-		return redirect("/")
+	model.Model().update(gameModel.Game, game.id, { "game": game.game + 1, "round": 1, "turn": turn })
+
+	return redirect("/games/%d/" % game.id)
 
 @mod.route("/<int:gameId>/teams/<int:teamId>/players/<int:playerId>/games/<int:game>/rounds/<int:round>/marks/<int:mark>/", methods = ["POST"])
 def games_score(gameId, teamId, playerId, game, round, mark):
@@ -322,19 +323,21 @@ def games_loss(gameId, teamId, game, score):
 
 @mod.route("/<int:gameId>/teams/<int:teamId>/win/", methods = ["POST"])
 def games_gameWin(gameId, teamId):
-	return gameResult(teamId, 1, 0)
+	return gameResult(gameId, teamId, 1, 0)
 
 @mod.route("/<int:gameId>/teams/<int:teamId>/loss/", methods = ["POST"])
 def games_gameLoss(gameId, teamId):
-	return gameResult(teamId, 0, 1)
+	return gameResult(gameId, teamId, 0, 1)
 
 def result(gameId, teamId, game, score, win, loss):
 	newResult = resultModel.Result(gameId, teamId, game, score, win, loss, datetime.now())
 	model.Model().create(newResult)
 	return Response(json.dumps({ "id": gameId }), status = 200, mimetype = "application/json")
 
-def gameResult(teamId, win, loss):
+def gameResult(gameId, teamId, win, loss):
 	model.Model().update(teamModel.Team, teamId, { "win": win, "loss": loss })
+	if win == 1:
+		model.Model().update(gameModel.Game, gameId, { "complete": 1 })
 	return Response(json.dumps({ "id": teamId }), status = 200, mimetype = "application/json")
 
 def getTeamPlayersByGameId(gameId):

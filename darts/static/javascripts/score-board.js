@@ -144,11 +144,12 @@ $(function(){
 		nextRoundModal.show();
 
 		if($("input[name=result][data-win=1][data-teamid=" + winnerId + "]").length >= 1){
-			nextRoundModal.find("h1").html("Team " + num + " Wins The Game!");
+			nextRoundModal.find("h1").html("Team " + num + "<br />Wins The Game!");
+			nextRoundModal.find("button").html("Done");
 			gameWin(winnerId);
 			gameLoss(loserId);
 		} else {
-			nextRoundModal.find("h1").html("Team " + num + " Wins Round " + game + "!");
+			nextRoundModal.find("h1").html("Team " + num + "<br />Wins Round " + game + "!");
 		}
 
 	}

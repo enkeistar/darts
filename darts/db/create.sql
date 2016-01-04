@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   `round` int(11) DEFAULT NULL,
   `ready` tinyint(4) DEFAULT NULL,
   `turn` int(11) DEFAULT NULL,
+  `complete` int(11) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

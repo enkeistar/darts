@@ -14,11 +14,13 @@ class Game(Base):
 	round = Column(Integer)
 	ready = Column(Integer)
 	turn = Column(Integer)
+	complete = Column(Integer)
 	createdAt = Column(DateTime)
 
-	def __init__(self, players, game, round, ready, createdAt):
+	def __init__(self, players, game, round, ready, complete, createdAt):
 		self.players = players
 		self.game = game
 		self.round = round
 		self.ready = ready
+		self.complete = complete
 		self.createdAt = createdAt
