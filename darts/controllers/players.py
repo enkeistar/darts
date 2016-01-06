@@ -1,6 +1,6 @@
 from darts import app
 from flask import Blueprint, request, render_template, redirect
-from darts.entities import player as playerModel, game as gameModel, team_player as teamPlayerModel, mark as markModel
+from darts.entities import player as playerModel, game as gameModel, team as teamModel, team_player as teamPlayerModel, mark as markModel
 from darts import model
 
 mod = Blueprint("players", __name__, url_prefix = "/players")
@@ -33,9 +33,67 @@ def players_create():
 @mod.route("/<int:id>/", methods = ["GET"])
 def players_details(id):
 	player = model.Model().selectById(playerModel.Player, id)
-	teams = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(playerId = id)
-	scores = model.Model().select(markModel.Mark).filter_by(playerId = id)
-	return render_template("players/details.html", player = player, teams = teams, scores = scores)
+	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(playerId = id)
+	marks = model.Model().select(markModel.Mark).filter_by(playerId = id)
+
+	teamIds = []
+	for teamPlayer in teamPlayers:
+		teamIds.append(teamPlayer.teamId)
+
+	teams = model.Model().select(teamModel.Team).filter(teamModel.Team.id.in_(teamIds))
+
+	wins = teams.filter_by(win = 1).count()
+	losses = teams.filter_by(loss = 1).count()
+
+	points = 0
+
+	game = 0
+	round = 0
+	for mark in marks:
+		if game != mark.gameId and round != mark.round:
+			scored = {
+				"twenty": 0,
+				"nineteen": 0,
+				"eighteen": 0,
+				"seventeen": 0,
+				"sixteen": 0,
+				"fifteen": 0,
+				"bullseye": 0
+			}
+			game = mark.gameId
+			round = mark.round
+
+		if mark.twenty:
+			scored["twenty"] += 1
+			if scored["twenty"] > 3:
+				points += 20
+		elif mark.nineteen:
+			scored["nineteen"] += 1
+			if scored["nineteen"] > 3:
+				points += 19
+		elif mark.eighteen:
+			scored["eighteen"] += 1
+			if scored["eighteen"] > 3:
+				points += 18
+		elif mark.seventeen:
+			scored["seventeen"] += 1
+			if scored["seventeen"] > 3:
+				points += 17
+		elif mark.sixteen:
+			scored["sixteen"] += 1
+			if scored["sixteen"] > 3:
+				points += 16
+		elif mark.fifteen:
+			scored["fifteen"] += 1
+			if scored["fifteen"] > 3:
+				points += 15
+		elif mark.bullseye:
+			scored["bullseye"] += 1
+			if scored["bullseye"] > 3:
+				points += 25
+
+
+	return render_template("players/details.html", player = player, teamPlayers = teamPlayers, marks = marks, wins = wins, losses = losses, points = points)
 
 @mod.route("/<int:id>/edit/", methods = ["GET"])
 def players_edit(id):

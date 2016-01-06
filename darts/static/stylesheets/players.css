@@ -1,2 +1,19 @@
 .players {
 }
+
+.player-details dl {
+	overflow: hidden;
+}
+
+.player-details dt {
+	float: left;
+	width: 120px;
+	padding-bottom: 8px;
+	margin-bottom: 8px;
+}
+
+.player-details dd {
+	border-bottom: solid 1px #ccc;
+	padding-bottom: 8px;
+	margin-bottom: 8px;
+}
