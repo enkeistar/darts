@@ -201,7 +201,7 @@ def games_players(id):
 	game = model.Model().selectById(gameModel.Game, id)
 	teamPlayers = getTeamPlayersByGameId(game.id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
-	players = model.Model().select(playerModel.Player)
+	players = model.Model().select(playerModel.Player).order_by(playerModel.Player.name)
 
 	return render_template("games/players.html", game = game, teams = teams, players = players, teamPlayers = teamPlayers)
 

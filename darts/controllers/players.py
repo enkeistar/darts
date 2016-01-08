@@ -7,7 +7,7 @@ mod = Blueprint("players", __name__, url_prefix = "/players")
 
 @mod.route("/", methods = ["GET"])
 def players_index():
-	players = model.Model().select(playerModel.Player)
+	players = model.Model().select(playerModel.Player).order_by(playerModel.Player.name)
 	return render_template("players/index.html", players = players)
 
 @mod.route("/new/", methods = ["GET"])

@@ -17,5 +17,9 @@ app.register_blueprint(games.mod)
 def not_found(error):
     return render_template("main/404.html"), 404
 
+@app.errorhandler(500)
+def not_founds(error):
+    return render_template("main/500.html"), 500
+
 if __name__ == "__main__":
 	app.run(debug = True, host = "0.0.0.0")
