@@ -29,3 +29,6 @@ class Model():
 	def delete(self, model, id):
 		session.query(model).filter(model.id == id).delete()
 		session.commit()
+
+	def getSession(self):
+		return session

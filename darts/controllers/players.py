@@ -2,6 +2,7 @@ from darts import app
 from flask import Blueprint, request, render_template, redirect
 from darts.entities import player as playerModel, game as gameModel, team as teamModel, team_player as teamPlayerModel, mark as markModel
 from darts import model
+from sqlalchemy import distinct
 
 mod = Blueprint("players", __name__, url_prefix = "/players")
 
@@ -35,6 +36,10 @@ def players_details(id):
 	player = model.Model().selectById(playerModel.Player, id)
 	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(playerId = id)
 	marks = model.Model().select(markModel.Mark).filter_by(playerId = id)
+
+	session = model.Model().getSession()
+	query = session.query(markModel.Mark.gameId, markModel.Mark.teamId, markModel.Mark.round).distinct(markModel.Mark.gameId).distinct(markModel.Mark.teamId).distinct(markModel.Mark.round).filter_by(playerId = id)
+	rounds = len(query.all())
 
 	teamIds = []
 	for teamPlayer in teamPlayers:
@@ -92,8 +97,7 @@ def players_details(id):
 			if scored["bullseye"] > 3:
 				points += 25
 
-
-	return render_template("players/details.html", player = player, teamPlayers = teamPlayers, marks = marks, wins = wins, losses = losses, points = points)
+	return render_template("players/details.html", player = player, teamPlayers = teamPlayers, marks = marks, wins = wins, losses = losses, points = points, rounds = rounds)
 
 @mod.route("/<int:id>/edit/", methods = ["GET"])
 def players_edit(id):

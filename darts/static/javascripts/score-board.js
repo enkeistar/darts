@@ -29,7 +29,11 @@ $(function(){
 		window.location = "/games/" + gameId + "/undo/";
 	});
 
-	$(".game-option .miss").on("click", nextTurn);
+	$(".game-option .miss").on("click", function(){
+		var teamId =  $(".player.active").data("teamid");
+		var playerId = $(".player.active").data("playerid");
+		$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/0/").done(nextTurn);
+	});
 
 	$(".awarded").on("click", function(){
 
