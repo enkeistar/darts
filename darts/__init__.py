@@ -22,4 +22,4 @@ def server_error(error):
     return render_template("main/500.html"), 500
 
 if __name__ == "__main__":
-	app.run(debug = True, host = "0.0.0.0")
+	app.run(host = "0.0.0.0")
