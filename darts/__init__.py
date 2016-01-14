@@ -5,11 +5,13 @@ app = Flask(__name__)
 from darts.controllers import main
 from darts.controllers import players
 from darts.controllers import games
+from darts.controllers import api
 from darts import HttpMethod
 
 app.register_blueprint(main.mod)
 app.register_blueprint(players.mod)
 app.register_blueprint(games.mod)
+app.register_blueprint(api.mod)
 
 # app.wsgi_app = HttpMethod.HttpMethod(app.wsgi_app)
 
@@ -22,4 +24,4 @@ def server_error(error):
     return render_template("main/500.html"), 500
 
 if __name__ == "__main__":
-	app.run(host = "0.0.0.0")
+	app.run(debug = True, host = "0.0.0.0")

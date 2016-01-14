@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block title %}Players{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid api">
+
+		<h1>Darts API</h1>
+
+<a href="/api/players/">
+	<kbd>/api/players/</kbd>
+</a>
+<p class="text-muted">Array of player data.<p>
+<pre>[{
+	id: 1,
+	name: "Morgan Freeman"
+}]</pre>
+
+<a href="/api/games/">
+	<kbd>/api/games/</kbd>
+</a>
+<p class="text-muted">Array of game data Includes information about progress of rounds and player turns.</p>
+<pre>[{
+	id: 1,
+	players: 4,
+	game: 1,
+	round: 13
+	ready: true,
+	turn: 3,
+	complete: false
+	createdAt: '2016-01-01 12:01:01'
+}]</pre>
+
+<a href="/api/marks/">
+	<kbd>/api/marks/</kbd>
+</a>
+<p class="text-muted">Player marks per round and what value was hit.</p>
+<pre>[{
+	id: 1,
+	gameId: 1,
+	teamId: 3,
+	playerId: 7,
+	game: 9,
+	round: 3,
+	twenty: false,
+	nineteen: false,
+	eighteen: true,
+	seventeen: false,
+	sixteen: false,
+	fifteen: false,
+	bullseye: false,
+	createdAt: '2016-01-01 12:01:01'
+}]</pre>
+
+<a href="/api/teams/">
+	<kbd>/api/teams/</kbd>
+</a>
+<p class="text-muted">Teams and their win/loss after a complete game.</p>
+<pre>[{
+	id: 1,
+	gameId: 1,
+	win: true,
+	loss: false
+}]</pre>
+
+<a href="/api/teams-players/">
+	<kbd>/api/teams-players/</kbd>
+</a>
+<p class="text-muted">Relationship between teams and players</p>
+<pre>[{
+	id: 1,
+	teamId: 21,
+	playerId: 34
+}]</pre>
+
+	</div>
+
+{% endblock %}
