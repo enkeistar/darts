@@ -19,7 +19,8 @@ def api_players():
 	for player in players:
 		data.append({
 			"id": player.id,
-			"name": player.name
+			"name": player.name,
+			"createdAt": str(player.createdAt)
 		})
 
 	return json_response(data)

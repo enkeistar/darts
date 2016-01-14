@@ -4,8 +4,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 import json
 
 engine = create_engine("mysql+mysqldb://brett:r45ftthry@localhost/darts")
-db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind = engine))
-Session = sessionmaker(bind=engine)
+db_session = scoped_session(sessionmaker(autocommit = False, autoflush = False, bind = engine))
+Session = sessionmaker(bind = engine)
 session = Session()
 
 class Model():

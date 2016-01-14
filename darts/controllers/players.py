@@ -2,6 +2,7 @@ from darts import app
 from flask import Blueprint, request, render_template, redirect
 from darts.entities import player as playerModel, game as gameModel, team as teamModel, team_player as teamPlayerModel, mark as markModel
 from darts import model
+from datetime import datetime
 from sqlalchemy import distinct
 
 mod = Blueprint("players", __name__, url_prefix = "/players")
@@ -21,7 +22,7 @@ def players_new_game(gameId):
 
 @mod.route("/", methods = ["POST"])
 def players_create():
-	newPlayer = playerModel.Player(request.form["name"])
+	newPlayer = playerModel.Player(request.form["name"], datetime.now())
 	model.Model().create(newPlayer)
 
 	gameId = request.form["gameId"]
