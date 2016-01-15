@@ -1,0 +1,44 @@
+{% extends "games/layout.html" %}
+
+{% block title %}Select Players{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid players">
+
+		<div class="teams"></div>
+
+		<div class="player-list">
+
+			<div class="player-item">
+				{% for player in players %}
+					<button class="player" data-playerid="{{ player.id }}">{{ player.name }}</button>
+				{% endfor %}
+			</div>
+
+		</div>
+
+		<form action="/games/{{ game.id }}/play/" method="POST">
+			<button class="btn btn-primary btn-lg btn-block play">Play</button>
+		</form>
+
+		<a class="btn btn-default add-player" href="/players/games/{{ game.id }}/new/">Add Player</a>
+
+		<form action="/games/{{ game.id }}/players/redo/" method="POST">
+			<button class="redo btn btn-default btn-block">Redo</button>
+		</form>
+
+	</div>
+
+	<input type="hidden" id="gameId" value="{{ game.id }}" />
+	{% for teamPlayer in teamPlayers %}
+		<input type="hidden" class="existing-players" value="{{ teamPlayer.playerId }}" />
+	{% endfor %}
+
+
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	<script src="{{ url_for('static', filename='javascripts/modes/x01-players.js') }}"></script>
+{% endblock %}

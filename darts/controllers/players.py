@@ -39,7 +39,11 @@ def players_details(id):
 	marks = model.Model().select(markModel.Mark).filter_by(playerId = id)
 
 	session = model.Model().getSession()
-	query = session.query(markModel.Mark.gameId, markModel.Mark.teamId, markModel.Mark.round).distinct(markModel.Mark.gameId).distinct(markModel.Mark.teamId).distinct(markModel.Mark.round).filter_by(playerId = id)
+	query = session.query(markModel.Mark.gameId, markModel.Mark.teamId, markModel.Mark.game, markModel.Mark.round).filter_by(playerId = id)
+	query = query.distinct(markModel.Mark.gameId)
+	query = query.distinct(markModel.Mark.teamId)
+	query = query.distinct(markModel.Mark.round)
+	query = query.distinct(markModel.Mark.game)
 	rounds = len(query.all())
 
 	teamIds = []
