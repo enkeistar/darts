@@ -160,3 +160,8 @@ header a:focus {
 .api pre {
 	margin-bottom: 24px;
 }
+
+.player-row.highlight,
+.awarded.highlight {
+	background-color: #fafafa;
+}

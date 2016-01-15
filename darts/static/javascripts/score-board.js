@@ -15,6 +15,8 @@ $(function(){
 	var turnTimeout;
 	var turnDelay = 5000;
 
+	setActivePlayer();
+
 	$(".game-option.new-game").on("click", function(){
 		newGameModal.show();
 	});
@@ -49,7 +51,7 @@ $(function(){
 
 
 		var points = 0;
-		var closed = $(".awarded[data-points=" + point + "]:not([data-team=" + teamId + "])").attr("data-hits") >= 3;
+		var closed = $(".awarded[data-points=" + point + "]:not([data-teamid=" + teamId + "])").attr("data-hits") >= 3;
 
 		if( hits < 3 || !closed ){
 			source.attr("data-hits", hits + 1);
@@ -61,7 +63,7 @@ $(function(){
 		}
 
 		if(!closed){
-			var current = $('.score[data-team="' + teamId + '"]');
+			var current = $('.score[data-teamid="' + teamId + '"]');
 			current.data("score", current.data("score") + points);
 			current.find(".current-round-points").html(current.data("score"));
 		}
@@ -88,7 +90,7 @@ $(function(){
 
 	function isClosed(teamId){
 		var closed = true;
-		$(".awarded[data-team=" + teamId + "]").each(function(){
+		$(".awarded[data-teamid=" + teamId + "]").each(function(){
 			if($(this).attr("data-hits") < 3){
 				closed = false;
 			}
@@ -97,12 +99,18 @@ $(function(){
 	}
 
 	function getScore(teamId){
-		return parseInt($(".score[data-team=" + teamId + "]").data("score"));
+		return parseInt($(".score[data-teamid=" + teamId + "]").data("score"));
 	}
 
 	function setActivePlayer(){
 		$(".player").removeClass("active");
 		$(".players").eq(turnTeam).find(".player").eq(turnPlayer).addClass("active");
+
+		$(".player-row, .awarded").removeClass("highlight");
+		var teamId =  $(".player.active").data("teamid");
+		$(".player-row[data-teamid=" + teamId + "]").addClass("highlight");
+		$(".awarded[data-teamid=" + teamId + "]").addClass("highlight");
+
 	}
 
 	function getActivePlayer(){

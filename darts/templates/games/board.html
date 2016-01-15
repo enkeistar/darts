@@ -23,7 +23,7 @@
 
 				<div class="players" data-teamid="{{ team.id }}" data-wins="" data-order="{{ teamOrder }}">
 					<div class="player-table">
-						<div class="player-row">
+						<div class="player-row" data-teamid="{{ team.id }}">
 
 							{% set playerOrder = 0 %}
 							{% for player in team["players"] %}
@@ -51,7 +51,7 @@
 				<div class="point-value" data-points="{{ i }}">{{ i }}</div>
 
 				{% for team in game["teams"] %}
-					<div class="target awarded" data-team="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["marks"][i] }}"></div>
+					<div class="target awarded" data-teamid="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["marks"][i] }}"></div>
 				{% endfor %}
 
 			</div>
@@ -61,7 +61,7 @@
 		<div class="points">
 			<div class="point-value" data-points="25">B</div>
 			{% for team in game["teams"] %}
-				<div class="target awarded" data-team="{{ team.id }}" data-points="25" data-hits="{{ team["marks"][25] }}"></div>
+				<div class="target awarded" data-teamid="{{ team.id }}" data-points="25" data-hits="{{ team["marks"][25] }}"></div>
 			{% endfor %}
 		</div>
 
@@ -69,7 +69,7 @@
 			<div class="game-option target new-game">Home</div>
 
 			{% for team in game["teams"] %}
-				<div class="score" data-team="{{ team.id }}" data-score="{{ team["marks"]["points"] }}">
+				<div class="score" data-teamid="{{ team.id }}" data-score="{{ team["marks"]["points"] }}">
 
 					<div class="score-row">
 						<span class="round-scores">

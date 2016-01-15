@@ -57,6 +57,10 @@ header {
 	color: #888;
 }
 
+.player.active {
+	box-shadow: inset 0 0 5px 5px #888;
+}
+
 .teams {
 	overflow: hidden;
 	height: 15%;
