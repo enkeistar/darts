@@ -70,6 +70,7 @@ header {
 
 .players {
 	border-bottom: solid 1px #e0e0e0;
+	width: 38%;
 }
 
 .player-table {
@@ -83,10 +84,12 @@ header {
 
 .player {
 	display: table-cell;
+	table-layout: fixed;
 	color: #aaa;
 	text-align: center;
 	padding: 0 3px;
 	height: 100%;
+	width: 50%;
 }
 
 .player .initial {
@@ -110,9 +113,7 @@ header {
 	display: table-row;
 }
 
-.teams {
 
-}
 .teams .players {
 	display: table-cell;
 	border-left: solid 1px #e0e0e0;

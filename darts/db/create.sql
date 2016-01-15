@@ -1,13 +1,16 @@
 CREATE TABLE IF NOT EXISTS `games` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `modeId` int(11) DEFAULT NULL,
   `players` int(11) DEFAULT NULL,
   `game` int(11) DEFAULT NULL,
   `round` int(11) DEFAULT NULL,
   `ready` tinyint(4) DEFAULT NULL,
   `turn` int(11) DEFAULT NULL,
-  `complete` int(11) DEFAULT NULL,
+  `complete` tinyint(1) DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `fk_games_modes` (`modeId`),
+  CONSTRAINT `fk_games_modes` FOREIGN KEY (`modeId`) REFERENCES `modes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `marks` (
@@ -34,6 +37,13 @@ CREATE TABLE IF NOT EXISTS `marks` (
   CONSTRAINT `fk_scores_teams` FOREIGN KEY (`teamId`) REFERENCES `teams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `modes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `enabled` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE IF NOT EXISTS `players` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
@@ -54,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `results` (
   KEY `fk_results_games` (`gameId`),
   KEY `fk_results_teams` (`teamId`),
   CONSTRAINT `fk_results_games` FOREIGN KEY (`gameId`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_results_teams` FOREIGN KEY (`teamId`) REFERENCES `teams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_results_teams` FOREIGN KEY (`teamId`) REFERENCES `teams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `teams` (

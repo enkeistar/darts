@@ -1,7 +1,5 @@
 .games form {
-	float: left;
-	width: 50%;
-	padding: 0 4px;
+	margin-bottom: 4px;
 }
 
 .games .number-of-players {

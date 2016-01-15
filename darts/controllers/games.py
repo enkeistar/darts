@@ -1,6 +1,12 @@
 from darts import app
 from flask import Blueprint, Response, render_template, redirect, request
-from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, mark as markModel, result as resultModel
+from darts.entities import game as gameModel
+from darts.entities import player as playerModel
+from darts.entities import team as teamModel
+from darts.entities import team_player as teamPlayerModel
+from darts.entities import mark as markModel
+from darts.entities import result as resultModel
+from darts.entities import mode as modeModel
 from darts import model
 from datetime import datetime
 from sqlalchemy import desc
@@ -53,9 +59,9 @@ def games_index():
 @mod.route("/<int:id>/", methods = ["GET"])
 def games_board(id):
 	game = model.Model().selectById(gameModel.Game, id)
+	mode = model.Model().selectById(modeModel.Mode, game.modeId)
 	results = model.Model().select(resultModel.Result).filter_by(gameId = game.id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
-
 
 	data = {
 		"id": int(game.id),
@@ -166,27 +172,36 @@ def games_board(id):
 
 		data["teams"].append(teamData)
 
-	return render_template("games/board.html", game = data)
+	return render_template("games/modes/" + mode.name.lower() + "/board.html", game = data)
 
 @mod.route("/new/", methods = ["GET"])
 def games_new():
-	return render_template("games/new.html")
+	modes = model.Model().select(modeModel.Mode)
+	return render_template("games/new.html", modes = modes)
 
 @mod.route("/", methods = ["POST"])
 def games_create():
-	newGame = gameModel.Game(request.form["players"], 1, 1, False, 0, datetime.now())
+	newGame = gameModel.Game(request.form["modes"], None, 1, 1, False, 0, datetime.now())
 	model.Model().create(newGame)
+	return redirect("/games/%d/num-players/" % newGame.id)
 
-	teams = 2
+@mod.route("/<int:id>/num-players/", methods = ["GET"])
+def games_num_players(id):
+	game = model.Model().selectById(gameModel.Game, id)
+	mode = model.Model().selectById(modeModel.Mode, game.modeId)
+	return render_template("games/modes/" + mode.name.lower() + "/num-players.html", game = game)
 
-	if newGame.players == 3:
-		teams = 3
+@mod.route("/<int:id>/num-players/", methods = ["POST"])
+def games_create_num_players(id):
+	game = model.Model().selectById(gameModel.Game, id)
+	mode = model.Model().selectById(modeModel.Mode, game.modeId)
+	model.Model().update(gameModel.Game, game.id, { "players": request.form["players"] })
 
-	for i in range(0, teams):
-		newTeam = teamModel.Team(newGame.id)
+	for i in range(0, 2):
+		newTeam = teamModel.Team(game.id)
 		model.Model().create(newTeam)
 
-	return redirect("/games/%d/players/" % newGame.id)
+	return redirect("/games/%d/players/" % game.id)
 
 @mod.route("/<int:id>/play/", methods = ["POST"])
 def games_play(id):
@@ -199,11 +214,11 @@ def games_play(id):
 @mod.route("/<int:id>/players/", methods = ["GET"])
 def games_players(id):
 	game = model.Model().selectById(gameModel.Game, id)
+	mode = model.Model().selectById(modeModel.Mode, game.modeId)
 	teamPlayers = getTeamPlayersByGameId(game.id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
 	players = model.Model().select(playerModel.Player).order_by(playerModel.Player.name)
-
-	return render_template("games/players.html", game = game, teams = teams, players = players, teamPlayers = teamPlayers)
+	return render_template("games/modes/" + mode.name.lower() + "/players.html", game = game, teams = teams, players = players, teamPlayers = teamPlayers)
 
 @mod.route("/<int:id>/players/", methods = ["POST"])
 def games_players_create(id):

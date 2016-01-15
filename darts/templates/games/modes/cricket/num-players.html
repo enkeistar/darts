@@ -1,0 +1,22 @@
+{% extends "games/layout.html" %}
+
+{% block title %}Select Number of Players{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid games">
+
+		<h1 class="select-num-players">Select Number of Players</h1>
+
+		{% for i in range(4, 1, -2) %}
+
+			<form action="/games/{{ game.id }}/num-players/" method="POST">
+				<input type="hidden" name="players" value="{{ i }}" />
+				<button class="btn btn-default number-of-players">{{ i }}</button>
+			</form>
+
+		{% endfor %}
+
+	</div>
+
+{% endblock %}
