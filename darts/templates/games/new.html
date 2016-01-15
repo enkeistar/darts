@@ -12,7 +12,7 @@
 
 			<form action="/games/" method="POST">
 				<input type="hidden" name="modes" value="{{ mode.id }}" />
-				<button class="btn btn-default btn-block">{{ mode.name }}</button>
+				<button class="btn btn-default btn-block"  {% if not mode.enabled %}disabled{% endif %}>{{ mode.name }}</button>
 			</form>
 
 		{% endfor %}
