@@ -2,8 +2,8 @@ $(function(){
 
 	var player = $(".player.active");
 	var gameId = $("input[name=gameId]").val();
-	var team1Id = $(".score").first().data("team");
-	var team2Id = $(".score").last().data("team");
+	var team1Id = $(".score").first().data("teamid");
+	var team2Id = $(".score").last().data("teamid");
 	var nextRoundModal = $(".modal-next-round");
 	var newGameModal = $(".modal-new-game");
 	var game = parseInt($("input[name=game]").val());
