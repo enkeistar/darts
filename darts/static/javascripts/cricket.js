@@ -42,13 +42,12 @@ $(function(){
 		var source = $(this);
 		var hits = parseInt(source.attr("data-hits"));
 		var point = source.data("points");
-		var teamId = source.data("team");
+		var teamId = source.data("teamid");
 		var playerId = $(".player.active").data("playerid");
 
 		if($(".player.active[data-teamid=" + teamId + "]").length == 0){
 			return;
 		}
-
 
 		var points = 0;
 		var closed = $(".awarded[data-points=" + point + "]:not([data-teamid=" + teamId + "])").attr("data-hits") >= 3;
