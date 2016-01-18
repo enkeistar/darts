@@ -13,8 +13,6 @@ app.register_blueprint(players.mod)
 app.register_blueprint(games.mod)
 app.register_blueprint(api.mod)
 
-# app.wsgi_app = HttpMethod.HttpMethod(app.wsgi_app)
-
 @app.errorhandler(404)
 def not_found(error):
     return render_template("main/404.html"), 404
@@ -24,4 +22,4 @@ def server_error(error):
     return render_template("main/500.html"), 500
 
 if __name__ == "__main__":
-	app.run(debug = True, host = "0.0.0.0")
+	app.run(debug = False, host = "0.0.0.0")

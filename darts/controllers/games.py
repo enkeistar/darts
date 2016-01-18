@@ -1,4 +1,3 @@
-from darts import app
 from flask import Blueprint, Response, render_template, redirect, request
 from darts.entities import game as gameModel
 from darts.entities import player as playerModel
