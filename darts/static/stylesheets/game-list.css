@@ -35,6 +35,10 @@
 	display: table-cell;
 	width: 45%;
 }
+.game-list .game .game-item .player-group .result {
+	font-size: 20px;
+	line-height: 20px;
+}
 
 .game-list .game .game-item .player {
 	display: block;

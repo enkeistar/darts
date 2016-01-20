@@ -38,7 +38,9 @@ def games_index():
 				"id": team.id,
 				"mark": 0,
 				"players": [],
-				"points": 0
+				"points": 0,
+				"win": team.win,
+				"loss": team.loss
 			}
 
 			players = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id)
@@ -175,7 +177,7 @@ def games_board(id):
 
 @mod.route("/new/", methods = ["GET"])
 def games_new():
-	modes = model.Model().select(modeModel.Mode)
+	modes = model.Model().select(modeModel.Mode).filter_by(enabled = 1)
 	return render_template("games/new.html", modes = modes)
 
 @mod.route("/", methods = ["POST"])

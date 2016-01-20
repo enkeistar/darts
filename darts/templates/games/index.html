@@ -37,6 +37,12 @@
 
 							{% for team in game["teams"] %}
 								<span class="player-group">
+									{% if team.win %}
+										<div class="result">W</div>
+									{% elif team.loss %}
+										<div class="result">L</div>
+									{% endif %}
+
 									{% for player in team["players"] %}
 										<span class="player">{{ player }}</span>
 									{% endfor %}
