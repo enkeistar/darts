@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}Players{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid leaderboard">
+
+		<h1>Leaderboard</h1>
+
+		<table id="leaderboard" class="table table-striped">
+
+			<thead>
+
+				<tr>
+
+					<th data-sort="string">Player</th>
+					<th data-sort="int">Games</th>
+					<th data-sort="int">Wins</th>
+					<th data-sort="int">Losses</th>
+					<th data-sort="int">Marks</th>
+					<th data-sort="int">Rounds</th>
+					<th data-sort="float">Marks Per Round</th>
+
+				</tr>
+
+			</thead>
+
+			<tbody>
+
+				{% for row in data %}
+
+					<tr>
+
+						<td>{{ row.name }}</td>
+						<td>{{ row.games }}</td>
+						<td>{{ row.wins }}</td>
+						<td>{{ row.losses }}</td>
+						<td>{{ row.marks }}</td>
+						<td>{{ row.rounds }}</td>
+						<td>{{ "{:.3f}".format(row.marks / row.rounds) }}</td>
+
+					</tr>
+
+				{% endfor %}
+
+			</tbody>
+
+		</table>
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	<script src="{{ url_for('static', filename='libraries/stupid-table/stupidtable.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='javascripts/leaderboard.js') }}"></script>
+{% endblock %}

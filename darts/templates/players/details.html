@@ -28,7 +28,7 @@
 			<dd>{{ marks.count() }}</dd>
 
 			<dt>Marks per Round:</dt>
-			<dd>{{ marks.count() / rounds }}</dd>
+			<dd>{{ "{:.3f}".format(marks.count() / rounds) }}</dd>
 
 			<dt>Points Scored:</dt>
 			<dd>{{ points }}</dd>

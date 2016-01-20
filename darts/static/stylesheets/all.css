@@ -165,3 +165,30 @@ header a:focus {
 .awarded.highlight {
 	background-color: #fafafa;
 }
+
+th[data-sort] {
+	cursor: pointer;
+}
+
+th[data-sort] .glyphicon-arrow-up {
+	visibility: hidden;
+}
+
+th[data-sort] .glyphicon-arrow-down {
+	display: none;
+}
+
+th[data-sort].sorting-asc .glyphicon-arrow-up {
+	visibility: visible;
+}
+
+th[data-sort].sorting-asc .glyphicon-arrow-down {
+}
+
+th[data-sort].sorting-desc .glyphicon-arrow-up {
+	display: none;
+}
+
+th[data-sort].sorting-desc .glyphicon-arrow-down {
+	display: inline;
+}

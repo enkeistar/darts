@@ -5,12 +5,14 @@ app = Flask(__name__)
 from darts.controllers import main
 from darts.controllers import players
 from darts.controllers import games
+from darts.controllers import leaderboard
 from darts.controllers import api
 from darts import HttpMethod
 
 app.register_blueprint(main.mod)
 app.register_blueprint(players.mod)
 app.register_blueprint(games.mod)
+app.register_blueprint(leaderboard.mod)
 app.register_blueprint(api.mod)
 
 @app.errorhandler(404)
