@@ -1,11 +1,9 @@
 from darts import app
-from flask import Blueprint, Response, render_template, redirect
+from flask import Response, render_template, redirect
 from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, mark as markModel, result as resultModel
 from darts import model
 
-mod = Blueprint("leaderboard", __name__, url_prefix = "/leaderboard")
-
-@mod.route("/", methods = ["GET"])
+@app.route("/leaderboard/", methods = ["GET"])
 def leaderboard_index():
 
 	session = model.Model().getSession()

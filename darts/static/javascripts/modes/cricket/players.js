@@ -19,7 +19,7 @@ $(function(){
 
 		players.prop("disabled", true);
 
-		$.post("/games/" + gameId + "/players/", data, function(data){
+		$.post("/games/" + gameId + "/modes/cricket/players/", data, function(data){
 			selectPlayer(source);
 			players.prop("disabled", false);
 		});

@@ -1,26 +1,24 @@
 from darts import app
-from flask import Blueprint, request, render_template, redirect
+from flask import request, render_template, redirect
 from darts.entities import player as playerModel, game as gameModel, team as teamModel, team_player as teamPlayerModel, mark as markModel
 from darts import model
 from datetime import datetime
 from sqlalchemy import distinct
 
-mod = Blueprint("players", __name__, url_prefix = "/players")
-
-@mod.route("/", methods = ["GET"])
+@app.route("/players/", methods = ["GET"])
 def players_index():
 	players = model.Model().select(playerModel.Player).order_by(playerModel.Player.name)
 	return render_template("players/index.html", players = players)
 
-@mod.route("/new/", methods = ["GET"])
+@app.route("/players/new/", methods = ["GET"])
 def players_new():
 	return render_template("players/new.html", gameId = 0)
 
-@mod.route("/games/<int:gameId>/new/", methods = ["GET"])
+@app.route("/players/games/<int:gameId>/new/", methods = ["GET"])
 def players_new_game(gameId):
 	return render_template("players/new.html", gameId = gameId)
 
-@mod.route("/", methods = ["POST"])
+@app.route("/players/", methods = ["POST"])
 def players_create():
 	newPlayer = playerModel.Player(request.form["name"], datetime.now())
 	model.Model().create(newPlayer)
@@ -32,7 +30,7 @@ def players_create():
 	else:
 		return redirect("/games/" + str(gameId) + "/players/")
 
-@mod.route("/<int:id>/", methods = ["GET"])
+@app.route("/players/<int:id>/", methods = ["GET"])
 def players_details(id):
 	player = model.Model().selectById(playerModel.Player, id)
 	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(playerId = id)
@@ -80,17 +78,17 @@ def players_details(id):
 
 	return render_template("players/details.html", player = player, teamPlayers = teamPlayers, marks = marks, wins = wins, losses = losses, points = points, rounds = rounds)
 
-@mod.route("/<int:id>/edit/", methods = ["GET"])
+@app.route("/players/<int:id>/edit/", methods = ["GET"])
 def players_edit(id):
 	players = model.Model().selectById(playerModel.Player, id)
 	return render_template("players/edit.html", player = players)
 
-@mod.route("/<int:id>/", methods = ["POST"])
+@app.route("/players/<int:id>/", methods = ["POST"])
 def players_update(id):
 	model.Model().update(playerModel.Player, id, request.form)
 	return redirect("/players/")
 
-@mod.route("/<int:id>/delete/", methods = ["POST"])
+@app.route("/players/<int:id>/delete/", methods = ["POST"])
 def players_delete(id):
 	model.Model().delete(playerModel.Player, id)
 	return redirect("/players/")

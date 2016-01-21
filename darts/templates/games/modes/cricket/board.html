@@ -119,7 +119,7 @@
 		<h1>{message}</h1>
 
 		<div class="button-group">
-			<form action="/games/{{ game.id }}/next/" method="POST">
+			<form action="/games/{{ game.id }}/modes/cricket/next/" method="POST">
 				<button class="btn btn-default btn-lg btn-block btn-next-round">
 					Next Round
 				</button>
@@ -140,5 +140,5 @@
 
 {% block footer %}
 	{{ super() }}
-	<script src="{{ url_for('static', filename='javascripts/modes/cricket.js') }}"></script>
+	<script src="{{ url_for('static', filename='javascripts/modes/cricket/board.js') }}"></script>
 {% endblock %}

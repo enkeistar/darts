@@ -10,9 +10,11 @@ class Mode(Base):
 	id = Column(Integer, primary_key = True)
 	name = Column(String)
 	mode = Column(String)
+	alias = Column(String)
 	enabled = Column(Integer)
 
-	def __init__(self, mode, enabled):
+	def __init__(self, mode, alias, enabled):
 		self.name = name
 		self.mode = mode
+		self.alias = alias
 		self.enabled = enabled
