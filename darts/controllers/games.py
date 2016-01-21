@@ -198,9 +198,17 @@ def games_create_num_players(id):
 	mode = model.Model().selectById(modeModel.Mode, game.modeId)
 	model.Model().update(gameModel.Game, game.id, { "players": request.form["players"] })
 
-	for i in range(0, 2):
-		newTeam = teamModel.Team(game.id)
-		model.Model().create(newTeam)
+	if mode.mode == "cricket":
+
+		for i in range(0, 2):
+			newTeam = teamModel.Team(game.id)
+			model.Model().create(newTeam)
+
+	elif mode.mode == "901" or mode.mode == "701" or mode.mode == "501" or mode.mode == "301":
+
+		for i in range(0, int(request.form["players"])):
+			newTeam = teamModel.Team(game.id)
+			model.Model().create(newTeam)
 
 	return redirect("/games/%d/players/" % game.id)
 

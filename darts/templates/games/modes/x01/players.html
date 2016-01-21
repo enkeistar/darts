@@ -4,9 +4,22 @@
 
 {% block body %}
 
-	<div class="container-fluid players">
+	<div class="container-fluid players x01">
 
-		<div class="teams"></div>
+		<h1>Pick {{ teams.count() }} Players</h1>
+
+		<ul class="teams">
+			{% set i = 1 %}
+			{% for team in teams %}
+
+				<li class="team" data-teamid="{{ team.id }}">
+					{{ i }}
+				</li>
+
+				{% set i = i + 1 %}
+			{% endfor %}
+
+		</ul>
 
 		<div class="player-list">
 

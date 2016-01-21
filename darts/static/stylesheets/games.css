@@ -26,6 +26,13 @@
 	border-radius: 4px;
 }
 
+.x01.players .team {
+	float: none;
+	width: 100%;
+	margin: 0 0 8px 0;
+	display: none;
+}
+
 .players .team .team-label {
 	font-size: 20px;
 	text-align: center;
