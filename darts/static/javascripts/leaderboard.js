@@ -1,6 +1,12 @@
 $(function(){
 
 	$("#leaderboard").stupidtable();
-	$("th[data-sort]").append('<span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span>');
+	var sorting =
+		'<div class="sorting-container">' +
+			'<span class="glyphicon glyphicon-chevron-up"></span>' +
+			'<span class="glyphicon glyphicon-chevron-down"></span>' +
+		'</div>'
+	;
+	$("th[data-sort]").append(sorting);
 
 });

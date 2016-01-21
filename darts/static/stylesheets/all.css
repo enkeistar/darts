@@ -170,25 +170,19 @@ th[data-sort] {
 	cursor: pointer;
 }
 
-th[data-sort] .glyphicon-arrow-up {
-	visibility: hidden;
+th[data-sort] .sorting-container {
+	display: inline-block;
+	margin-left: 4px;
+	font-size: 10px;
+	position: absolute;
 }
 
-th[data-sort] .glyphicon-arrow-down {
-	display: none;
+th[data-sort] .glyphicon {
+	color: #aaa;
+	display: block;
 }
 
-th[data-sort].sorting-asc .glyphicon-arrow-up {
-	visibility: visible;
-}
-
-th[data-sort].sorting-asc .glyphicon-arrow-down {
-}
-
-th[data-sort].sorting-desc .glyphicon-arrow-up {
-	display: none;
-}
-
-th[data-sort].sorting-desc .glyphicon-arrow-down {
-	display: inline;
+th[data-sort].sorting-asc .glyphicon-chevron-up,
+th[data-sort].sorting-desc .glyphicon-chevron-down {
+	color: #333
 }
