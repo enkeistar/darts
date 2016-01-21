@@ -62,45 +62,21 @@ def players_details(id):
 	for mark in marks:
 		if game != mark.gameId and round != mark.round:
 			scored = {
-				"twenty": 0,
-				"nineteen": 0,
-				"eighteen": 0,
-				"seventeen": 0,
-				"sixteen": 0,
-				"fifteen": 0,
-				"bullseye": 0
+				20: 0,
+				19: 0,
+				18: 0,
+				17: 0,
+				16: 0,
+				15: 0,
+				25: 0,
+				0: 0
 			}
 			game = mark.gameId
 			round = mark.round
 
-		if mark.twenty:
-			scored["twenty"] += 1
-			if scored["twenty"] > 3:
-				points += 20
-		elif mark.nineteen:
-			scored["nineteen"] += 1
-			if scored["nineteen"] > 3:
-				points += 19
-		elif mark.eighteen:
-			scored["eighteen"] += 1
-			if scored["eighteen"] > 3:
-				points += 18
-		elif mark.seventeen:
-			scored["seventeen"] += 1
-			if scored["seventeen"] > 3:
-				points += 17
-		elif mark.sixteen:
-			scored["sixteen"] += 1
-			if scored["sixteen"] > 3:
-				points += 16
-		elif mark.fifteen:
-			scored["fifteen"] += 1
-			if scored["fifteen"] > 3:
-				points += 15
-		elif mark.bullseye:
-			scored["bullseye"] += 1
-			if scored["bullseye"] > 3:
-				points += 25
+		scored[mark.value] += 1
+		if scored[mark.value] > 3:
+			points += mark.value
 
 	return render_template("players/details.html", player = player, teamPlayers = teamPlayers, marks = marks, wins = wins, losses = losses, points = points, rounds = rounds)
 

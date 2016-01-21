@@ -88,6 +88,7 @@ def games_board(id):
 				16: 0,
 				15: 0,
 				25: 0,
+				0: 0,
 				"points": 0
 			},
 			"results": []
@@ -121,54 +122,24 @@ def games_board(id):
 			})
 
 		scored = {
-			"twenty": 0,
-			"nineteen": 0,
-			"eighteen": 0,
-			"seventeen": 0,
-			"sixteen": 0,
-			"fifteen": 0,
-			"bullseye": 0
+			20: 0,
+			19: 0,
+			18: 0,
+			17: 0,
+			16: 0,
+			15: 0,
+			25: 0,
+			0: 0
 		}
 		pointsScored = 0
 
 		marks = model.Model().select(markModel.Mark).filter_by(gameId = game.id, teamId = team.id, game = game.game)
 
 		for mark in marks:
-			if mark.twenty:
-				teamData["marks"][20] += 1
-				scored["twenty"] += 1
-				if scored["twenty"] > 3:
-					pointsScored += 20
-			elif mark.nineteen:
-				teamData["marks"][19] += 1
-				scored["nineteen"] += 1
-				if scored["nineteen"] > 3:
-					pointsScored += 19
-			elif mark.eighteen:
-				teamData["marks"][18] += 1
-				scored["eighteen"] += 1
-				if scored["eighteen"] > 3:
-					pointsScored += 18
-			elif mark.seventeen:
-				teamData["marks"][17] += 1
-				scored["seventeen"] += 1
-				if scored["seventeen"] > 3:
-					pointsScored += 17
-			elif mark.sixteen:
-				teamData["marks"][16] += 1
-				scored["sixteen"] += 1
-				if scored["sixteen"] > 3:
-					pointsScored += 16
-			elif mark.fifteen:
-				teamData["marks"][15] += 1
-				scored["fifteen"] += 1
-				if scored["fifteen"] > 3:
-					pointsScored += 15
-			elif mark.bullseye:
-				teamData["marks"][25] += 1
-				scored["bullseye"] += 1
-				if scored["bullseye"] > 3:
-					pointsScored += 25
+			teamData["marks"][mark.value] += 1
+			scored[mark.value] += 1
+			if scored[mark.value] > 3:
+				pointsScored += mark.value
 
 		teamData["marks"]["points"] = pointsScored
 
@@ -301,24 +272,8 @@ def games_score(gameId, teamId, playerId, game, round, mark):
 	newMark.playerId = playerId
 	newMark.game = game
 	newMark.round = round
+	newMark.value = int(mark)
 	newMark.createdAt = datetime.now()
-
-	points = int(mark)
-
-	if points == 20:
-		newMark.twenty = 1
-	elif points == 19:
-		newMark.nineteen = 1
-	elif points == 18:
-		newMark.eighteen = 1
-	elif points == 17:
-		newMark.seventeen = 1
-	elif points == 16:
-		newMark.sixteen = 1
-	elif points == 15:
-		newMark.fifteen = 1
-	elif points == 25:
-		newMark.bullseye = 1
 
 	model.Model().create(newMark)
 

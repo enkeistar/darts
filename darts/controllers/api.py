@@ -59,13 +59,7 @@ def api_marks():
 			"playerId": mark.playerId,
 			"game": mark.game,
 			"round": mark.round,
-			"twenty": toBoolean(mark.twenty),
-			"nineteen": toBoolean(mark.nineteen),
-			"eighteen": toBoolean(mark.eighteen),
-			"seventeen": toBoolean(mark.seventeen),
-			"sixteen": toBoolean(mark.sixteen),
-			"fifteen": toBoolean(mark.fifteen),
-			"bullseye": toBoolean(mark.bullseye),
+			"value": mark.value,
 			"createdAt": str(mark.createdAt)
 		})
 
