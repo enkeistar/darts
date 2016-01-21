@@ -71,7 +71,8 @@ def games_board(id):
 		"players": game.players,
 		"turn": game.turn,
 		"teams": [],
-		"results": results
+		"results": results,
+		"mode": mode
 	}
 
 	for team in teams:
