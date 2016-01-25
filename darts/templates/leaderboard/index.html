@@ -16,11 +16,12 @@
 
 					<th data-sort="string">Player</th>
 					<th data-sort="int">Games</th>
+					<th data-sort="int">Win %</th>
 					<th data-sort="int">Wins</th>
 					<th data-sort="int">Losses</th>
 					<th data-sort="int">Marks</th>
 					<th data-sort="int">Rounds</th>
-					<th data-sort="float">Marks Per Round</th>
+					<th data-sort="float">Marks/Round</th>
 
 				</tr>
 
@@ -30,10 +31,13 @@
 
 				{% for row in data %}
 
+					{% set winPercentage = "{:.3f}".format((row.wins / (row.wins + row.losses)) * 100 ) %}
+
 					<tr>
 
 						<td>{{ row.name }}</td>
 						<td>{{ row.games }}</td>
+						<td data-sort-value="{{winPercentage}}">{{ winPercentage }}%</td>
 						<td>{{ row.wins }}</td>
 						<td>{{ row.losses }}</td>
 						<td>{{ row.marks }}</td>
