@@ -1,7 +1,11 @@
 # darts
 
 # TODO
+
+* Prevent completed games from being changed.
+* Only count completed games for leaderboard stats.
 * Game marks per round
+
 
 * better way to delete players from manage players screen, only admins, only if no stats?
 * more better stats
