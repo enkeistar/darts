@@ -15,6 +15,17 @@ def cricket_index(id):
 	game = model.Model().selectById(gameModel.Game, id)
 	return render_template("games/modes/cricket/num-players.html", game = game)
 
+@app.route("/games/<int:id>/modes/cricket/num-players/", methods = ["POST"])
+def cricket_create_num_players(id):
+	game = model.Model().selectById(gameModel.Game, id)
+	model.Model().update(gameModel.Game, game.id, { "players": request.form["players"] })
+
+	for i in range(0, 2):
+		newTeam = teamModel.Team(game.id)
+		model.Model().create(newTeam)
+
+	return redirect("/games/%d/modes/cricket/players/" % game.id)
+
 @app.route("/games/<int:id>/modes/cricket/play/", methods = ["GET"])
 def cricket_board(id):
 	game = model.Model().selectById(gameModel.Game, id)
@@ -104,17 +115,6 @@ def cricket_board(id):
 		data["teams"].append(teamData)
 
 	return render_template("games/modes/cricket/board.html", game = data)
-
-@app.route("/games/<int:id>/modes/cricket/num-players/", methods = ["POST"])
-def cricket_create_num_players(id):
-	game = model.Model().selectById(gameModel.Game, id)
-	model.Model().update(gameModel.Game, game.id, { "players": request.form["players"] })
-
-	for i in range(0, 2):
-		newTeam = teamModel.Team(game.id)
-		model.Model().create(newTeam)
-
-	return redirect("/games/%d/modes/cricket/players/" % game.id)
 
 @app.route("/games/<int:id>/modes/cricket/play/", methods = ["POST"])
 def cricket_play(id):

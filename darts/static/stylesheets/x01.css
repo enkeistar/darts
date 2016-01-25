@@ -1,0 +1,89 @@
+header {
+	display: none;
+}
+
+.players-container {
+	display: table;
+	width: 100%;
+}
+
+.players {
+	display: table-row;
+}
+
+.player {
+	display: table-cell;
+	text-align: center;
+	border-left: solid 1px #fff;
+	border-right: solid 1px #e0e0e0;
+}
+
+.player.active {
+	box-shadow: 0 0 5px 5px #888 inset;
+}
+
+.inital {
+	font-size: 6vh;
+}
+
+.name {
+
+}
+
+.score {
+	font-size: 10vw;
+	font-family: digital;
+}
+
+.score-button-container {
+	overflow: hidden;
+	width: 100%;
+	border-style: solid;
+	border-width: 1px;
+	border-top-color: #e0e0e0;
+	border-bottom-color: #fff;
+	border-left: none;
+	border-right: none;
+}
+
+.score-button {
+	float: left;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #fff #fff #e0e0e0 #e0e0e0;
+	text-align: center;
+	width: 20%;
+	font-family: moondart;
+	font-size: 9vh;
+}
+
+.score-button.bullseye {
+	width: 100%;
+}
+
+.score-button:nth-child(5n + 1){
+	clear: both;
+}
+
+.footer-buttons {
+	overflow: hidden;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.footer-button {
+	width: 33.333%;
+	float: left;
+	border-left: solid 1px #fff;
+	border-right: solid 1px #e0e0e0;
+	text-align: center;
+	font-size: 3vh;
+	padding: 10px 0;
+}
+
+.score-button:active,
+.footer-button:active {
+	box-shadow: 0 0 5px 5px #888 inset;
+	font-weight: bold;
+}
