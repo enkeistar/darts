@@ -1,5 +1,13 @@
 $(function(){
 
+	var complete = $("input[name=complete]").val() == "1";
+	if(complete){
+		$(".home").on("click", function(){
+			window.location = "/";
+		});
+		return;
+	}
+
 	var gameId = $("input[name=gameId]").val();
 	var baseUrl = "/games/" + gameId + "/modes/x01";
 	var players = $(".player");
@@ -7,13 +15,12 @@ $(function(){
 	var round = parseInt($("input[name=round").val());
 	var turn = parseInt($("input[name=turn").val());
 	var game = parseInt($("input[name=game").val());
+	var quiteGameModal = $(".modal-quit-game");
 
 	var turnTimeout;
 	var turnDelay = 5000;
 
-	var order = 0;
-
-	players.first().addClass("active");
+	var order = players.filter("[data-playerid=" + turn + "]").addClass("active").index();
 
 
 	$(".score-button").on("click", function(){
@@ -41,7 +48,9 @@ $(function(){
 		}
 
 		players.removeClass("active");
-		players.eq(order).addClass("active");
+		var playerId = players.eq(order).addClass("active").data("playerid");
+
+		$.post(baseUrl + "/players/" + playerId + "/turn/");
 	}
 
 	$(".miss").on("click", function(){
@@ -56,9 +65,13 @@ $(function(){
 	});
 
 	$(".home").on("click", function(){
-		if(confirm("Are you sure?")){
-			window.location = "/";
-		}
+		quiteGameModal.show();
+	});
+	$(".quit-game-yes").on("click", function(){
+		window.location = "/";
+	});
+	$(".quit-game-no").on("click", function(){
+		quiteGameModal.hide();
 	});
 
 });

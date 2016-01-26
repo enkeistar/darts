@@ -16,11 +16,11 @@
 
 				{% for player in data["players"] %}
 
-					<div class="player" style="width: {{ 100 / data["num-players"] }}%;" data-playerid="{{ player.id }}" data-teamid="{{ player.teamId }}" data-score="{{ data["mode"].mode }}">
+					<div class="player" style="width: {{ 100 / data["num-players"] }}%;" data-playerid="{{ player.id }}" data-teamid="{{ player.teamId }}" data-score="{{ player.points }}">
 
 						<div class="inital">{{ player.name[:1] }}</div>
 						<div class="name">{{ player.name }}</div>
-						<div class="score">{{ data["mode"].mode }}</div>
+						<div class="score">{{ player.points }}</div>
 
 					</div>
 
@@ -56,6 +56,16 @@
 	<input type="hidden" name="round" value="{{ data.round }}" />
 	<input type="hidden" name="players" value="{{ data.players }}" />
 	<input type="hidden" name="turn" value="{{ data.turn }}" />
+	<input type="hidden" name="complete" value="{{ data.complete }}" />
+
+	<div class="modal-box modal-quit-game">
+		<h1>Are you sure you want to quit this game?</h1>
+
+		<div class="button-group">
+			<a class="btn btn-default btn-lg quit-game-yes">Yes</a>
+			<a class="btn btn-default btn-lg quit-game-no">No</a>
+		</div>
+	</div>
 
 {% endblock %}
 

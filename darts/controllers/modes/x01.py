@@ -62,6 +62,7 @@ def x01_play(id):
 		"players": game.players,
 		"num-players": 0,
 		"turn": game.turn,
+		"complete": game.complete,
 		"players": [],
 		"mode": mode
 	}
@@ -73,11 +74,17 @@ def x01_play(id):
 
 			user = model.Model().selectById(playerModel.Player, player.playerId)
 			teamPlayer = teamPlayers.filter_by(playerId = user.id).one()
+			marks = model.Model().select(markModel.Mark).filter_by(gameId = game.id, playerId = player.playerId)
+			playerPoints = int(mode.mode)
+
+			for mark in marks:
+				playerPoints -= mark.value
 
 			data["players"].append({
 				"id": user.id,
 				"name": user.name,
-				"teamId": teamPlayer.teamId
+				"teamId": teamPlayer.teamId,
+				"points": playerPoints
 			})
 
 	data["num-players"] = len(data["players"])
@@ -101,6 +108,22 @@ def x01_score(gameId, teamId, playerId, game, round, mark):
 	model.Model().create(newMark)
 
 	return Response(json.dumps({ "id": int(newMark.id) }), status = 200, mimetype = "application/json")
+
+@app.route("/games/<int:gameId>/modes/x01/players/<int:playerId>/turn/", methods = ["POST"])
+def x01_turn(gameId, playerId):
+	model.Model().update(gameModel.Game, gameId, { "turn": playerId })
+	return Response(json.dumps({ "id": gameId }), status = 200, mimetype = "application/json")
+
+@app.route("/games/<int:gameId>/modes/x01/undo/", methods = ["GET"])
+def x01_undo(gameId):
+	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId).order_by(markModel.Mark.id.desc())
+
+	if marks.count() > 0:
+		mark = marks.first()
+		model.Model().update(gameModel.Game, gameId, { "turn": mark.playerId })
+		model.Model().delete(markModel.Mark, mark.id)
+
+	return redirect("/games/%d/modes/x01/play/" % gameId)
 
 def getTeamPlayersByGameId(gameId):
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = gameId)
