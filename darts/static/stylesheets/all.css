@@ -186,3 +186,6 @@ th[data-sort].sorting-asc .glyphicon-chevron-up,
 th[data-sort].sorting-desc .glyphicon-chevron-down {
 	color: #333
 }
+.leaderboard {
+	padding: 0;
+}

@@ -15,18 +15,23 @@ def leaderboard_index():
 			(\
 				SELECT COUNT(*)\
 				FROM teams_players tp\
-				WHERE tp.playerId = p.id\
+				LEFT JOIN teams t ON tp.teamId = t.id\
+				LEFT JOIN games g on t.gameId = g.id\
+				WHERE tp.playerId = p.id AND g.complete = 1\
 			) AS games,\
 			(\
 				SELECT COUNT(*)\
 				FROM marks m\
-				WHERE m.playerId = p.id\
+				LEFT JOIN games g on m.gameId = g.id\
+				WHERE m.playerId = p.id AND g.complete = 1\
 			) AS marks,\
-			(	\
+			(\
 				SELECT COUNT(playerId) \
 				FROM (\
 					SELECT r.playerId, r.gameId, r.teamId, r.game, r.round\
 					FROM marks r\
+					LEFT JOIN games g on r.gameId = g.id\
+					WHERE g.complete = 1\
 					GROUP BY r.playerId, r.gameId, r.teamId, r.round, r.game\
 				) AS rounds\
 				WHERE playerId = p.id\

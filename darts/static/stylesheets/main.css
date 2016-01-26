@@ -4,8 +4,8 @@ header {
 
 .darts h1 {
 	text-align: center;
-	font-size: 30vw;
-	margin: 5% 0;
+	font-size: 30vh;
+	margin: 0;
 	font-family: digital;
 }
 
@@ -13,7 +13,7 @@ header {
 	display: block;
 	text-align: center;
 	padding: 20px;
-	font-size: 5vw;
+	font-size: 5vh;
 }
 
 .darts a:active {
