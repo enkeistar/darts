@@ -33,7 +33,15 @@
 
 				{% for row in data %}
 
-					{% set winPercentage = "{:.3f}".format((row.wins / (row.wins + row.losses)) * 100 ) %}
+					{% set winPercentage = 0 %}
+					{% set marksPerRound = 0 %}
+
+					{% if row.wins > 0 or row.losses > 0 %}
+						{% set winPercentage = "{:.3f}".format((row.wins / (row.wins + row.losses)) * 100 ) %}
+					{% endif %}
+					{% if row.rounds > 0 %}
+						{% set marksPerRound = "{:.3f}".format(row.marks / row.rounds) %}
+					{% endif %}
 
 					<tr>
 
@@ -44,7 +52,7 @@
 						<td>{{ row.losses }}</td>
 						<td>{{ row.marks }}</td>
 						<td>{{ row.rounds }}</td>
-						<td>{{ "{:.3f}".format(row.marks / row.rounds) }}</td>
+						<td>{{ marksPerRound }}</td>
 
 					</tr>
 
