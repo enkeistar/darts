@@ -16,11 +16,11 @@
 
 				{% for player in data["players"] %}
 
-					<div class="player" style="width: {{ 100 / data["num-players"] }}%;">
+					<div class="player" style="width: {{ 100 / data["num-players"] }}%;" data-playerid="{{ player.id }}" data-teamid="{{ player.teamId }}" data-score="{{ data["mode"].mode }}">
 
 						<div class="inital">{{ player.name[:1] }}</div>
 						<div class="name">{{ player.name }}</div>
-						<div class="score" data-score="{{ data["mode"].mode }}">{{ data["mode"].mode }}</div>
+						<div class="score">{{ data["mode"].mode }}</div>
 
 					</div>
 
@@ -35,11 +35,11 @@
 
 			{% for i in range(20, 0, -1) %}
 
-				<div class="score-button">{{ i }}</div>
+				<div class="score-button" data-points="{{ i }}">{{ i }}</div>
 
 			{% endfor %}
 
-			<div class="score-button bullseye">Bullseye</div>
+			<div class="score-button bullseye" data-points="25">Bullseye</div>
 
 		</div>
 
@@ -49,9 +49,13 @@
 			<div class="footer-button home">Home</div>
 		</div>
 
-
-
 	</div>
+
+	<input type="hidden" name="gameId" value="{{ data.id }}" />
+	<input type="hidden" name="game" value="{{ data.game }}" />
+	<input type="hidden" name="round" value="{{ data.round }}" />
+	<input type="hidden" name="players" value="{{ data.players }}" />
+	<input type="hidden" name="turn" value="{{ data.turn }}" />
 
 {% endblock %}
 

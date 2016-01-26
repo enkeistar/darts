@@ -2,9 +2,11 @@ from darts import app, model
 from darts.entities import game as gameModel
 from darts.entities import team as teamModel
 from darts.entities import mode as modeModel
+from darts.entities import mark as markModel
 from darts.entities import player as playerModel
 from darts.entities import team_player as teamPlayerModel
 from flask import render_template, request, redirect, Response
+from datetime import datetime
 import json
 
 @app.route("/games/<int:id>/modes/x01/", methods = ["GET"])
@@ -70,16 +72,35 @@ def x01_play(id):
 		for player in players:
 
 			user = model.Model().selectById(playerModel.Player, player.playerId)
+			teamPlayer = teamPlayers.filter_by(playerId = user.id).one()
 
 			data["players"].append({
 				"id": user.id,
-				"name": user.name
+				"name": user.name,
+				"teamId": teamPlayer.teamId
 			})
 
 	data["num-players"] = len(data["players"])
 
 	return render_template("games/modes/x01/board.html", data = data)
 
+@app.route("/games/<int:gameId>/modes/x01/teams/<int:teamId>/players/<int:playerId>/games/<int:game>/rounds/<int:round>/marks/<int:mark>/", methods = ["POST"])
+def x01_score(gameId, teamId, playerId, game, round, mark):
+
+	model.Model().update(gameModel.Game, gameId, { "round": round })
+
+	newMark = markModel.Mark()
+	newMark.gameId = gameId
+	newMark.teamId = teamId
+	newMark.playerId = playerId
+	newMark.game = game
+	newMark.round = round
+	newMark.value = int(mark)
+	newMark.createdAt = datetime.now()
+
+	model.Model().create(newMark)
+
+	return Response(json.dumps({ "id": int(newMark.id) }), status = 200, mimetype = "application/json")
 
 def getTeamPlayersByGameId(gameId):
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = gameId)
