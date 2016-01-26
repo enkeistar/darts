@@ -33,8 +33,8 @@
 
 				{% for row in data %}
 
-					{% set winPercentage = 0 %}
-					{% set marksPerRound = 0 %}
+					{% set winPercentage = "0.000" %}
+					{% set marksPerRound = "0.000" %}
 
 					{% if row.wins > 0 or row.losses > 0 %}
 						{% set winPercentage = "{:.3f}".format((row.wins / (row.wins + row.losses)) * 100 ) %}
