@@ -1,5 +1,13 @@
 $(function(){
 
+	var complete = $("input[name=complete]").val() == "1";
+	if(complete){
+		$(".game-option.new-game").on("click", function(){
+			window.location = "/";
+		});
+		return;
+	}
+
 	var player = $(".player.active");
 	var gameId = $("input[name=gameId]").val();
 	var team1Id = $(".score").first().data("teamid");

@@ -41,6 +41,7 @@ def cricket_board(id):
 		"turn": game.turn,
 		"teams": [],
 		"results": results,
+		"complete": game.complete,
 		"mode": mode
 	}
 
