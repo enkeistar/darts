@@ -2,7 +2,7 @@ $(function(){
 
 	var complete = $("input[name=complete]").val() == "1";
 	if(complete){
-		$(".game-option.home").on("click", function(){
+		$(".game-option .home").on("click", function(){
 			window.location = "/";
 		});
 		return;
