@@ -1,2 +1,4 @@
 *.pyc
 /darts/config_file.cfg
+/darts/static/.webassets-cache/
+/darts/static/gen/
