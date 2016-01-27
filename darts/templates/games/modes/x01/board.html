@@ -16,7 +16,7 @@
 
 				{% for player in data["players"] %}
 
-					<div class="player" style="width: {{ 100 / data["num-players"] }}%;" data-playerid="{{ player.id }}" data-teamid="{{ player.teamId }}" data-score="{{ player.points }}">
+					<div class="player {% if player.id == data.turn %}active{% endif %} {% if player.points == 0 %}winner{% endif %}" style="width: {{ 100 / data["num-players"] }}%;" data-playerid="{{ player.id }}" data-teamid="{{ player.teamId }}" data-score="{{ player.points }}">
 
 						<div class="inital">{{ player.name[:1] }}</div>
 						<div class="name">{{ player.name }}</div>
@@ -45,6 +45,7 @@
 
 		<div class="footer-buttons">
 			<div class="footer-button miss">Miss</div>
+			<div class="footer-button turn">Turn</div>
 			<div class="footer-button undo">Undo</div>
 			<div class="footer-button home">Home</div>
 		</div>
@@ -55,7 +56,6 @@
 	<input type="hidden" name="game" value="{{ data.game }}" />
 	<input type="hidden" name="round" value="{{ data.round }}" />
 	<input type="hidden" name="players" value="{{ data.players }}" />
-	<input type="hidden" name="turn" value="{{ data.turn }}" />
 	<input type="hidden" name="complete" value="{{ data.complete }}" />
 
 	<div class="modal-box modal-quit-game">

@@ -114,7 +114,7 @@ def x01_turn(gameId, playerId):
 	model.Model().update(gameModel.Game, gameId, { "turn": playerId })
 	return Response(json.dumps({ "id": gameId }), status = 200, mimetype = "application/json")
 
-@app.route("/games/<int:gameId>/modes/x01/undo/", methods = ["GET"])
+@app.route("/games/<int:gameId>/modes/x01/undo/", methods = ["POST"])
 def x01_undo(gameId):
 	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId).order_by(markModel.Mark.id.desc())
 
@@ -122,8 +122,9 @@ def x01_undo(gameId):
 		mark = marks.first()
 		model.Model().update(gameModel.Game, gameId, { "turn": mark.playerId })
 		model.Model().delete(markModel.Mark, mark.id)
+		return Response(json.dumps({  "gameId": gameId, "playerId": mark.playerId, "value": mark.value, "valid": True }), status = 200, mimetype = "application/json")
 
-	return redirect("/games/%d/modes/x01/play/" % gameId)
+	return Response(json.dumps({ "id": gameId, "valid": False }), status = 200, mimetype = "application/json")
 
 def getTeamPlayersByGameId(gameId):
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = gameId)
