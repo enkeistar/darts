@@ -10,7 +10,9 @@
 
 			<title>Darts | {% block title %}{% endblock %}</title>
 			<link href="{{ url_for('static', filename='libraries/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-			<link href="{{ url_for('static', filename='stylesheets/all.css') }}" rel="stylesheet">
+			{% assets output="gen/layout.css", "stylesheets/all.css" %}
+				<link href="{{ ASSET_URL }}" rel="stylesheet">
+			{% endassets %}
 
 		{% endblock %}
 
@@ -40,9 +42,9 @@
 
 		{% block body %}{% endblock %}
 
-		<script src="{{ url_for('static', filename='libraries/jquery/jquery.min.js') }}"></script>
-		<script src="{{ url_for('static', filename='javascripts/all.js') }}"></script>
-		<!-- <script src="{{ url_for('static', filename='javascripts/test.js') }}"></script> -->
+		{% assets output="gen/layout.js", "libraries/jquery/jquery.min.js", "javascripts/all.js" %}
+			<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+		{% endassets %}
 
 		{% block footer %}{% endblock %}
 

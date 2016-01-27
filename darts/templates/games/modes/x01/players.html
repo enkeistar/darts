@@ -53,5 +53,7 @@
 
 {% block footer %}
 	{{ super() }}
-	<script src="{{ url_for('static', filename='javascripts/modes/x01/players.js') }}"></script>
+	{% assets output="gen/x01-players.js", "javascripts/modes/x01/players.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
 {% endblock %}

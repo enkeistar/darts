@@ -68,6 +68,7 @@
 
 {% block footer %}
 	{{ super() }}
-	<script src="{{ url_for('static', filename='libraries/stupid-table/stupidtable.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='javascripts/leaderboard.js') }}"></script>
+	{% assets output="gen/leaderboard.js", "libraries/stupid-table/stupidtable.min.js", "javascripts/leaderboard.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
 {% endblock %}

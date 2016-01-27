@@ -4,7 +4,9 @@
 
 {% block head %}
 	{{ super() }}
-	<link href="{{ url_for('static', filename='stylesheets/cricket.css') }}" rel="stylesheet">
+	{% assets output="gen/cricket.css", "stylesheets/cricket.css" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}
 {% endblock %}
 
 {% block body %}
@@ -144,5 +146,7 @@
 
 {% block footer %}
 	{{ super() }}
-	<script src="{{ url_for('static', filename='javascripts/modes/cricket/board.js') }}"></script>
+	{% assets output="gen/cricket-board.js", "javascripts/modes/cricket/board.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
 {% endblock %}
