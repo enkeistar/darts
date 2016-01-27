@@ -212,7 +212,7 @@ def cricket_score(gameId, teamId, playerId, game, round, mark):
 
 	return Response(json.dumps({ "id": int(newMark.id) }), status = 200, mimetype = "application/json")
 
-@app.route("/games/<int:gameId>/modes/cricket/undo/", methods = ["GET"])
+@app.route("/games/<int:gameId>/modes/cricket/undo/", methods = ["POST"])
 def cricket_undo(gameId):
 	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId).order_by(markModel.Mark.id.desc())
 
@@ -220,8 +220,9 @@ def cricket_undo(gameId):
 		mark = marks.first()
 		model.Model().update(gameModel.Game, gameId, { "turn": mark.playerId })
 		model.Model().delete(markModel.Mark, mark.id)
+		return Response(json.dumps({  "gameId": gameId, "teamId": mark.teamId, "playerId": mark.playerId, "value": mark.value, "valid": True }), status = 200, mimetype = "application/json")
 
-	return redirect("/games/%d/modes/cricket/play/" % gameId)
+	return Response(json.dumps({ "id": gameId, "valid": False }), status = 200, mimetype = "application/json")
 
 @app.route("/games/<int:gameId>/modes/cricket/players/<int:playerId>/turn/", methods = ["POST"])
 def cricket_turn(gameId, playerId):

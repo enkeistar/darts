@@ -37,9 +37,7 @@ $(function(){
 		newGameModal.hide();
 	});
 
-	$(".game-option .undo").on("click", function(){
-		window.location = baseUrl + "/undo/";
-	});
+	$(".game-option .undo").on("click", undo);
 
 	$(".game-option .miss").on("click", function(){
 		var teamId =  $(".player.active").data("teamid");
@@ -182,6 +180,24 @@ $(function(){
 			nextRound(2, team2Id, team1Id);
 		}
 
+	}
+
+	function undo(){
+		return $.post(baseUrl + "/undo/", function(response){
+			if(response.valid){
+				$(".player").removeClass("active");
+				var player = $(".player[data-playerid=" + response.playerId + "]").addClass("active");
+				var awarded = $(".awarded[data-teamid=" + response.teamId + "][data-points=" + response.value + "]");
+				var hits = parseInt(awarded.attr("data-hits")) - 1;
+				awarded.attr("data-hits", hits);
+
+				if(hits >= 3){
+					var current = $(".score[data-teamid=" + response.teamId + "]");
+					current.data("score", current.data("score") - response.value);
+					current.find(".current-round-points").html(current.data("score"));
+				}
+			}
+		});
 	}
 
 });
