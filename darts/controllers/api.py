@@ -1,6 +1,12 @@
 from darts import app
 from flask import Response, render_template, redirect, request
-from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, mark as markModel, result as resultModel
+from darts.entities import game as gameModel
+from darts.entities import player as playerModel
+from darts.entities import team as teamModel
+from darts.entities import team_player as teamPlayerModel
+from darts.entities import mark as markModel
+from darts.entities import result as resultModel
+from darts.entities import mode as modeModel
 from darts import model
 import json
 
@@ -90,6 +96,23 @@ def api_teams_players():
 			"id": teamPlayer.id,
 			"teamId": teamPlayer.teamId,
 			"playerId": teamPlayer.playerId
+		})
+
+	return json_response(data)
+
+@app.route("/api/modes/", methods = ["GET"])
+def api_modes():
+	modes = model.Model().select(modeModel.Mode)
+
+	data = []
+
+	for mode in modes:
+		data.append({
+			"id": mode.id,
+			"name": mode.name,
+			"mode": mode.mode,
+			"alias": mode.alias,
+			"enabled": toBoolean(mode.enabled)
 		})
 
 	return json_response(data)

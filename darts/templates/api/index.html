@@ -15,7 +15,8 @@
 <p class="text-muted">Array of player data.<p>
 <pre>[{
 	id: 1,
-	name: "Morgan Freeman"
+	name: "Morgan Freeman",
+	createdAt: '2016-01-01 12:01:01'
 }]</pre>
 
 <a href="/api/games/">
@@ -25,6 +26,7 @@
 <p class="text-muted">Array of game data Includes information about progress of rounds and player turns.</p>
 <pre>[{
 	id: 1,
+	modeId: 2,
 	players: 4,
 	game: 1,
 	round: 13
@@ -46,13 +48,7 @@
 	playerId: 7,
 	game: 9,
 	round: 3,
-	twenty: false,
-	nineteen: false,
-	eighteen: true,
-	seventeen: false,
-	sixteen: false,
-	fifteen: false,
-	bullseye: false,
+	value: 20,
 	createdAt: '2016-01-01 12:01:01'
 }]</pre>
 
@@ -77,6 +73,19 @@
 	id: 1,
 	teamId: 21,
 	playerId: 34
+}]</pre>
+
+<a href="/api/modes/">
+	<code>GET</code>
+	<kbd>/api/modes/</kbd>
+</a>
+<p class="text-muted">Types of Dart Games Available</p>
+<pre>[{
+	id: 1,
+	name: 'Cricket',
+	mode: 'cricket',
+	alias: 'cricket',
+	enabled: true
 }]</pre>
 
 	</div>
