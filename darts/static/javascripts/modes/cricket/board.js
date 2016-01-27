@@ -2,7 +2,7 @@ $(function(){
 
 	var complete = $("input[name=complete]").val() == "1";
 	if(complete){
-		$(".game-option.new-game").on("click", function(){
+		$(".game-option.home").on("click", function(){
 			window.location = "/";
 		});
 		return;
@@ -13,7 +13,7 @@ $(function(){
 	var team1Id = $(".score").first().data("teamid");
 	var team2Id = $(".score").last().data("teamid");
 	var nextRoundModal = $(".modal-next-round");
-	var newGameModal = $(".modal-new-game");
+	var homeModal = $(".modal-home");
 	var game = parseInt($("input[name=game]").val());
 	var numPlayers = parseInt($("input[name=players]").val());
 	var round = parseInt($("input[name=round]").val());
@@ -27,17 +27,19 @@ $(function(){
 
 	setActivePlayer();
 
-	$(".game-option.new-game").on("click", function(){
-		newGameModal.show();
+	$(".game-option .home").on("click", function(){
+		homeModal.show();
 	});
-	$(".new-game-yes").on("click", function(){
+	$(".home-yes").on("click", function(){
 		window.location = "/";
 	});
-	$(".new-game-no").on("click", function(){
-		newGameModal.hide();
+	$(".home-no").on("click", function(){
+		homeModal.hide();
 	});
 
 	$(".game-option .undo").on("click", undo);
+
+	$(".game-option .turn").on("click", nextTurn);
 
 	$(".game-option .miss").on("click", function(){
 		var teamId =  $(".player.active").data("teamid");

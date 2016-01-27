@@ -33,20 +33,23 @@ header {
 	border-right: solid 1px #fff;
 }
 
-.game-option.new-game {
+.game-option .turn {
 	border-top: solid 1px #fff;
-	border-bottom: solid 1px #e0e0e0;
 }
 
-.game-option .miss {
+.game-option .miss,
+.game-option .turn {
 	border-bottom: 1px solid #e0e0e0;
 }
-.game-option .undo {
+.game-option .undo,
+.game-option .home {
 	border-top: 1px solid #fff;
 }
 
 .game-option .miss,
-.game-option .undo {
+.game-option .undo,
+.game-option .turn,
+.game-option .home {
 	height: 50%;
 	line-height: 7vh;
 }

@@ -66,7 +66,10 @@
 		</div>
 
 		<div class="scores">
-			<div class="game-option target new-game">Home</div>
+			<div class="game-option">
+				<div class="target turn">Turn</div>
+				<div class="target home">Home</div>
+			</div>
 
 			{% for team in game["teams"] %}
 				<div class="score" data-teamid="{{ team.id }}" data-score="{{ team["marks"]["points"] }}">
@@ -128,12 +131,12 @@
 		</div>
 	</div>
 
-	<div class="modal-box modal-new-game">
+	<div class="modal-box modal-home">
 		<h1>Are you sure you want to quit this game?</h1>
 
 		<div class="button-group">
-			<a class="btn btn-default btn-lg new-game-yes">Yes</a>
-			<a class="btn btn-default btn-lg new-game-no">No</a>
+			<a class="btn btn-default btn-lg home-yes">Yes</a>
+			<a class="btn btn-default btn-lg home-no">No</a>
 		</div>
 	</div>
 
