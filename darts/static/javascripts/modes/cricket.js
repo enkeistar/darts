@@ -22,7 +22,6 @@ $(function(){
 	var turnPlayer = parseInt(player.data("order"));
 	var turnTimeout;
 	var turnDelay = 5000;
-	var finalCountdown;
 
 	setActivePlayer();
 
@@ -181,27 +180,6 @@ $(function(){
 			nextRound(2, team2Id, team1Id);
 		}
 
-		if(game == 3){
-			var team1ClosedPoints = 0;
-			$(".awarded[data-teamid=" + team1Id + "]").each(function(){
-				if(parseInt($(this).attr("data-hits")) >= 3){
-					team1ClosedPoints++;
-				}
-			});
-			var team2ClosedPoints = 0;
-			$(".awarded[data-teamid=" + team2Id + "]").each(function(){
-				if(parseInt($(this).attr("data-hits")) >= 3){
-					team2ClosedPoints++;
-				}
-			});
-
-			if(team1ClosedPoints >= 6 || team2ClosedPoints >= 6){
-				if(!finalCountdown){
-					finalCountdown = document.getElementById("final-countdown");
-					finalCountdown.play();
-				}
-			}
-		}
 	}
 
-});152
+});
