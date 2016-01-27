@@ -10,7 +10,7 @@
 
 		{% for i in range(4, 1, -2) %}
 
-			<form action="/games/{{ game.id }}/num-players/" method="POST">
+			<form action="/games/{{ game.id }}/modes/cricket/num-players/" method="POST">
 				<input type="hidden" name="players" value="{{ i }}" />
 				<button class="btn btn-default number-of-players">{{ i }}</button>
 			</form>

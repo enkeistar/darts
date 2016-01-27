@@ -23,6 +23,8 @@ $(function(){
 	var turnTimeout;
 	var turnDelay = 5000;
 
+	var baseUrl = "/games/" + gameId + "/modes/cricket";
+
 	setActivePlayer();
 
 	$(".game-option.new-game").on("click", function(){
@@ -36,13 +38,13 @@ $(function(){
 	});
 
 	$(".game-option .undo").on("click", function(){
-		window.location = "/games/" + gameId + "/undo/";
+		window.location = baseUrl + "/undo/";
 	});
 
 	$(".game-option .miss").on("click", function(){
 		var teamId =  $(".player.active").data("teamid");
 		var playerId = $(".player.active").data("playerid");
-		$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/0/").done(nextTurn);
+		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/0/").done(nextTurn);
 	});
 
 	$(".awarded").on("click", function(){
@@ -62,7 +64,7 @@ $(function(){
 
 		if( hits < 3 || !closed ){
 			source.attr("data-hits", hits + 1);
-			$.post("/games/" + gameId + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/" + point + "/");
+			$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/" + point + "/");
 		}
 
 		if( hits >= 3 && !closed ){
@@ -122,7 +124,7 @@ $(function(){
 
 		var playerId = getActivePlayer();
 
-		$.post("/games/" + gameId + "/players/" + playerId + "/turn/");
+		$.post(baseUrl + "/players/" + playerId + "/turn/");
 
 		if(turnTeam == 0 && turnPlayer == 0){
 			round++;
@@ -130,19 +132,19 @@ $(function(){
 	}
 
 	function win(id){
-		$.post("/games/" + gameId + "/teams/" + id + "/game/" + game + "/score/" + getScore(id) + "/win/");
+		$.post(baseUrl + "/teams/" + id + "/game/" + game + "/score/" + getScore(id) + "/win/");
 	}
 
 	function loss(id){
-		$.post("/games/" + gameId + "/teams/" + id + "/game/" + game + "/score/" + getScore(id) + "/loss/");
+		$.post(baseUrl + "/teams/" + id + "/game/" + game + "/score/" + getScore(id) + "/loss/");
 	}
 
 	function gameWin(id){
-		$.post("/games/" + gameId + "/teams/" + id + "/win/");
+		$.post(baseUrl + "/teams/" + id + "/win/");
 	}
 
 	function gameLoss(id){
-		$.post("/games/" + gameId + "/teams/" + id + "/loss/");
+		$.post(baseUrl + "/teams/" + id + "/loss/");
 	}
 
 	function nextRound(num, winnerId, loserId){

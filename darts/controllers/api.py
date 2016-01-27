@@ -1,16 +1,14 @@
 from darts import app
-from flask import Blueprint, Response, render_template, redirect, request
+from flask import Response, render_template, redirect, request
 from darts.entities import game as gameModel, player as playerModel, team as teamModel, team_player as teamPlayerModel, mark as markModel, result as resultModel
 from darts import model
 import json
 
-mod = Blueprint("api", __name__, url_prefix = "/api")
-
-@mod.route("/", methods = ["GET"])
+@app.route("/api/", methods = ["GET"])
 def api_index():
 	return render_template("api/index.html")
 
-@mod.route("/players/", methods = ["GET"])
+@app.route("/api/players/", methods = ["GET"])
 def api_players():
 	players = model.Model().select(playerModel.Player)
 
@@ -25,7 +23,7 @@ def api_players():
 
 	return json_response(data)
 
-@mod.route("/games/", methods = ["GET"])
+@app.route("/api/games/", methods = ["GET"])
 def api_games():
 	games = model.Model().select(gameModel.Game)
 
@@ -45,7 +43,7 @@ def api_games():
 
 	return json_response(data)
 
-@mod.route("/marks/", methods = ["GET"])
+@app.route("/api/marks/", methods = ["GET"])
 def api_marks():
 	marks = model.Model().select(markModel.Mark)
 
@@ -59,19 +57,13 @@ def api_marks():
 			"playerId": mark.playerId,
 			"game": mark.game,
 			"round": mark.round,
-			"twenty": toBoolean(mark.twenty),
-			"nineteen": toBoolean(mark.nineteen),
-			"eighteen": toBoolean(mark.eighteen),
-			"seventeen": toBoolean(mark.seventeen),
-			"sixteen": toBoolean(mark.sixteen),
-			"fifteen": toBoolean(mark.fifteen),
-			"bullseye": toBoolean(mark.bullseye),
+			"value": mark.value,
 			"createdAt": str(mark.createdAt)
 		})
 
 	return json_response(data)
 
-@mod.route("/teams/", methods = ["GET"])
+@app.route("/api/teams/", methods = ["GET"])
 def api_teams():
 	teams = model.Model().select(teamModel.Team)
 
@@ -87,7 +79,7 @@ def api_teams():
 
 	return json_response(data)
 
-@mod.route("/teams-players/", methods = ["GET"])
+@app.route("/api/teams-players/", methods = ["GET"])
 def api_teams_players():
 	teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer)
 

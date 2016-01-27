@@ -7,13 +7,11 @@ from darts.controllers import players
 from darts.controllers import games
 from darts.controllers import leaderboard
 from darts.controllers import api
-from darts import HttpMethod
 
-app.register_blueprint(main.mod)
-app.register_blueprint(players.mod)
-app.register_blueprint(games.mod)
-app.register_blueprint(leaderboard.mod)
-app.register_blueprint(api.mod)
+from darts.controllers.modes import cricket
+from darts.controllers.modes import x01
+
+from darts import HttpMethod
 
 @app.errorhandler(404)
 def not_found(error):

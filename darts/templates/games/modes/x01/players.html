@@ -31,7 +31,7 @@
 
 		</div>
 
-		<form action="/games/{{ game.id }}/play/" method="POST">
+		<form action="/games/{{ game.id }}/modes/x01/play/" method="POST">
 			<button class="btn btn-primary btn-lg btn-block play">Play</button>
 		</form>
 
@@ -53,5 +53,5 @@
 
 {% block footer %}
 	{{ super() }}
-	<script src="{{ url_for('static', filename='javascripts/modes/x01-players.js') }}"></script>
+	<script src="{{ url_for('static', filename='javascripts/modes/x01/players.js') }}"></script>
 {% endblock %}
