@@ -187,6 +187,12 @@ $(function(){
 	function undo(){
 		return $.post(baseUrl + "/undo/", function(response){
 			if(response.valid){
+
+				if(response.redirect){
+					window.location = baseUrl + "/play/";
+					return;
+				}
+
 				$(".player").removeClass("active");
 				var player = $(".player[data-playerid=" + response.playerId + "]").addClass("active");
 				var awarded = $(".awarded[data-teamid=" + response.teamId + "][data-points=" + response.value + "]");

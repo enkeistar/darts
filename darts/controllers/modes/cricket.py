@@ -214,13 +214,22 @@ def cricket_score(gameId, teamId, playerId, game, round, mark):
 
 @app.route("/games/<int:gameId>/modes/cricket/undo/", methods = ["POST"])
 def cricket_undo(gameId):
+	game = model.Model().selectById(gameModel.Game, gameId)
 	marks = model.Model().select(markModel.Mark).filter_by(gameId = gameId).order_by(markModel.Mark.id.desc())
 
 	if marks.count() > 0:
 		mark = marks.first()
-		model.Model().update(gameModel.Game, gameId, { "turn": mark.playerId })
+
+		redirect = False
+		if game.game != mark.game:
+			redirect = True
+			results = model.Model().select(resultModel.Result).filter_by(gameId = gameId, game = mark.game)
+			for result in results:
+				model.Model().delete(resultModel.Result, result.id)
+
+		model.Model().update(gameModel.Game, gameId, { "game": mark.game, "round": mark.round, "turn": mark.playerId })
 		model.Model().delete(markModel.Mark, mark.id)
-		return Response(json.dumps({  "gameId": gameId, "teamId": mark.teamId, "playerId": mark.playerId, "value": mark.value, "valid": True }), status = 200, mimetype = "application/json")
+		return Response(json.dumps({  "gameId": gameId, "teamId": mark.teamId, "playerId": mark.playerId, "value": mark.value, "valid": True, "redirect": redirect }), status = 200, mimetype = "application/json")
 
 	return Response(json.dumps({ "id": gameId, "valid": False }), status = 200, mimetype = "application/json")
 
