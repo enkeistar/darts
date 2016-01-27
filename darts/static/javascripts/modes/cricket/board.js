@@ -77,20 +77,7 @@ $(function(){
 			current.find(".current-round-points").html(current.data("score"));
 		}
 
-		var team1Closed = isClosed(team1Id);
-		var team2Closed = isClosed(team2Id);
-		var team1Score = getScore(team1Id);
-		var team2Score = getScore(team2Id);
-
-		if(team1Closed && team1Score >= team2Score){
-			win(team1Id);
-			loss(team2Id);
-			nextRound(1, team1Id, team2Id);
-		} else if(team2Closed && team2Score >= team1Score){
-			win(team2Id);
-			loss(team1Id);
-			nextRound(2, team2Id, team1Id);
-		}
+		determineWinner();
 
 		clearTimeout(turnTimeout);
 		turnTimeout = setTimeout(nextTurn, turnDelay);
@@ -171,6 +158,28 @@ $(function(){
 			gameLoss(loserId);
 		} else {
 			nextRoundModal.find("h1").html("Team " + num + "<br />Wins Round " + game + "!");
+		}
+
+	}
+
+	function determineWinner(){
+
+		var team1Closed = isClosed(team1Id);
+		var team2Closed = isClosed(team2Id);
+		var team1Score = getScore(team1Id);
+		var team2Score = getScore(team2Id);
+
+		var team1Wins = team1Closed && team1Score >= team2Score;
+		var team2Wins = team2Closed && team2Score >= team1Score;
+
+		if(team1Wins){
+			win(team1Id);
+			loss(team2Id);
+			nextRound(1, team1Id, team2Id);
+		} else if(team2Wins){
+			win(team2Id);
+			loss(team1Id);
+			nextRound(2, team2Id, team1Id);
 		}
 
 	}
