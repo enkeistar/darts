@@ -58,7 +58,7 @@ def games_index():
 
 @app.route("/games/new/", methods = ["GET"])
 def games_new():
-	modes = model.Model().select(modeModel.Mode)
+	modes = model.Model().select(modeModel.Mode).filter_by(enabled = True)
 	return render_template("games/new.html", modes = modes)
 
 @app.route("/games/", methods = ["POST"])
