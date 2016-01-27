@@ -24,7 +24,7 @@ ALTER TABLE `modes`
 	ADD COLUMN `alias` VARCHAR(255) NULL DEFAULT NULL AFTER `mode`;
 
 UPDATE `modes`
-	SET `alias` = `value`;
+	SET `alias` = `mode`;
 
 UPDATE `modes`
 	SET `alias` = 'x01' WHERE `alias` IN ('901','701','501','301');
