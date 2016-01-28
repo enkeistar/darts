@@ -144,6 +144,7 @@ header {
 	float: none;
 	border-top: solid 1px #fff;
 	border-bottom: solid 1px #e0e0e0;
+	position: relative;
 }
 
 .awarded:last-child {
@@ -208,4 +209,23 @@ header {
 	line-height: 0;
 	vertical-align: middle;
 	height: 100%;
+}
+
+.mark-counter {
+	background: #f00;
+	color: #fff;
+	padding: 4px 6px;
+	border-radius: 24px;
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	font-size: 13px;
+	line-height: 13px;
+	font-weight: bold;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }

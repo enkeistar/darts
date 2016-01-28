@@ -20,6 +20,10 @@ $(function(){
 	var turnTimeout;
 	var turnDelay = 5000;
 
+	var markCounter = $("<span />").addClass("mark-counter");
+	var numberOfMarks = 0;
+	var valueOfMark;
+
 	var baseUrl = "/games/" + gameId + "/modes/cricket";
 
 	highlightTeam();
@@ -62,6 +66,19 @@ $(function(){
 		if( hits < 3 || !closed ){
 			source.attr("data-hits", hits + 1);
 			$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/" + point + "/");
+
+			if(point != valueOfMark){
+				valueOfMark = point;
+				numberOfMarks = 0;
+			}
+
+			numberOfMarks++;
+			markCounter.html(numberOfMarks).hide().appendTo(source).fadeIn(0, function(){
+				setTimeout(function(){
+					markCounter.fadeOut(100);
+				}, 500)
+			});
+
 		}
 
 		if( hits >= 3 && !closed ){
@@ -78,6 +95,7 @@ $(function(){
 
 		clearTimeout(turnTimeout);
 		turnTimeout = setTimeout(nextTurn, turnDelay);
+
 
 	});
 
@@ -154,6 +172,7 @@ $(function(){
 		var playerId = $(players[index]).addClass("active").data("playerid");
 		$.post(baseUrl + "/players/" + playerId + "/turn/");
 		highlightTeam();
+		numberOfMarks = 0;
 	}
 
 	function win(id){
