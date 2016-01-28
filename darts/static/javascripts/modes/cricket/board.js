@@ -18,7 +18,7 @@ $(function(){
 	var round = parseInt($("input[name=round]").val());
 
 	var turnTimeout;
-	var turnDelay = 5000;
+	var turnDelay = 500;
 
 	var baseUrl = "/games/" + gameId + "/modes/cricket";
 
@@ -145,6 +145,10 @@ $(function(){
 
 			var index = position == 0 ? 1 : 0;
 
+		}
+
+		if(index == 0){
+			round++;
 		}
 
 		var playerId = $(players[index]).addClass("active").data("playerid");
