@@ -86,11 +86,18 @@ def players_details(id):
 
 @app.route("/players/<int:id>/edit/", methods = ["GET"])
 def players_edit(id):
-	players = model.Model().selectById(playerModel.Player, id)
-	return render_template("players/edit.html", player = players)
+	player = model.Model().selectById(playerModel.Player, id)
+	return render_template("players/edit.html", player = player, error = False)
 
 @app.route("/players/<int:id>/", methods = ["POST"])
 def players_update(id):
+	players = model.Model().select(playerModel.Player).filter_by(name = request.form["name"]).filter(playerModel.Player.id != id)
+
+	if players.count() > 0:
+		player = model.Model().selectById(playerModel.Player, id)
+		player.name = request.form["name"]
+		return render_template("players/edit.html", player = player, error = True)
+
 	model.Model().update(playerModel.Player, id, request.form)
 	return redirect("/players/")
 
@@ -98,3 +105,5 @@ def players_update(id):
 def players_delete(id):
 	model.Model().delete(playerModel.Player, id)
 	return redirect("/players/")
+
+

@@ -18,7 +18,7 @@ def games_index():
 
 	data = []
 
-	games = model.Model().select(gameModel.Game).filter_by(ready = True).order_by(desc("createdAt"))
+	games = model.Model().select(gameModel.Game).filter_by(ready = True, modeId = 1).order_by(desc("createdAt"))
 
 	for game in games:
 
