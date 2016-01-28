@@ -13,6 +13,10 @@
 
 		<h1>Edit Player</h1>
 
+		{% if error %}
+			<div class="alert alert-danger">That name is already taken. Please specify a unique name.</div>
+		{% endif %}
+
 		<form action="/players/{{ player.id }}/" method="POST">
 
 			<div class="form-group">

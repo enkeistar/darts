@@ -12,7 +12,7 @@ def players_index():
 
 @app.route("/players/new/", methods = ["GET"])
 def players_new():
-	return render_template("players/new.html", gameId = 0)
+	return render_template("players/new.html", gameId = 0, name = "", error = False)
 
 @app.route("/players/games/<int:gameId>/new/", methods = ["GET"])
 def players_new_game(gameId):
@@ -20,15 +20,21 @@ def players_new_game(gameId):
 
 @app.route("/players/", methods = ["POST"])
 def players_create():
+
+	gameId = int(request.form["gameId"])
+
+	players = model.Model().select(playerModel.Player).filter_by(name = request.form["name"])
+
+	if players.count() > 0:
+		return render_template("players/new.html", gameId = gameId, name = request.form["name"], error = True)
+
 	newPlayer = playerModel.Player(request.form["name"], datetime.now())
 	model.Model().create(newPlayer)
 
-	gameId = request.form["gameId"]
-
-	if gameId == "0":
+	if gameId == 0:
 		return redirect("/players/")
 	else:
-		return redirect("/games/" + str(gameId) + "/players/")
+		return redirect("/games/" + str(gameId) + "/modes/cricket/players/")
 
 @app.route("/players/<int:id>/", methods = ["GET"])
 def players_details(id):

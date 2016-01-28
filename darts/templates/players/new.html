@@ -13,13 +13,17 @@
 
 		<h1>Create Player</h1>
 
+		{% if error %}
+			<div class="alert alert-danger">That name is already taken. Please specify a unique name.</div>
+		{% endif %}
+
 		<form action="/players/" method="POST">
 
 			<input type="hidden" name="gameId" value="{{ gameId }}" />
 
-			<div class="form-group">
+			<div class="form-group {% if error %}has-error{% endif %}">
 
-				<input type="text" name="name" class="form-control" placeholder="Name..." autocomplete="off" maxlength="255" required />
+				<input type="text" name="name" value="{{ name }}" class="form-control" placeholder="Name..." autocomplete="off" maxlength="255" required />
 
 			</div>
 
