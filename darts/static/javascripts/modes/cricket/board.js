@@ -8,7 +8,6 @@ $(function(){
 		return;
 	}
 
-	var player = $(".player.active");
 	var gameId = $("input[name=gameId]").val();
 	var team1Id = $(".score").first().data("teamid");
 	var team2Id = $(".score").last().data("teamid");
@@ -18,14 +17,12 @@ $(function(){
 	var numPlayers = parseInt($("input[name=players]").val());
 	var round = parseInt($("input[name=round]").val());
 
-	var turnTeam = player.parents(".players").data("order");
-	var turnPlayer = parseInt(player.data("order"));
 	var turnTimeout;
 	var turnDelay = 5000;
 
 	var baseUrl = "/games/" + gameId + "/modes/cricket";
 
-	setActivePlayer();
+	highlightTeam();
 
 	$(".game-option .home").on("click", function(){
 		homeModal.show();
@@ -98,10 +95,7 @@ $(function(){
 		return parseInt($(".score[data-teamid=" + teamId + "]").data("score"));
 	}
 
-	function setActivePlayer(){
-		$(".player").removeClass("active");
-		$(".players").eq(turnTeam).find(".player").eq(turnPlayer).addClass("active");
-
+	function highlightTeam(){
 		$(".player-row, .awarded").removeClass("highlight");
 		var teamId =  $(".player.active").data("teamid");
 		$(".player-row[data-teamid=" + teamId + "]").addClass("highlight");
@@ -114,21 +108,48 @@ $(function(){
 	}
 
 	function nextTurn(){
-		if(numPlayers == 4 && turnTeam == 1){
-			turnPlayer = turnPlayer == 1 ? 0 : 1;
+
+		var players = $(".player");
+
+		var position = 0;
+		for( var i = 0; i < players.length; i++){
+			var player = $(players[i]);
+			if(player.hasClass("active")){
+				position = i;
+				break;
+			}
 		}
 
-		turnTeam = turnTeam == 1 ? 0 : 1;
+		players.removeClass("active");
 
-		setActivePlayer();
 
-		var playerId = getActivePlayer();
+		if(players.length == 4){
 
+			var index = 0;
+			switch(position){
+				case 0:
+					index = 2;
+					break;
+				case 1:
+					index = 3;
+					break;
+				case 2:
+					index = 1;
+					break;
+				case 3:
+					index = 0;
+					break;
+			}
+
+		} else {
+
+			var index = position == 0 ? 1 : 0;
+
+		}
+
+		var playerId = $(players[index]).addClass("active").data("playerid");
 		$.post(baseUrl + "/players/" + playerId + "/turn/");
-
-		if(turnTeam == 0 && turnPlayer == 0){
-			round++;
-		}
+		highlightTeam();
 	}
 
 	function win(id){
@@ -194,7 +215,9 @@ $(function(){
 				}
 
 				$(".player").removeClass("active");
-				var player = $(".player[data-playerid=" + response.playerId + "]").addClass("active");
+				$(".player[data-playerid=" + response.playerId + "]").addClass("active");
+				highlightTeam();
+
 				var awarded = $(".awarded[data-teamid=" + response.teamId + "][data-points=" + response.value + "]");
 				var hits = parseInt(awarded.attr("data-hits")) - 1;
 				awarded.attr("data-hits", hits);
