@@ -5,9 +5,6 @@ from flask.ext.assets import Environment, Bundle
 app = Flask(__name__)
 assets = Environment(app)
 
-# js = Bundle("libraries/jquery/jquery.min.js", output = "gen/packed.js")
-# assets.register("js_all", js)
-
 from darts.controllers import main
 from darts.controllers import players
 from darts.controllers import games
