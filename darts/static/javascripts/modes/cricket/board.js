@@ -18,7 +18,7 @@ $(function(){
 	var round = parseInt($("input[name=round]").val());
 
 	var turnTimeout;
-	var turnDelay = 500;
+	var turnDelay = 5000;
 
 	var baseUrl = "/games/" + gameId + "/modes/cricket";
 
