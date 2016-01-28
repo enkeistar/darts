@@ -1,6 +1,10 @@
 from darts import app
 from flask import request, render_template, redirect
-from darts.entities import player as playerModel, game as gameModel, team as teamModel, team_player as teamPlayerModel, mark as markModel
+from darts.entities import player as playerModel
+from darts.entities import game as gameModel
+from darts.entities import team as teamModel
+from darts.entities import team_player as teamPlayerModel
+from darts.entities import mark as markModel
 from darts import model
 from datetime import datetime
 from sqlalchemy import distinct

@@ -166,26 +166,31 @@ header a:focus {
 	background-color: #fafafa;
 }
 
-th[data-sort] {
+.leaderboard {
+}
+
+.leaderboard th,
+.leaderboard td {
+	width: 12.5%;
+}
+
+.leaderboard th[data-sort] {
 	cursor: pointer;
 }
 
-th[data-sort] .sorting-container {
+.leaderboard th[data-sort] .sorting-container {
 	display: inline-block;
 	margin-left: 4px;
 	font-size: 10px;
 	position: absolute;
 }
 
-th[data-sort] .glyphicon {
+.leaderboard th[data-sort] .glyphicon {
 	color: #aaa;
 	display: block;
 }
 
-th[data-sort].sorting-asc .glyphicon-chevron-up,
-th[data-sort].sorting-desc .glyphicon-chevron-down {
+.leaderboard th[data-sort].sorting-asc .glyphicon-chevron-up,
+.leaderboard th[data-sort].sorting-desc .glyphicon-chevron-down {
 	color: #333
-}
-.leaderboard {
-	padding: 0;
 }

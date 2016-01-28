@@ -2,6 +2,11 @@
 
 {% block title %}Players{% endblock %}
 
+{% block head %}
+	{{ super() }}
+	<link href="{{ url_for('static', filename='libraries/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
 
 	<div class="container-fluid leaderboard">
@@ -10,57 +15,17 @@
 
 		<p class="text-center">Statistics and Win/Loss records are calculated from complete games only.</p>
 
-		<table id="leaderboard" class="table table-striped">
+		<form class="form-inline" style="text-align: center; margin: 12px 0;">
+			<div class="form-group">
+				<div class="input-daterange input-group">
+					<input type="text" class="input-sm form-control" name="start" placeholder="start date" />
+					<span class="input-group-addon">to</span>
+					<input type="text" class="input-sm form-control" name="end" placeholder="end date" />
+				</div>
+			</div>
+		</form>
 
-			<thead>
-
-				<tr>
-
-					<th data-sort="string">Player</th>
-					<th data-sort="int">Games</th>
-					<th data-sort="int">Win %</th>
-					<th data-sort="int">Wins</th>
-					<th data-sort="int">Losses</th>
-					<th data-sort="int">Marks</th>
-					<th data-sort="int">Rounds</th>
-					<th data-sort="float">Marks/Round</th>
-
-				</tr>
-
-			</thead>
-
-			<tbody>
-
-				{% for row in data %}
-
-					{% set winPercentage = "0.000" %}
-					{% set marksPerRound = "0.000" %}
-
-					{% if row.wins > 0 or row.losses > 0 %}
-						{% set winPercentage = "{:.3f}".format((row.wins / (row.wins + row.losses)) * 100 ) %}
-					{% endif %}
-					{% if row.rounds > 0 %}
-						{% set marksPerRound = "{:.3f}".format(row.marks / row.rounds) %}
-					{% endif %}
-
-					<tr>
-
-						<td>{{ row.name }}</td>
-						<td>{{ row.games }}</td>
-						<td data-sort-value="{{winPercentage}}">{{ winPercentage }}%</td>
-						<td>{{ row.wins }}</td>
-						<td>{{ row.losses }}</td>
-						<td>{{ row.marks }}</td>
-						<td>{{ row.rounds }}</td>
-						<td>{{ marksPerRound }}</td>
-
-					</tr>
-
-				{% endfor %}
-
-			</tbody>
-
-		</table>
+		<div id="leaderboard"></div>
 
 	</div>
 
@@ -68,7 +33,7 @@
 
 {% block footer %}
 	{{ super() }}
-	{% assets output="gen/leaderboard.js", "libraries/stupid-table/stupidtable.min.js", "javascripts/leaderboard.js" %}
+	{% assets output="gen/leaderboard.js", "libraries/stupid-table/stupidtable.min.js", "libraries/bootstrap-datepicker/js/bootstrap-datepicker.min.js", "javascripts/leaderboard.js" %}
 		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 	{% endassets %}
 {% endblock %}
