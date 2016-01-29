@@ -40,6 +40,15 @@ def x01_players_create(id):
 	model.Model().create(teamPlayer)
 	return Response(json.dumps({ "id": int(teamPlayer.id) }), status = 200, mimetype = "application/json")
 
+@app.route("/games/<int:id>/modes/x01/players/redo/", methods = ["POST"])
+def x01_players_redo(id):
+	teamPlayers = getTeamPlayersByGameId(id)
+
+	for teamPlayer in teamPlayers:
+		model.Model().delete(teamPlayerModel.TeamPlayer, teamPlayer.id)
+
+	return redirect("/games/%d/modes/x01/players/" % id)
+
 @app.route("/games/<int:id>/modes/x01/play/", methods = ["POST"])
 def x01_play_create(id):
 	team = model.Model().select(teamModel.Team).filter_by(gameId = id).first()
