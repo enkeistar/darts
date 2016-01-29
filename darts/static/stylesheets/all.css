@@ -167,15 +167,23 @@ header a:focus {
 }
 
 .leaderboard {
+	padding: 0;
+}
+.leaderboard form {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.leaderboard .table {
+	min-width: 600px;
 }
 
 .leaderboard th,
 .leaderboard td {
-	width: 12.5%;
 }
 
 .leaderboard th[data-sort] {
 	cursor: pointer;
+	padding-right: 14px;
 }
 
 .leaderboard th[data-sort] .sorting-container {
