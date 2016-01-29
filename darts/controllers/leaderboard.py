@@ -135,7 +135,6 @@ def leaderboard_index():
 	session = model.Model().getSession()
 	connection = session.connection()
 	data = connection.execute(text(query), start = start, end = end)
-	session.close()
 
 	if request.is_xhr:
 		return render_template("leaderboard/_table.html", data = data)
