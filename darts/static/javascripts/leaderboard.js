@@ -4,13 +4,13 @@ $(function(){
 	var leaderboard = $("#leaderboard");
 	var column, direction;
 
-	$.post("/leaderboard/", { "start": "", "end": "" }).done(updateTable);
-
 	function updateTable(html){
-		leaderboard.html(html).find("table").stupidtable();
+		leaderboard.html(html);
+		bindSort();
+	}
 
-
-		leaderboard.find("table").bind("aftertablesort", function(el, data){
+	function bindSort(){
+		leaderboard.find("table").stupidtable().bind("aftertablesort", function(el, data){
 			column = data.column;
 			direction = data.direction;
 		});
@@ -30,8 +30,10 @@ $(function(){
 		if(ajaxRequest){
 			ajaxRequest.abort();
 		}
-		ajaxRequest = $.post("/leaderboard/", { "start": $("input[name=start]").val(), "end": $("input[name=end]").val() }).done(updateTable);
+		ajaxRequest = $.get("/leaderboard/", { "start": $("input[name=start]").val(), "end": $("input[name=end]").val() }).done(updateTable);
 
 	});
+
+	bindSort();
 
 });

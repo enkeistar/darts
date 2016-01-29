@@ -12,13 +12,9 @@ from datetime import datetime, timedelta
 
 @app.route("/leaderboard/", methods = ["GET"])
 def leaderboard_index():
-	return render_template("leaderboard/index.html")
 
-@app.route("/leaderboard/", methods = ["POST"])
-def leaderboard_filter():
-
-	start = request.form["start"]
-	end = request.form["end"]
+	start = request.args.get("start")
+	end = request.args.get("end")
 
 	useStart = start is not None and len(start) > 0
 	useEnd = end is not None and len(end) > 0
@@ -140,4 +136,8 @@ def leaderboard_filter():
 	connection = session.connection()
 	data = connection.execute(text(query), start = start, end = end)
 
-	return render_template("leaderboard/_table.html", data = data)
+	if request.is_xhr:
+		return render_template("leaderboard/_table.html", data = data)
+	else:
+		return render_template("leaderboard/index.html", data = data)
+
