@@ -8,7 +8,7 @@ from darts.entities import result as resultModel
 from darts.entities import mode as modeModel
 from flask import Response, render_template, redirect, request
 from datetime import datetime
-import json
+import json, random
 
 @app.route("/games/<int:id>/modes/cricket/")
 def cricket_index(id):
@@ -116,6 +116,20 @@ def cricket_board(id):
 		data["teams"].append(teamData)
 
 	return render_template("games/modes/cricket/board.html", game = data)
+
+@app.route("/games/<int:id>/modes/cricket/randomize/", methods = ["POST"])
+def cricket_randomize(id):
+	teamPlayers = getTeamPlayersByGameId(id)
+	playerIds = []
+
+	for teamPlayer in teamPlayers:
+		playerIds.append(teamPlayer.playerId)
+	random.shuffle(playerIds)
+
+	for i, teamPlayer in enumerate(teamPlayers):
+		model.Model().update(teamPlayerModel.TeamPlayer, teamPlayer.id, { "playerId": playerIds[i] })
+
+	return redirect("/games/%d/modes/cricket/players/" % id)
 
 @app.route("/games/<int:id>/modes/cricket/play/", methods = ["POST"])
 def cricket_play(id):
