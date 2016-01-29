@@ -100,12 +100,13 @@
 	color: #eee;
 }
 
-.players .redo,
+.players .add-player,
+.players .redo {
+	margin-top: 8px;
+	width: 150px;
+	text-align: center;
+}
 .players .play {
 	margin-top: 8px;
 	display: none;
-}
-
-.players .add-player {
-	margin-top: 8px;
 }

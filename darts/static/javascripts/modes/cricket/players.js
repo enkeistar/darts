@@ -48,7 +48,6 @@ $(function(){
 
 		if(current >= teamPlayers.length){
 			$(".play").show();
-			$(".redo").css("display", "block");
 			$(".player-list").hide();
 			$(".add-player").hide();
 		}
