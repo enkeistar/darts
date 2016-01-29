@@ -73,10 +73,13 @@ $(function(){
 			}
 
 			numberOfMarks++;
-			markCounter.html(numberOfMarks).hide().appendTo(source).fadeIn(0, function(){
+			markCounter.clone().html(numberOfMarks).hide().appendTo(source).fadeIn(0, function(){
+				var newMarkCounter = $(this);
 				setTimeout(function(){
-					markCounter.fadeOut(100);
-				}, 500)
+					newMarkCounter.fadeOut(100, function(){
+						$(this).remove();
+					});
+				}, 250)
 			});
 
 		}
