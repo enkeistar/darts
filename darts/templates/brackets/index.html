@@ -17,7 +17,7 @@
 
 			{% for player in round1Players %}
 
-				<div class="bracket-player">
+				<div class="bracket-player" data-playerid="{{ player.id }}">
 					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
 				</div>
 
@@ -29,7 +29,7 @@
 
 			{% for player in round2Players %}
 
-				<div class="bracket-player">
+				<div class="bracket-player" data-playerid="{{ player.id }}">
 					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
 				</div>
 
@@ -41,7 +41,7 @@
 
 			{% for player in round3Players %}
 
-				<div class="bracket-player">
+				<div class="bracket-player" data-playerid="{{ player.id }}">
 					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
 				</div>
 
@@ -53,15 +53,22 @@
 
 			{% for player in round4Players %}
 
-				<div class="bracket-player">
+				<div class="bracket-player" data-playerid="{{ player.id }}">
 					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
 				</div>
 
 			{% endfor %}
 
-
 		</div>
 
 	</div>
 
+{% endblock %}
+
+
+{% block footer %}
+	{{ super() }}
+	{% assets output="gen/bracket.js", "javascripts/bracket.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
 {% endblock %}

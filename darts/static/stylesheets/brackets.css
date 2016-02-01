@@ -65,3 +65,7 @@ html, body {
 .col4 .bracket-player:nth-child(2) {
 	border-right: none;
 }
+
+.col4 .bracket-player {
+	font-weight: bold;
+}
