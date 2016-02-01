@@ -12,8 +12,8 @@ header {
 .darts a {
 	display: block;
 	text-align: center;
-	padding: 20px;
-	font-size: 5vh;
+	padding: 16px;
+	font-size: 4vh;
 }
 
 .darts a:active {

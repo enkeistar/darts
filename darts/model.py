@@ -22,7 +22,10 @@ class Model():
 		return session.query(model)
 
 	def selectById(self, model, id):
-		return session.query(model).filter(model.id == id).one()
+		items = session.query(model).filter(model.id == id)
+		if items.count() > 0:
+			return items.one()
+		return None
 
 	def create(self, data):
 		session.add(data)

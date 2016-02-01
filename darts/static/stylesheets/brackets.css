@@ -1,0 +1,67 @@
+html, body {
+	height: 100%;
+}
+
+.bracket {
+	padding: 8px;
+	overflow: hidden;
+}
+
+.bracket-col {
+	float: left;
+	width: 25%;
+}
+
+.bracket-player {
+	border: solid 1px #666;
+	border-left: none;
+	padding-left: 8px;
+}
+
+.bracket-player:nth-child(odd) {
+	border-top: none;
+}
+
+.bracket-player:nth-child(even) {
+	border-top: none;
+	border-bottom: none;
+}
+
+.bracket-player:nth-child(1),
+.bracket-player:nth-child(4),
+.bracket-player:nth-child(5),
+.bracket-player:nth-child(8),
+.bracket-player:nth-child(9),
+.bracket-player:nth-child(12),
+.bracket-player:nth-child(13),
+.bracket-player:nth-child(16) {
+	border-right: none;
+}
+
+.col1 .bracket-player:nth-child(even) {
+	padding-bottom: 20px;
+}
+
+.col2 .bracket-player:nth-child(even) {
+	padding-bottom: 81px;
+}
+
+.col3 .bracket-player:nth-child(even) {
+	padding-bottom: 203px;
+}
+
+.col2 .bracket-player:first-child {
+	margin-top: 31px;
+}
+
+.col3 .bracket-player:first-child {
+	margin-top: 90px;
+}
+
+.col4 .bracket-player:first-child {
+	margin-top: 210px;
+}
+
+.col4 .bracket-player:nth-child(2) {
+	border-right: none;
+}

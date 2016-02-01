@@ -5,11 +5,12 @@ from flask.ext.assets import Environment, Bundle
 app = Flask(__name__)
 assets = Environment(app)
 
-from darts.controllers import main
-from darts.controllers import players
+from darts.controllers import api
+from darts.controllers import brackets
 from darts.controllers import games
 from darts.controllers import leaderboard
-from darts.controllers import api
+from darts.controllers import main
+from darts.controllers import players
 
 from darts.controllers.modes import cricket
 from darts.controllers.modes import x01
