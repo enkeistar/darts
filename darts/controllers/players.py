@@ -69,16 +69,9 @@ def players_details(id):
 	round = 0
 	for mark in marks:
 		if game != mark.gameId and round != mark.round:
-			scored = {
-				20: 0,
-				19: 0,
-				18: 0,
-				17: 0,
-				16: 0,
-				15: 0,
-				25: 0,
-				0: 0
-			}
+			scored = {}
+			for i in range(0,26):
+				scored[i] = 0
 			game = mark.gameId
 			round = mark.round
 
