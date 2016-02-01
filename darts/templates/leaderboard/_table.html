@@ -16,6 +16,11 @@
 				Win%
 				{% include 'leaderboard/_sort.html' %}
 			 </th>
+			 <th data-sort="float">
+				<span class="hidden-xs">Marks/Round</span>
+				<span class="visible-xs-inline">M/R</span>
+				{% include 'leaderboard/_sort.html' %}
+			</th>
 			<th data-sort="int">
 				<span class="hidden-xs">Wins</span>
 				<span class="visible-xs-inline">W</span>
@@ -33,11 +38,6 @@
 			<th data-sort="int">
 				<span class="hidden-xs">Rounds</span>
 				<span class="visible-xs-inline">Rnds</span>
-				{% include 'leaderboard/_sort.html' %}
-			</th>
-			<th data-sort="float">
-				<span class="hidden-xs">Marks/Round</span>
-				<span class="visible-xs-inline">M/R</span>
 				{% include 'leaderboard/_sort.html' %}
 			</th>
 
@@ -64,11 +64,11 @@
 				<td>{{ row.name }}</td>
 				<td>{{ row.games }}</td>
 				<td data-sort-value="{{winPercentage}}">{{ winPercentage }}%</td>
+				<td>{{ marksPerRound }}</td>
 				<td>{{ row.wins }}</td>
 				<td>{{ row.losses }}</td>
 				<td>{{ row.marks }}</td>
 				<td>{{ row.rounds }}</td>
-				<td>{{ marksPerRound }}</td>
 
 			</tr>
 
