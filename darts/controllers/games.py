@@ -20,6 +20,11 @@ def games_index():
 
 	games = model.Model().select(gameModel.Game).filter_by(ready = True, modeId = 1).order_by(desc("createdAt"))
 
+	players = model.Model().select(playerModel.Player)
+	playerDict = {}
+	for player in players:
+		playerDict[player.id] = player
+
 	for game in games:
 
 		gameData = {
@@ -45,8 +50,7 @@ def games_index():
 			players = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id)
 
 			for player in players:
-				user = model.Model().selectById(playerModel.Player, player.playerId)
-				teamData["players"].append(user.name)
+				teamData["players"].append(playerDict[player.playerId].name)
 
 			gameData["teams"].append(teamData)
 
