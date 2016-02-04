@@ -69,3 +69,10 @@ html, body {
 .col4 .bracket-player {
 	font-weight: bold;
 }
+
+.bracket-player-select {
+	width: 150px;
+	height: 20px;
+	border: solid 1px #ccc;
+	border-radius: 2px;
+}

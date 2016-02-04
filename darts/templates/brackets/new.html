@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block title %}Create Bracket{% endblock %}
+
+{% block head %}
+	{{ super() }}
+	{% assets output="gen/brackets.css", "stylesheets/brackets.css" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}
+{% endblock %}
+
+{% block body %}
+
+
+	<div id="bracket-form" class="container bracket">
+
+		<form>
+
+			<div class="form-group">
+				<label for="bracket-num-players">Number Of Players:</label>
+				<select id="bracket-num-players" class="form-control" required>
+					<option value="">Select Number Of Players</option>
+					<option value="8">8</option>
+					<option value="16">16</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label for="bracket-type">Type:</label>
+				<select id="bracket-type" class="form-control" required>
+					<option value="">Select Type</option>
+					<option value="single">Single Player</option>
+					<option value="team">2 Person Teams</option>
+				</select>
+			</div>
+
+			<button class="btn btn-primary">Generate Bracket</button>
+
+		</form>
+
+	</div>
+
+	<div id="bracket-grid" class="container bracket hidden">
+
+		<div class="bracket-col col1">
+
+			{% for i in range(0, 16) %}
+
+				<div class="bracket-player">
+					<select class="bracket-player-select">
+						<option value="">Select Player</option>
+						{% for player in players %}
+							<option value="{{ player.id }}">{{ player.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+			{% endfor %}
+
+		</div>
+
+		<div class="bracket-col col2">
+
+			{% for i in range(0, 8) %}
+				<div class="bracket-player">&nbsp;</div>
+			{% endfor %}
+
+		</div>
+
+		<div class="bracket-col col3">
+
+			{% for i in range(0, 4) %}
+				<div class="bracket-player">&nbsp;</div>
+			{% endfor %}
+
+		</div>
+
+		<div class="bracket-col col4">
+			<div class="bracket-player">&nbsp;</div>
+		</div>
+
+	</div>
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	{% assets output="gen/brackets.js", "javascripts/brackets.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
+{% endblock %}

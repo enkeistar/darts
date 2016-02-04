@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}Bracket{% endblock %}
+
+{% block head %}
+	{{ super() }}
+	{% assets output="gen/brackets.css", "stylesheets/brackets.css" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}
+{% endblock %}
+
+{% block body %}
+
+	<div class="container bracket">
+
+		<div class="bracket-col col1">
+
+			{% for player in round1Players %}
+
+				<div class="bracket-player" data-playerid="{{ player.id }}">
+					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
+				</div>
+
+			{% endfor %}
+
+		</div>
+
+		<div class="bracket-col col2">
+
+			{% for player in round2Players %}
+
+				<div class="bracket-player" data-playerid="{{ player.id }}">
+					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
+				</div>
+
+			{% endfor %}
+
+		</div>
+
+		<div class="bracket-col col3">
+
+			{% for player in round3Players %}
+
+				<div class="bracket-player" data-playerid="{{ player.id }}">
+					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
+				</div>
+
+			{% endfor %}
+
+		</div>
+
+		<div class="bracket-col col4">
+
+			{% for player in round4Players %}
+
+				<div class="bracket-player" data-playerid="{{ player.id }}">
+					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
+				</div>
+
+			{% endfor %}
+
+		</div>
+
+	</div>
+
+{% endblock %}
+
+
+{% block footer %}
+	{{ super() }}
+	{% assets output="gen/brackets.js", "javascripts/brackets.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
+{% endblock %}

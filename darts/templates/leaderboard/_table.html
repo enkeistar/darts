@@ -9,16 +9,25 @@
 				{% include 'leaderboard/_sort.html' %}
 			</th>
 			<th data-sort="int">
-				Games
-				{% include 'leaderboard/_sort.html' %}
-			</th>
-			<th data-sort="int">
 				Win%
 				{% include 'leaderboard/_sort.html' %}
 			 </th>
 			 <th data-sort="float">
 				<span class="hidden-xs">Marks/Round</span>
 				<span class="visible-xs-inline">M/R</span>
+				{% include 'leaderboard/_sort.html' %}
+			</th>
+			<th data-sort="int">
+				Games
+				{% include 'leaderboard/_sort.html' %}
+			</th>
+			<th data-sort="int">
+				Points
+				{% include 'leaderboard/_sort.html' %}
+			</th>
+			<th data-sort="int">
+				<span class="hidden-xs">Points/Game</span>
+				<span class="visible-xs-inline">P/G</span>
 				{% include 'leaderboard/_sort.html' %}
 			</th>
 			<th data-sort="int">
@@ -51,6 +60,7 @@
 
 			{% set winPercentage = "0.000" %}
 			{% set marksPerRound = "0.000" %}
+			{% set pointsPerGame = "0.000" %}
 
 			{% if row.wins > 0 or row.losses > 0 %}
 				{% set winPercentage = "{:.3f}".format((row.wins / (row.wins + row.losses)) * 100 ) %}
@@ -58,13 +68,18 @@
 			{% if row.rounds > 0 %}
 				{% set marksPerRound = "{:.3f}".format(row.marks / row.rounds) %}
 			{% endif %}
+			{% if row.games > 0 %}
+				{% set pointsPerGame = "{:.3f}".format(points[row.id] / row.games) %}
+			{% endif %}
 
 			<tr>
 
 				<td>{{ row.name }}</td>
-				<td>{{ row.games }}</td>
-				<td data-sort-value="{{winPercentage}}">{{ winPercentage }}%</td>
+				<td data-sort-value="{{ winPercentage }}">{{ winPercentage }}%</td>
 				<td>{{ marksPerRound }}</td>
+				<td>{{ row.games }}</td>
+				<td data-sort-value="{{ points[row.id] }}">{{ "{:,}".format(points[row.id]) }}</td>
+				<td data-sort-value="{{ pointsPerGame }}">{{ pointsPerGame }}</td>
 				<td>{{ row.wins }}</td>
 				<td>{{ row.losses }}</td>
 				<td>{{ row.marks }}</td>

@@ -1,74 +1,27 @@
 {% extends "layout.html" %}
 
-{% block title %}Players{% endblock %}
-
-{% block head %}
-	{{ super() }}
-	{% assets output="gen/brackets.css", "stylesheets/brackets.css" %}
-		<link href="{{ ASSET_URL }}" rel="stylesheet">
-	{% endassets %}
-{% endblock %}
+{% block title %}Brackets{% endblock %}
 
 {% block body %}
 
-	<div class="bracket">
+	<div class="container-fluid brackets">
 
-		<div class="bracket-col col1">
+		<a class="btn btn-default btn-sm action" href="/brackets/new/">
+			<span class="glyphicon glyphicon-star"></span>
+			Create New Bracket
+		</a>
 
-			{% for player in round1Players %}
+		<h1 class="with-action">Brackets</h1>
 
-				<div class="bracket-player" data-playerid="{{ player.id }}">
-					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
-				</div>
+		<table class="table">
 
-			{% endfor %}
+			<tbody>
 
-		</div>
 
-		<div class="bracket-col col2">
+			</tbody>
 
-			{% for player in round2Players %}
-
-				<div class="bracket-player" data-playerid="{{ player.id }}">
-					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
-				</div>
-
-			{% endfor %}
-
-		</div>
-
-		<div class="bracket-col col3">
-
-			{% for player in round3Players %}
-
-				<div class="bracket-player" data-playerid="{{ player.id }}">
-					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
-				</div>
-
-			{% endfor %}
-
-		</div>
-
-		<div class="bracket-col col4">
-
-			{% for player in round4Players %}
-
-				<div class="bracket-player" data-playerid="{{ player.id }}">
-					<a href="/players/{{ player.id }}/">{{ player.name }}&nbsp;</a>
-				</div>
-
-			{% endfor %}
-
-		</div>
+		</table>
 
 	</div>
 
-{% endblock %}
-
-
-{% block footer %}
-	{{ super() }}
-	{% assets output="gen/bracket.js", "javascripts/bracket.js" %}
-		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
-	{% endassets %}
 {% endblock %}

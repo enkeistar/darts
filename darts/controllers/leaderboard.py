@@ -136,8 +136,48 @@ def leaderboard_index():
 	connection = session.connection()
 	data = connection.execute(text(query), start = start, end = end)
 
-	if request.is_xhr:
-		return render_template("leaderboard/_table.html", data = data)
-	else:
-		return render_template("leaderboard/index.html", data = data)
+	points = getPlayerPoints(start, useStart, end, useEnd)
 
+	if request.is_xhr:
+		return render_template("leaderboard/_table.html", data = data, points = points)
+	else:
+		return render_template("leaderboard/index.html", data = data, points = points)
+
+
+def getPlayerPoints(start, useStart, end, useEnd):
+
+	data = {}
+
+	marks = model.Model().select(markModel.Mark)
+
+	# filter(Invoice.invoicedate >= date.today())
+
+	points = {}
+	players = model.Model().select(playerModel.Player)
+
+	for player in players:
+		points[player.id] = 0
+
+	for mark in marks:
+
+		if not data.has_key(mark.gameId):
+			data[mark.gameId] = {}
+
+		if not data[mark.gameId].has_key(mark.teamId):
+			data[mark.gameId][mark.teamId] = {}
+
+		if not data[mark.gameId][mark.teamId].has_key(mark.game):
+			data[mark.gameId][mark.teamId][mark.game] = {}
+
+		if not data[mark.gameId][mark.teamId][mark.game].has_key(mark.round):
+			data[mark.gameId][mark.teamId][mark.game][mark.round] = {}
+
+		if not data[mark.gameId][mark.teamId][mark.game][mark.round].has_key(mark.value):
+			data[mark.gameId][mark.teamId][mark.game][mark.round][mark.value] = 0
+
+		data[mark.gameId][mark.teamId][mark.game][mark.round][mark.value] += 1
+
+		if data[mark.gameId][mark.teamId][mark.game][mark.round][mark.value] > 3:
+			points[mark.playerId] += mark.value
+
+	return points
