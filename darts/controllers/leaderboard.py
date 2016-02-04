@@ -148,9 +148,14 @@ def getPlayerPoints(start, useStart, end, useEnd):
 
 	data = {}
 
-	marks = model.Model().select(markModel.Mark)
-
-	# filter(Invoice.invoicedate >= date.today())
+	session = model.Model().getSession()
+	connection = session.connection()
+	marks = connection.execute(text("\
+		SELECT m.*\
+		FROM marks m\
+		LEFT JOIN games g ON m.gameId = g.id\
+		WHERE g.modeId = 1 AND g.complete = 1\
+	"))
 
 	points = {}
 	players = model.Model().select(playerModel.Player)
