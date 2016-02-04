@@ -16,7 +16,7 @@ def brackets_index():
 	for id in round2:
 		round2Players.append(model.Model().selectById(playerModel.Player, id))
 
-	round3 = [0,0,0,0]
+	round3 = [1,21,0,0]
 	round3Players = []
 	for id in round3:
 		round3Players.append(model.Model().selectById(playerModel.Player, id))
