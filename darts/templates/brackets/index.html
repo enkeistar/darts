@@ -4,7 +4,7 @@
 
 {% block body %}
 
-	<div class="container-fluid brackets">
+	<div class="container brackets">
 
 		<a class="btn btn-default btn-sm action" href="/brackets/new/">
 			<span class="glyphicon glyphicon-star"></span>
@@ -16,6 +16,26 @@
 		<table class="table">
 
 			<tbody>
+
+				{% for bracket in brackets %}
+
+					<tr>
+
+						<td>
+							<a href="/brackets/{{ bracket.id }}/">{{ bracket.createdAt }}</a>
+						</td>
+
+					</tr>
+
+				{% endfor %}
+
+				{% if brackets.count() == 0 %}
+
+					<tr>
+						<td class="text-center">No brackets have been added.<td>
+					</td>
+
+				{% endif %}
 
 
 			</tbody>

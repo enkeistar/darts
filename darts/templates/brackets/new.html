@@ -14,12 +14,13 @@
 
 	<div id="bracket-form" class="container bracket">
 
-		<form>
+		<form id="brackets-details">
 
 			<div class="form-group">
-				<label for="bracket-num-players">Number Of Players:</label>
-				<select id="bracket-num-players" class="form-control" required>
+				<label for="bracket-players">Number Of Players:</label>
+				<select id="bracket-players" name="players" class="form-control" required>
 					<option value="">Select Number Of Players</option>
+					<option value="4">4</option>
 					<option value="8">8</option>
 					<option value="16">16</option>
 				</select>
@@ -27,7 +28,7 @@
 
 			<div class="form-group">
 				<label for="bracket-type">Type:</label>
-				<select id="bracket-type" class="form-control" required>
+				<select id="bracket-type" name="bracketType" class="form-control" required>
 					<option value="">Select Type</option>
 					<option value="single">Single Player</option>
 					<option value="team">2 Person Teams</option>
@@ -42,42 +43,51 @@
 
 	<div id="bracket-grid" class="container bracket hidden">
 
-		<div class="bracket-col col1">
+		<form action="/brackets/" method="POST" id="brackets-form">
 
-			{% for i in range(0, 16) %}
+			<input type="hidden" name="players" />
+			<input type="hidden" name="bracketType" />
 
-				<div class="bracket-player">
-					<select class="bracket-player-select">
-						<option value="">Select Player</option>
-						{% for player in players %}
-							<option value="{{ player.id }}">{{ player.name }}</option>
-						{% endfor %}
-					</select>
-				</div>
+			<div class="bracket-col col1">
 
-			{% endfor %}
+				{% for i in range(0, 16) %}
 
-		</div>
+					<div class="bracket-player">
+						<select class="bracket-player-select" name="playerId" required>
+							<option value="">Select Player</option>
+							{% for player in players %}
+								<option value="{{ player.id }}">{{ player.name }}</option>
+							{% endfor %}
+						</select>&nbsp;
+					</div>
 
-		<div class="bracket-col col2">
+				{% endfor %}
 
-			{% for i in range(0, 8) %}
+			</div>
+
+			<div class="bracket-col col2">
+
+				{% for i in range(0, 8) %}
+					<div class="bracket-player">&nbsp;</div>
+				{% endfor %}
+
+			</div>
+
+			<div class="bracket-col col3">
+
+				{% for i in range(0, 4) %}
+					<div class="bracket-player">&nbsp;</div>
+				{% endfor %}
+
+			</div>
+
+			<div class="bracket-col col4">
 				<div class="bracket-player">&nbsp;</div>
-			{% endfor %}
+			</div>
 
-		</div>
+			<button class="btn btn-primary btn-block">Create Bracket</button>
 
-		<div class="bracket-col col3">
-
-			{% for i in range(0, 4) %}
-				<div class="bracket-player">&nbsp;</div>
-			{% endfor %}
-
-		</div>
-
-		<div class="bracket-col col4">
-			<div class="bracket-player">&nbsp;</div>
-		</div>
+		</form>
 
 	</div>
 {% endblock %}

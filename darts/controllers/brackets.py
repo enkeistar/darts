@@ -1,16 +1,33 @@
 from darts import app
 from flask import Response, render_template, redirect, request
 from darts.entities import player as playerModel
+from darts.entities import bracket as bracketModel
+from darts.entities import bracket_player as bracketPlayerModel
 from darts import model
+from datetime import datetime
 
 @app.route("/brackets/", methods = ["GET"])
 def brackets_index():
-	return render_template("brackets/index.html")
+	brackets = model.Model().select(bracketModel.Bracket)
+	return render_template("brackets/index.html", brackets = brackets)
 
 @app.route("/brackets/new/", methods = ["GET"])
 def brackets_new():
 	players = model.Model().select(playerModel.Player).order_by("name")
 	return render_template("brackets/new.html", players = players)
+
+
+@app.route("/brackets/", methods = ["POST"])
+def brackets_create():
+
+	newBracket = bracketModel.Bracket(request.form["players"], request.form["bracketType"], datetime.now())
+	model.Model().create(newBracket)
+
+	for playerId in request.form.getlist("playerId"):
+		bracketPlayer = bracketPlayerModel.BracketPlayer(newBracket.id, playerId)
+		model.Model().create(bracketPlayer)
+
+	return redirect("/brackets/%d/" % newBracket.id)
 
 @app.route("/brackets/<int:id>/", methods = ["GET"])
 def brackets_show(id):
@@ -36,3 +53,4 @@ def brackets_show(id):
 		round4Players.append(model.Model().selectById(playerModel.Player, id))
 
 	return render_template("brackets/show.html", round1Players = round1Players, round2Players = round2Players, round3Players = round3Players, round4Players = round4Players)
+
