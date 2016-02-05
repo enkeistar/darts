@@ -11,7 +11,7 @@ app.config["MYSQL_DATABASE"] = ""
 
 app.config.from_pyfile("config_file.cfg")
 
-engine = create_engine("mysql+mysqldb://" + app.config["MYSQL_USERNAME"] + ":" + app.config["MYSQL_PASSWORD"] + "@" + app.config["MYSQL_HOST"] + "/" + app.config["MYSQL_DATABASE"])
+engine = create_engine("mysql+mysqldb://" + app.config["MYSQL_USERNAME"] + ":" + app.config["MYSQL_PASSWORD"] + "@" + app.config["MYSQL_HOST"] + "/" + app.config["MYSQL_DATABASE"], pool_recycle = 3600)
 db_session = scoped_session(sessionmaker(autocommit = False, autoflush = False, bind = engine))
 Session = sessionmaker(bind = engine)
 session = Session()
