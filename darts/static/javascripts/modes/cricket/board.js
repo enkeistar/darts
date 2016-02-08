@@ -96,9 +96,7 @@ $(function(){
 
 		determineWinner();
 
-		clearTimeout(turnTimeout);
 		turnTimeout = setTimeout(nextTurn, turnDelay);
-
 
 	});
 
@@ -143,7 +141,6 @@ $(function(){
 
 		players.removeClass("active");
 
-
 		if(players.length == 4){
 
 			var index = 0;
@@ -163,9 +160,7 @@ $(function(){
 			}
 
 		} else {
-
 			var index = position == 0 ? 1 : 0;
-
 		}
 
 		if(index == 0){
@@ -176,6 +171,8 @@ $(function(){
 		$.post(baseUrl + "/players/" + playerId + "/turn/");
 		highlightTeam();
 		numberOfMarks = 0;
+
+		clearTimeout(turnTimeout);
 	}
 
 	function win(id){
