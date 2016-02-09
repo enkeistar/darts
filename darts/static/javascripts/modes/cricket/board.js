@@ -40,7 +40,10 @@ $(function(){
 
 	$(".game-option .undo").on("click", undo);
 
-	$(".game-option .turn").on("click", nextTurn);
+	$(".game-option .turn").on("click", function(){
+		nextTurn();
+		clearTimeout(turnTimeout);
+	});
 
 	$(".game-option .miss").on("click", function(){
 		var teamId =  $(".player.active").data("teamid");
@@ -96,6 +99,7 @@ $(function(){
 
 		determineWinner();
 
+		clearTimeout(turnTimeout);
 		turnTimeout = setTimeout(nextTurn, turnDelay);
 
 	});
@@ -171,8 +175,6 @@ $(function(){
 		$.post(baseUrl + "/players/" + playerId + "/turn/");
 		highlightTeam();
 		numberOfMarks = 0;
-
-		clearTimeout(turnTimeout);
 	}
 
 	function win(id){
