@@ -15,8 +15,6 @@ from darts.controllers import players
 from darts.controllers.modes import cricket
 from darts.controllers.modes import x01
 
-from darts import HttpMethod
-
 @app.errorhandler(404)
 def not_found(error):
     return render_template("main/404.html"), 404
