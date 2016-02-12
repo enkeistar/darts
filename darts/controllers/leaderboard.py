@@ -150,12 +150,23 @@ def getPlayerPoints(start, useStart, end, useEnd):
 
 	session = model.Model().getSession()
 	connection = session.connection()
-	marks = connection.execute(text("\
+	query = "\
 		SELECT m.*\
 		FROM marks m\
 		LEFT JOIN games g ON m.gameId = g.id\
 		WHERE g.modeId = 1 AND g.complete = 1\
-	"))
+	"
+
+	if useStart:
+		query += "\
+			AND g.createdAt >= :start\
+		"
+	if useEnd:
+		query += "\
+			AND g.createdAt < :end\
+		"
+
+	marks = connection.execute(text(query), start = start, end = end)
 
 	points = {}
 	players = model.Model().select(playerModel.Player)
