@@ -77,7 +77,7 @@
 				<div class="score" data-teamid="{{ team.id }}" data-score="{{ team["marks"]["points"] }}">
 
 					<div class="score-row">
-						<span class="round-scores">
+						<div class="round-scores">
 							{% for i in range(1, 3) %}
 								<span class="round-score">
 									<label>R{{ i }}:</label>
@@ -90,10 +90,10 @@
 									{% endif %}
 								</span>
 							{% endfor %}
-						</span>
-						<span class="current-round-points">
+						</div>
+						<div class="current-round-points">
 							{{ team["marks"]["points"] }}
-						</span>
+						</div>
 					</div>
 
 				</div>

@@ -182,21 +182,14 @@ header {
 	border-top: solid 1px #fff;
 }
 
-.score-row {
-	display: table;
-	height: 100%;
-	width: 100%;
-}
-
 .round-scores {
-	display: table-cell;
-	padding: 0 8px;
-	height: 100%;
-	vertical-align: middle;
+	overflow: hidden;
 }
 
 .round-score {
-	display: block;
+	float: left;
+	width: 50%;
+	text-align: center;
 }
 .round-score label {
 	width: 16px;
@@ -204,11 +197,9 @@ header {
 }
 
 .current-round-points {
-	display: table-cell;
-	font-size: 15vh;
-	line-height: 0;
-	vertical-align: middle;
-	height: 100%;
+	font-size: 13vh;
+	line-height: 10vh;
+	text-align: center;
 }
 
 .mark-counter {
