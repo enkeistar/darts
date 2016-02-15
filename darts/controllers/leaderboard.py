@@ -212,12 +212,12 @@ def getTimePlayed(start, useStart, end, useEnd):
 
 	query = "\
 		SELECT DISTINCT p.id as playerId, g.id as gameId, UNIX_TIMESTAMP(g.createdAt) as gameTime, (\
-			SELECT UNIX_TIMESTAMP(m.createdAt)\
-			FROM marks m\
-			WHERE m.gameId = g.id AND m.playerId = p.id\
-			ORDER BY m.id DESC\
+			SELECT UNIX_TIMESTAMP(r.createdAt)\
+			FROM results r\
+			WHERE r.gameId = g.id AND r.teamId = t.id\
+			ORDER BY r.id DESC\
 			LIMIT 1\
-		) as markTime\
+		) as resultTime\
 		FROM players p\
 		LEFT JOIN teams_players tp ON p.id = tp.playerId\
 		LEFT JOIN teams t ON tp.teamId = t.id\
@@ -239,10 +239,7 @@ def getTimePlayed(start, useStart, end, useEnd):
 	rows = connection.execute(text(query), start = start, end = end)
 
 	for row in rows:
-		times[row.playerId]["seconds"] += row.markTime - row.gameTime
-		if row.playerId and row.markTime - row.gameTime > 2200:
-			print(row.gameId)
-			print(formatTime(row.markTime - row.gameTime))
+		times[row.playerId]["seconds"] += row.resultTime - row.gameTime
 
 	for playerId in times:
 		times[playerId]["time"] = formatTime(times[playerId]["seconds"])
