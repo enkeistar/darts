@@ -137,19 +137,18 @@ def leaderboard_index():
 	data = connection.execute(text(query), start = start, end = end)
 
 	points = getPlayerPoints(start, useStart, end, useEnd)
+	times = getTimePlayed(start, useStart, end, useEnd)
 
 	if request.is_xhr:
-		return render_template("leaderboard/_table.html", data = data, points = points)
+		return render_template("leaderboard/_table.html", data = data, points = points, times = times)
 	else:
-		return render_template("leaderboard/index.html", data = data, points = points)
+		return render_template("leaderboard/index.html", data = data, points = points, times = times)
 
 
 def getPlayerPoints(start, useStart, end, useEnd):
 
 	data = {}
 
-	session = model.Model().getSession()
-	connection = session.connection()
 	query = "\
 		SELECT m.*\
 		FROM marks m\
@@ -166,6 +165,8 @@ def getPlayerPoints(start, useStart, end, useEnd):
 			AND g.createdAt < :end\
 		"
 
+	session = model.Model().getSession()
+	connection = session.connection()
 	marks = connection.execute(text(query), start = start, end = end)
 
 	points = {}
@@ -197,3 +198,58 @@ def getPlayerPoints(start, useStart, end, useEnd):
 			points[mark.playerId] += mark.value
 
 	return points
+
+def getTimePlayed(start, useStart, end, useEnd):
+
+	times = {}
+	players = model.Model().select(playerModel.Player)
+
+	for player in players:
+		times[player.id] = {
+			"seconds": 0,
+			"time": ""
+		}
+
+	query = "\
+		SELECT DISTINCT p.id as playerId, g.id as gameId, UNIX_TIMESTAMP(g.createdAt) as gameTime, (\
+			SELECT UNIX_TIMESTAMP(m.createdAt)\
+			FROM marks m\
+			WHERE m.gameId = g.id AND m.playerId = p.id\
+			ORDER BY m.id DESC\
+			LIMIT 1\
+		) as markTime\
+		FROM players p\
+		LEFT JOIN teams_players tp ON p.id = tp.playerId\
+		LEFT JOIN teams t ON tp.teamId = t.id\
+		LEFT JOIN games g ON t.gameId = g.id\
+		WHERE g.complete = 1 AND g.modeId = 1\
+	"
+
+	if useStart:
+		query += "\
+			AND g.createdAt >= :start\
+		"
+	if useEnd:
+		query += "\
+			AND g.createdAt < :end\
+		"
+
+	session = model.Model().getSession()
+	connection = session.connection()
+	rows = connection.execute(text(query), start = start, end = end)
+
+	for row in rows:
+		times[row.playerId]["seconds"] += row.markTime - row.gameTime
+		if row.playerId and row.markTime - row.gameTime > 2200:
+			print(row.gameId)
+			print(formatTime(row.markTime - row.gameTime))
+
+	for playerId in times:
+		times[playerId]["time"] = formatTime(times[playerId]["seconds"])
+
+	return times
+
+def formatTime(seconds):
+	m, s = divmod(seconds, 60)
+	h, m = divmod(m, 60)
+	return "%02d:%02d:%02d" % (h, m, s)

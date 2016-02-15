@@ -44,6 +44,10 @@
 				Rounds
 				{% include 'leaderboard/_sort.html' %}
 			</th>
+			<th data-sort="int">
+				Time
+				{% include 'leaderboard/_sort.html' %}
+			</th>
 
 		</tr>
 
@@ -69,7 +73,7 @@
 
 			<tr>
 
-				<td>{{ row.name }}</td>
+				<td><a href="/players/{{ row.id }}/">{{ row.name }}</a></td>
 				<td data-sort-value="{{winPercentage}}">{{ winPercentage }}%</td>
 				<td>{{ marksPerRound }}</td>
 				<td>{{ row.games }}</td>
@@ -79,6 +83,7 @@
 				<td>{{ row.losses }}</td>
 				<td data-sort-value="{{ row.marks }}">{{ "{:,}".format(row.marks) }}</td>
 				<td data-sort-value="{{ row.rounds }}">{{ "{:,}".format(row.rounds) }}</td>
+				<td data-sort-value="{{ times[row.id]["seconds"] }}">{{ times[row.id]["time"] }}</td>
 
 			</tr>
 
