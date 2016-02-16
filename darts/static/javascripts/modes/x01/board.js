@@ -10,8 +10,6 @@ $(function(){
 
 	var gameId = $("input[name=gameId]").val();
 	var baseUrl = "/games/" + gameId + "/modes/x01";
-	var players = $(".player:not(.winner)");
-	var numPlayers = players.length;
 	var round = parseInt($("input[name=round").val());
 	var game = parseInt($("input[name=game").val());
 	var quiteGameModal = $(".modal-quit-game");
@@ -63,6 +61,8 @@ $(function(){
 		clearTimeout(turnTimeout);
 		turns = 0;
 
+		var players = $(".player:not(.winner)");
+
 		var index = 0;
 		for(var i = 0; i < players.length; i++){
 			if($(players[i]).hasClass("active")){
@@ -89,7 +89,7 @@ $(function(){
 	function undo(){
 		return $.post(baseUrl + "/undo/", function(response){
 			if(response.valid){
-				$(".player").removeClass("active");
+				$(".player").removeClass("active").removeClass("winner");
 				var player = $(".player[data-playerid=" + response.playerId + "]").addClass("active");
 				changeScore(player, response.value);
 			}
@@ -121,7 +121,7 @@ $(function(){
 		var winners = $(".player:not(.winner)[data-score=0]");
 		if(winners.length > 0){
 			winners.addClass("winner");
-			players = players.filter(":not(.winner)");
+			alert(winners.first().find(".name").html() + " wins!");
 		}
 	}
 
