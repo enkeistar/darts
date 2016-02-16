@@ -23,5 +23,10 @@ def not_found(error):
 def server_error(error):
     return render_template("main/500.html"), 500
 
+@app.after_request
+def beforeRequest(response):
+	model.Model().close()
+	return response
+
 if __name__ == "__main__":
 	app.run()

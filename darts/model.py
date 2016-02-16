@@ -43,3 +43,6 @@ class Model():
 
 	def getSession(self):
 		return session
+
+	def close(self):
+		session.close()
