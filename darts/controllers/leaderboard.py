@@ -186,15 +186,12 @@ def getPlayerPoints(start, useStart, end, useEnd):
 		if not data[mark.gameId][mark.teamId].has_key(mark.game):
 			data[mark.gameId][mark.teamId][mark.game] = {}
 
-		if not data[mark.gameId][mark.teamId][mark.game].has_key(mark.round):
-			data[mark.gameId][mark.teamId][mark.game][mark.round] = {}
+		if not data[mark.gameId][mark.teamId][mark.game].has_key(mark.value):
+			data[mark.gameId][mark.teamId][mark.game][mark.value] = 0
 
-		if not data[mark.gameId][mark.teamId][mark.game][mark.round].has_key(mark.value):
-			data[mark.gameId][mark.teamId][mark.game][mark.round][mark.value] = 0
+		data[mark.gameId][mark.teamId][mark.game][mark.value] += 1
 
-		data[mark.gameId][mark.teamId][mark.game][mark.round][mark.value] += 1
-
-		if data[mark.gameId][mark.teamId][mark.game][mark.round][mark.value] > 3:
+		if data[mark.gameId][mark.teamId][mark.game][mark.value] > 3:
 			points[mark.playerId] += mark.value
 
 	return points
