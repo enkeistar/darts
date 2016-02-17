@@ -1,62 +1,64 @@
-.game-list .game-container {
-	display: table;
-	width: 100%;
+.table > tbody > tr {
+	cursor: pointer;
 }
 
-.game-list .game {
-	display: table-row;
-	overflow: hidden;
-	color: #333;
-	text-decoration: none;
+.table > tbody > tr:active td {
+	background: #ddd;
 }
 
-.game-list .game:active {
-	background: #ccc;
-}
-
-.game-list .game .game-item {
-	border-top: solid 1px #ccc;
-	display: table-cell;
-	padding: 8px;
+.table > tbody > tr > td {
 	vertical-align: middle;
+}
+.table > tbody > tr > td > span {
+	display: block;
+	overflow: hidden;
+}
+
+.game-number {
 	text-align: center;
 }
 
-.game-list .game:last-child .game-item {
-	border-bottom: solid 1px #ccc;
+.game-date {
+	text-align: center;
 }
 
-.game-list .game:last-child .players {
-	display: table;
-	width: 100%;
+.game-team-players {
+	text-align: center;
 }
 
-.game-list .game .game-item .player-group {
-	display: table-cell;
-	width: 45%;
-}
-.game-list .game .game-item .player-group .result {
-	font-size: 20px;
-	line-height: 20px;
+.game-rounds {
+	text-align: left;
+	vertical-align: bottom !important;
+	font-size: 10px;
+	padding-bottom: 10px !important;
 }
 
-.game-list .game .game-item .player {
-	display: block;
-}
-
-.game-list .game .game-item .player-group-seperator {
-	display: table-cell;
-	padding: 0 5px;
-	vertical-align: middle;
+.game-vs {
+	text-align: center;
 	color: #888;
 }
 
-.game-list .game .game-item .player-group-seperator:last-child {
-	display: none;
+.game-team-result {
+	font-weight: bold;
+	font-size: 20px;
 }
 
-.game-list .players {
-	display: table;
-	width: 100%;
-	margin: 0;
+.game-rounds-round {
+	display: block;
+	float: left;
+	width: 18px;
+}
+
+.game-rounds-score {
+	display: block;
+	float: left;
+	width: 20px;
+	text-align: right;
+}
+
+.game-rounds-win-loss {
+	display: block;
+	float: left;
+	text-align: center;
+	width: 15px;
 }

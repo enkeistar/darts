@@ -4,68 +4,98 @@
 
 {% block head %}
 	{{ super() }}
-	<link href="{{ url_for('static', filename='stylesheets/game-list.css') }}" rel="stylesheet">
+	{% assets output="gen/game-list.css", "stylesheets/game-list.css" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}
 {% endblock %}
 
 {% block body %}
 
-	<div class="game-list">
+	<div class="games-list">
 
 		<h1>Games</h1>
 
-		<div class="game-container">
+		<table class="table">
+			<tbody>
 
-			{% set num = games|length %}
+				{% set num = games|length %}
 
-			{% for game in games %}
+				{% for game in games %}
 
-				<a class="game" href="/games/{{ game["id"] }}/modes/cricket/play/">
+					<tr data-href="/games/{{ game["id"] }}/modes/cricket/play/">
 
-					<span class="game-item name">
-						Game: {{ num }}
-						{% set num = num - 1 %}
-					</span>
+						<td class="game-number">
+							Game: {{ num }}
+							{% set num = num - 1 %}
+						</td>
 
-					<span class="game-item date">
-						{{ game["date"] }}<br />
-						{{ game["time"] }}
-					</span>
+						<td class="game-date">
+							{{ game["date"] }}<br />
+							{{ game["time"] }}
+						</td>
 
-					<span class="game-item">
+						{% set used = False %}
+						{% for team in game["teams"] %}
 
-						<span class="players">
-
-							{% for team in game["teams"] %}
-								<span class="player-group">
+								<td class="game-team-players">
 									{% if team.win %}
-										<div class="result">W</div>
+										<div class="game-team-result">W</div>
 									{% elif team.loss %}
-										<div class="result">L</div>
+										<div class="game-team-result">L</div>
 									{% endif %}
 
 									{% for player in team["players"] %}
-										<span class="player">{{ player }}</span>
+										<div class="player">{{ player }}</div>
 									{% endfor %}
-								</span>
-								<span class="player-group-seperator">vs</span>
-							{% endfor %}
+								</td>
 
-						</span>
+								<td class="game-rounds">
+									{% if results.has_key(game.id) and results[game.id].has_key(team.id) %}
+										{% set round = 1 %}
+										{% for result in results[game.id][team.id] %}
+											<span>
+												<span class="game-rounds-round">R{{ round }}:</span>
+												<span class="game-rounds-score">{{ result.score }}</span>
+												<span class="game-rounds-win-loss">
+													{% if result.win %}<strong>W</strong>{% endif %}
+													{% if result.loss %}L{% endif %}
+												</span>
+											</span>
+											{% set round = round + 1 %}
+										{% endfor %}
+									{% endif %}
+								</td>
 
-					</span>
 
-				</a>
+							{% if not used %}
+								<td class="game-vs">vs</td>
+							{% endif %}
+							{% set used = True %}
 
-			{% endfor %}
+						{% endfor %}
 
-			{% if games|length == 0 %}
+					</tr>
 
-				<p class="text-center">No games have been played.<p>
+				{% endfor %}
 
-			{% endif %}
+				{% if games|length == 0 %}
+					<tr>
+						<td colspan="10" class="text-center">No games have been played.</td>
+					</tr>
+				{% endif %}
 
-		</div>
+			</tbody>
+		</table>
 
 	</div>
 
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	<script>
+		$("tr").on("click", function(){
+			window.location = $(this).data("href");
+		});
+	</script>
 {% endblock %}

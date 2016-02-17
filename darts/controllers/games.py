@@ -25,6 +25,15 @@ def games_index():
 	for player in players:
 		playerDict[player.id] = player
 
+	results = model.Model().select(resultModel.Result)
+	resultDict = {}
+	for result in results:
+		if not resultDict.has_key(result.gameId):
+			resultDict[result.gameId] = {}
+		if not resultDict[result.gameId].has_key(result.teamId):
+			resultDict[result.gameId][result.teamId] = []
+		resultDict[result.gameId][result.teamId].append(result)
+
 	for game in games:
 
 		gameData = {
@@ -58,7 +67,7 @@ def games_index():
 
 		gameData["teams"].sort(key = operator.itemgetter("mark"), reverse = True)
 
-	return render_template("games/index.html", games = data)
+	return render_template("games/index.html", games = data, results = resultDict)
 
 @app.route("/games/new/", methods = ["GET"])
 def games_new():
