@@ -48,7 +48,10 @@ $(function(){
 	$(".game-option .miss").on("click", function(){
 		var teamId =  $(".player.active").data("teamid");
 		var playerId = $(".player.active").data("playerid");
-		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/0/").done(nextTurn);
+		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/0/").done(function(response){
+			updateMarksPerRound(response);
+			nextTurn();
+		});
 	});
 
 	$(".awarded").on("click", function(){
@@ -68,7 +71,7 @@ $(function(){
 
 		if( hits < 3 || !closed ){
 			source.attr("data-hits", hits + 1);
-			$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/" + point + "/");
+			$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/" + point + "/", updateMarksPerRound);
 
 			if(point != valueOfMark){
 				valueOfMark = point;
@@ -254,6 +257,10 @@ $(function(){
 				}
 			}
 		});
+	}
+
+	function updateMarksPerRound(data){
+		$(".player[data-playerid=" + data.playerId + "]").find(".marks-per-round").find(".value").html(data.marksPerRound);
 	}
 
 });

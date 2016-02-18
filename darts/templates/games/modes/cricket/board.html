@@ -31,8 +31,14 @@
 							{% for player in team["players"] %}
 
 								<div class="player {% if player.id == game.turn %}active{% endif %}" data-playerid="{{ player.id }}" data-teamid="{{ team.id }}" data-order="{{ playerOrder }}">
+
+									<div class="marks-per-round">
+										<div class="label">M/R</div>
+										<div class="value">{{ player.marksPerRound }}</div>
+									</div>
 									<div class="initial">{{ player.name[:1] }}</div>
 									<div class="name">{{ player.name }}</div>
+
 								</div>
 
 								{% set playerOrder = playerOrder + 1 %}
