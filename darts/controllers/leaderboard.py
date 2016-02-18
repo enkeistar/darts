@@ -50,7 +50,11 @@ def leaderboard_index():
 				SELECT COUNT(*)\
 				FROM marks m\
 				LEFT JOIN games g on m.gameId = g.id\
-				WHERE m.playerId = p.id AND g.modeId = 1 AND g.complete = 1\
+				WHERE 1 = 1\
+					AND m.playerId = p.id\
+					AND m.value != 0\
+					AND g.modeId = 1\
+					AND g.complete = 1\
 	"
 
 	if useStart:
