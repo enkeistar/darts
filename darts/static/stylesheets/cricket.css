@@ -106,6 +106,23 @@ header {
 	text-overflow: ellipsis;
 }
 
+
+.player .marks-per-round {
+	line-height: 13px;
+	font-size: 11px;
+	position: absolute;
+}
+
+.player .marks-per-round .label,
+.player .marks-per-round .value {
+	color: #ccc;
+}
+
+.player.active .marks-per-round .label,
+.player.active .marks-per-round .value {
+	color: #888;
+}
+
 .player.set {
 	color: #999;
 }
