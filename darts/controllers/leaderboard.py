@@ -148,6 +148,84 @@ def leaderboard_index():
 	else:
 		return render_template("leaderboard/index.html", data = data, points = points, times = times)
 
+@app.route("/leaderboard/players/<int:playerId>/", methods = ["GET"])
+def leaderboard_players(playerId):
+
+	player = model.Model().selectById(playerModel.Player, playerId)
+	players = model.Model().select(playerModel.Player)
+
+	stats = {}
+
+	for p in players:
+		teamIds = getPlayerTeams(player.id, p.id)
+		if len(teamIds) == 0:
+			continue
+
+		stats[p.id] = {}
+		stats[p.id]["player"] = p
+		stats[p.id]["theirs"] = getStats(p.id, teamIds)
+		stats[p.id]["yours"] = getStats(player.id, teamIds)
+
+	return render_template("leaderboard/players.html", player = player, stats = stats)
+
+def getStats(playerId, teamIds):
+
+	query = "SELECT (\
+		SELECT COUNT(*)\
+		FROM marks m\
+		LEFT JOIN games g ON m.gameId = g.id\
+		WHERE 1 = 1\
+			AND g.modeId = 1\
+			AND g.complete = 1\
+			AND m.value != 0\
+			AND m.playerId = :playerId\
+			AND m.teamId IN (:teamIds)\
+	) as marks,\
+	( SELECT COUNT(playerId) \
+		FROM (\
+			SELECT r.playerId, r.gameId, r.teamId, r.game, r.round\
+			FROM marks r\
+			LEFT JOIN games g on r.gameId = g.id\
+			WHERE 1 = 1\
+				AND g.modeId = 1\
+				AND g.complete = 1\
+				AND r.teamId IN (:teamIds)\
+			GROUP BY r.playerId, r.gameId, r.teamId, r.round, r.game\
+		) AS rounds\
+		WHERE playerId = :playerId\
+	) AS rounds\
+	"
+
+	session = model.Model().getSession()
+	connection = session.connection()
+	data = connection.execute(text(query), teamIds = teamIds, playerId = playerId).first()
+
+	marksPerRound = 0
+	if data.rounds > 0:
+		marksPerRound = float(data.marks) / float(data.rounds)
+
+	return "{:.2f}".format(marksPerRound)
+
+def getPlayerTeams(player1Id, player2Id):
+
+	query = "\
+		SELECT teamId, count(teamId) as num\
+		FROM teams_players\
+		WHERE playerId IN(:player1Id, :player2Id)\
+		GROUP BY teamId\
+		HAVING num > 1\
+		ORDER by teamId, playerId\
+	"
+
+	session = model.Model().getSession()
+	connection = session.connection()
+	data = connection.execute(text(query), player1Id = player1Id, player2Id = player2Id)
+
+	ids = ""
+	for row in data:
+		ids = ids + str(row.teamId) + ","
+
+	return ids
 
 def getPlayerPoints(start, useStart, end, useEnd):
 

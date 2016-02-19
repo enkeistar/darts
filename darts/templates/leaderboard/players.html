@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block title %}Players{% endblock %}
+
+{% block head %}
+	{{ super() }}
+	<link href="{{ url_for('static', filename='libraries/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid leaderboard leaderboard-player">
+
+		<h1>{{ player.name }} Team Statistics</h1>
+
+		<p class="text-center">Statistics and Win/Loss records are calculated from complete games only.</p>
+
+		<div id="leaderboard">
+
+			<table class="table table-striped">
+
+				<thead>
+
+					<tr>
+						<th>{{ player.name }}</th>
+						<th data-sort="float">
+							Marks Per Round
+							{% include 'leaderboard/_sort.html' %}
+						</th>
+						<th data-sort="string">
+							Teammate
+							{% include 'leaderboard/_sort.html' %}
+						</th>
+						<th data-sort="float">
+							Marks Per Round
+							{% include 'leaderboard/_sort.html' %}
+						</th>
+					</tr>
+
+				</thead>
+
+				<tbody>
+
+					{% for id in stats %}
+						{% set stat = stats[id] %}
+
+						<tr>
+
+							<td>{{ player.name }}</td>
+							<td>{{ stat["yours"] }}</td>
+							<td>{{ stat["player"].name }}</td>
+							<td>{{ stat["theirs"] }}</td>
+
+						</tr>
+
+					{% endfor %}
+
+				</tbody>
+			</table>
+
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	{% assets output="gen/leaderboard.js", "libraries/stupid-table/stupidtable.min.js", "libraries/bootstrap-datepicker/js/bootstrap-datepicker.min.js", "javascripts/leaderboard.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
+{% endblock %}
