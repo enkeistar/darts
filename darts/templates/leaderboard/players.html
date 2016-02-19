@@ -22,9 +22,8 @@
 				<thead>
 
 					<tr>
-						<th>{{ player.name }}</th>
 						<th data-sort="float">
-							Mks/Rnd
+							Your M/R
 							{% include 'leaderboard/_sort.html' %}
 						</th>
 						<th data-sort="string">
@@ -33,6 +32,26 @@
 						</th>
 						<th data-sort="float">
 							Mks/Rnd
+							{% include 'leaderboard/_sort.html' %}
+						</th>
+						<th data-sort="float">
+							Win %
+							{% include 'leaderboard/_sort.html' %}
+						</th>
+						<th data-sort="int">
+							Games
+							{% include 'leaderboard/_sort.html' %}
+						</th>
+						<th data-sort="int">
+							Wins
+							{% include 'leaderboard/_sort.html' %}
+						</th>
+						<th data-sort="int">
+							Losses
+							{% include 'leaderboard/_sort.html' %}
+						</th>
+						<th data-sort="float">
+							Avg Score
 							{% include 'leaderboard/_sort.html' %}
 						</th>
 					</tr>
@@ -46,10 +65,14 @@
 
 						<tr>
 
-							<td>{{ player.name }}</td>
-							<td>{{ stat["yours"] }}</td>
+							<td data-sort-value="{{ stat["yours"] }}">{{ "{:.2f}".format(stat["yours"]) }}</td>
 							<td>{{ stat["player"].name }}</td>
-							<td>{{ stat["theirs"] }}</td>
+							<td data-sort-value="{{ stat["theirs"] }}">{{ "{:.2f}".format(stat["theirs"]) }}</td>
+							<td data-sort-value="{{ stat["winPercentage"] }}">{{ "{:.2f}".format(stat["winPercentage"]) }}</td>
+							<td>{{ stat["games"] }}</td>
+							<td>{{ stat["wins"] }}</td>
+							<td>{{ stat["losses"] }}</td>
+							<td data-sort-value="{{ stat["averageScore"] }}">{{ "{:.2f}".format(stat["averageScore"]) }}</td>
 
 						</tr>
 

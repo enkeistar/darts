@@ -161,14 +161,16 @@ def leaderboard_players(playerId):
 		if len(teamIds) == 0:
 			continue
 
-		stats[p.id] = {}
-		stats[p.id]["player"] = p
-		stats[p.id]["theirs"] = getStats(p.id, teamIds)
-		stats[p.id]["yours"] = getStats(player.id, teamIds)
+		stat = {}
+		stat["player"] = p
+		stat["theirs"] = getMarksPerRound(p.id, teamIds)
+		stat["yours"] = getMarksPerRound(player.id, teamIds)
+		stat["games"], stat["wins"], stat["losses"], stat["winPercentage"], stat["averageScore"] = getWinsAndLosses(teamIds)
+		stats[p.id] = stat
 
 	return render_template("leaderboard/players.html", player = player, stats = stats)
 
-def getStats(playerId, teamIds):
+def getMarksPerRound(playerId, teamIds):
 
 	query = "SELECT (\
 		SELECT COUNT(*)\
@@ -179,7 +181,7 @@ def getStats(playerId, teamIds):
 			AND g.complete = 1\
 			AND m.value != 0\
 			AND m.playerId = :playerId\
-			AND m.teamId IN (:teamIds)\
+			AND m.teamId IN (" + teamIds + ")\
 	) as marks,\
 	( SELECT COUNT(playerId) \
 		FROM (\
@@ -189,7 +191,7 @@ def getStats(playerId, teamIds):
 			WHERE 1 = 1\
 				AND g.modeId = 1\
 				AND g.complete = 1\
-				AND r.teamId IN (:teamIds)\
+				AND r.teamId IN (" + teamIds + ")\
 			GROUP BY r.playerId, r.gameId, r.teamId, r.round, r.game\
 		) AS rounds\
 		WHERE playerId = :playerId\
@@ -198,13 +200,13 @@ def getStats(playerId, teamIds):
 
 	session = model.Model().getSession()
 	connection = session.connection()
-	data = connection.execute(text(query), teamIds = teamIds, playerId = playerId).first()
+	data = connection.execute(text(query), playerId = playerId).first()
 
 	marksPerRound = 0
 	if data.rounds > 0:
 		marksPerRound = float(data.marks) / float(data.rounds)
 
-	return "{:.2f}".format(marksPerRound)
+	return marksPerRound
 
 def getPlayerTeams(player1Id, player2Id):
 
@@ -227,7 +229,7 @@ def getPlayerTeams(player1Id, player2Id):
 	for row in data:
 		ids = ids + str(row.teamId) + ","
 
-	return ids
+	return ids[:-1]
 
 def getPlayerPoints(start, useStart, end, useEnd):
 
@@ -326,6 +328,28 @@ def getTimePlayed(start, useStart, end, useEnd):
 		times[playerId]["time"] = formatTime(times[playerId]["seconds"])
 
 	return times
+
+def getWinsAndLosses(teamIds):
+
+	query = "\
+		SELECT\
+			COUNT(*) AS games,\
+			SUM(win = 1) as wins,\
+			SUM(loss = 1) as losses,\
+			AVG(score) as averageScore\
+		FROM results\
+		WHERE teamId IN(" + teamIds + ")\
+	"
+
+	session = model.Model().getSession()
+	connection = session.connection()
+	data = connection.execute(text(query)).first()
+
+	winPercentage = 0
+	if data.games > 0:
+		winPercentage = data.wins / data.games
+
+	return data.games, data.wins, data.losses, winPercentage, data.averageScore
 
 def formatTime(seconds):
 	m, s = divmod(seconds, 60)
