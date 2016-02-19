@@ -165,7 +165,7 @@ def leaderboard_players(playerId):
 		stat["player"] = p
 		stat["theirs"] = getMarksPerRound(p.id, teamIds)
 		stat["yours"] = getMarksPerRound(player.id, teamIds)
-		stat["games"], stat["wins"], stat["losses"], stat["winPercentage"], stat["averageScore"] = getWinsAndLosses(teamIds)
+		stat["games"], stat["wins"], stat["losses"], stat["winPercentage"] = getWinsAndLosses(teamIds)
 		stats[p.id] = stat
 
 	return render_template("leaderboard/players.html", player = player, stats = stats)
@@ -331,14 +331,22 @@ def getTimePlayed(start, useStart, end, useEnd):
 
 def getWinsAndLosses(teamIds):
 
+	# query = "\
+	# 	SELECT\
+	# 		COUNT(*) AS games,\
+	# 		SUM(win = 1) as wins,\
+	# 		SUM(loss = 1) as losses,\
+	# 		AVG(score) as averageScore\
+	# 	FROM results\
+	# 	WHERE teamId IN(" + teamIds + ")\
+	# "
 	query = "\
 		SELECT\
 			COUNT(*) AS games,\
 			SUM(win = 1) as wins,\
-			SUM(loss = 1) as losses,\
-			AVG(score) as averageScore\
-		FROM results\
-		WHERE teamId IN(" + teamIds + ")\
+			SUM(loss = 1) as losses\
+		FROM teams\
+		WHERE id IN(" + teamIds + ")\
 	"
 
 	session = model.Model().getSession()
@@ -349,7 +357,7 @@ def getWinsAndLosses(teamIds):
 	if data.games > 0:
 		winPercentage = data.wins / data.games
 
-	return data.games, data.wins, data.losses, winPercentage, data.averageScore
+	return data.games, data.wins, data.losses, winPercentage
 
 def formatTime(seconds):
 	m, s = divmod(seconds, 60)
