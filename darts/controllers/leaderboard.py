@@ -209,12 +209,14 @@ def getStats(playerId, teamIds):
 def getPlayerTeams(player1Id, player2Id):
 
 	query = "\
-		SELECT teamId, count(teamId) as num\
-		FROM teams_players\
-		WHERE playerId IN(:player1Id, :player2Id)\
-		GROUP BY teamId\
+		SELECT tp.teamId, count(tp.teamId) as num\
+		FROM teams_players tp\
+		LEFT JOIN teams t ON tp.teamId = t.id\
+		LEFT JOIN games g ON g.id = t.gameId\
+		WHERE tp.playerId IN(:player1Id, :player2Id) AND g.modeId = 1 AND g.complete = 1\
+		GROUP BY tp.teamId\
 		HAVING num > 1\
-		ORDER by teamId, playerId\
+		ORDER by tp.teamId, tp.playerId\
 	"
 
 	session = model.Model().getSession()
