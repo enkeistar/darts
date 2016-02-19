@@ -173,8 +173,11 @@ header a:focus {
 	padding-left: 15px;
 	padding-right: 15px;
 }
-.leaderboard .table {
+.leaderboard .table.leaders {
 	min-width: 1000px;
+}
+.leaderboard .table.teams {
+	min-width: 400px;
 }
 
 .leaderboard th,
