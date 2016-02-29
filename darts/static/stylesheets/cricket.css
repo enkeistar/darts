@@ -114,7 +114,7 @@ header {
 
 .player .marks-per-round .label,
 .player .marks-per-round .value {
-	color: #bbb;
+	color: #ccc;
 }
 
 .player.active .marks-per-round .label,
