@@ -123,7 +123,7 @@ header {
 }
 .player .marks-per-round .rnd {
 	display: inline-block;
-	width: 12px;
+	width: 6px;
 	text-align: right;
 }
 .player .marks-per-round .val {
