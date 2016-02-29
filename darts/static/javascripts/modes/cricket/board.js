@@ -260,7 +260,11 @@ $(function(){
 	}
 
 	function updateMarksPerRound(data){
-		$(".player[data-playerid=" + data.playerId + "]").find(".marks-per-round").find(".value").html(data.marksPerRound);
+		var mprs = $(".player[data-playerid=" + data.playerId + "]").find(".marks-per-round");
+		mprs.find(".value .all").html(data.mpr);
+		mprs.find(".value .r1").html(data.mpr1);
+		mprs.find(".value .r2").html(data.mpr2);
+		mprs.find(".value .r3").html(data.mpr3);
 	}
 
 });

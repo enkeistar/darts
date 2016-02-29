@@ -108,7 +108,7 @@ header {
 
 .player .marks-per-round {
 	line-height: 13px;
-	font-size: 11px;
+	font-size: 9px;
 	position: absolute;
 }
 
@@ -120,6 +120,16 @@ header {
 .player.active .marks-per-round .label,
 .player.active .marks-per-round .value {
 	color: #888;
+}
+.player .marks-per-round .rnd {
+	display: inline-block;
+	width: 16px;
+	text-align: right;
+}
+.player .marks-per-round .val {
+	display: inline-block;
+	width: 16px;
+	text-align: left;
 }
 
 .player.set {

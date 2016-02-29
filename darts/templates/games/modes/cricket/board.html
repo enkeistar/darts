@@ -34,7 +34,22 @@
 
 									<div class="marks-per-round">
 										<div class="label">M/R</div>
-										<div class="value">{{ player.marksPerRound }}</div>
+										<div class="value">
+											<span class="rnd">R1:</span>
+											<span class="val r1">{% if game.game >= 1 %}{{ player.mpr1 }}{% else %}-{% endif %}</span>
+										</div>
+										<div class="value">
+											<span class="rnd">R2:</span>
+											<span class="val r2">{% if game.game >= 2 %}{{ player.mpr2 }}{% else %}-{% endif %}</span>
+										</div>
+										<div class="value">
+											<span class="rnd">R3:</span>
+											<span class="val r3">{% if game.game >= 3 %}{{ player.mpr3 }}{% else %}-{% endif %}</span>
+										</div>
+										<div class="value">
+											<span class="rnd">All:</span>
+											<span class="val all">{{ player.mpr }}</span>
+										</div>
 									</div>
 									<div class="initial">{{ player.name[:1] }}</div>
 									<div class="name">{{ player.name }}</div>

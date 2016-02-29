@@ -90,7 +90,10 @@ def cricket_board(id):
 			teamData["players"].append({
 				"id": user.id,
 				"name": user.name,
-				"marksPerRound": getMarksPerRound(game.id, player.playerId)
+				"mpr": getMarksPerRound(game.id, player.playerId, None),
+				"mpr1": getMarksPerRound(game.id, player.playerId, 1),
+				"mpr2": getMarksPerRound(game.id, player.playerId, 2),
+				"mpr3": getMarksPerRound(game.id, player.playerId, 3)
 			})
 
 		scored = {
@@ -226,9 +229,12 @@ def cricket_score(gameId, teamId, playerId, game, round, mark):
 
 	model.Model().create(newMark)
 
-	marksPerRound = getMarksPerRound(gameId, playerId)
+	mpr = getMarksPerRound(gameId, playerId, None)
+	mpr1 = getMarksPerRound(gameId, playerId, 1)
+	mpr2 = getMarksPerRound(gameId, playerId, 2)
+	mpr3 = getMarksPerRound(gameId, playerId, 3)
 
-	return Response(json.dumps({ "id": int(newMark.id), "playerId": playerId, "marksPerRound": marksPerRound }), status = 200, mimetype = "application/json")
+	return Response(json.dumps({ "id": int(newMark.id), "playerId": playerId, "mpr": mpr, "mpr1": mpr1, "mpr2": mpr2, "mpr3": mpr3 }), status = 200, mimetype = "application/json")
 
 @app.route("/games/<int:gameId>/modes/cricket/undo/", methods = ["POST"])
 def cricket_undo(gameId):
@@ -295,7 +301,7 @@ def getTeamPlayersByGameId(gameId):
 	return teamPlayers
 
 
-def getMarksPerRound(gameId, playerId):
+def getMarksPerRound(gameId, playerId, game):
 
 	query = "SELECT (\
 		SELECT COUNT(*)\
@@ -304,22 +310,37 @@ def getMarksPerRound(gameId, playerId):
 			AND m.value != 0\
 			AND m.gameId = :gameId\
 			AND m.playerId = :playerId\
-	) as marks,\
-	( SELECT COUNT(playerId) \
-		FROM (\
-			SELECT r.playerId, r.gameId, r.teamId, r.game, r.round\
-			FROM marks r\
-			LEFT JOIN games g on r.gameId = g.id\
-			WHERE g.id = :gameId\
-			GROUP BY r.playerId, r.gameId, r.teamId, r.round, r.game\
+	"
+	if game != None:
+		query += "\
+			AND m.game = :game\
+		"
+
+	query += "\
+		) as marks,\
+		( SELECT COUNT(playerId) \
+			FROM (\
+				SELECT r.playerId, r.gameId, r.teamId, r.game, r.round\
+				FROM marks r\
+				LEFT JOIN games g on r.gameId = g.id\
+				WHERE g.id = :gameId\
+	"
+
+	if game != None:
+		query += "\
+			AND r.game = :game\
+		"
+
+	query += "\
+				GROUP BY r.playerId, r.gameId, r.teamId, r.round, r.game\
+			) AS rounds\
+			WHERE playerId = :playerId\
 		) AS rounds\
-		WHERE playerId = :playerId\
-	) AS rounds\
 	"
 
 	session = model.Model().getSession()
 	connection = session.connection()
-	data = connection.execute(text(query), gameId = gameId, playerId = playerId).first()
+	data = connection.execute(text(query), gameId = gameId, playerId = playerId, game = game).first()
 
 	marksPerRound = 0
 	if data.rounds > 0:
