@@ -262,9 +262,9 @@ $(function(){
 	function updateMarksPerRound(data){
 		var mprs = $(".player[data-playerid=" + data.playerId + "]").find(".marks-per-round");
 		mprs.find(".value .all").html(data.mpr);
-		mprs.find(".value .r1").html(data.mpr1);
-		mprs.find(".value .r2").html(data.mpr2);
-		mprs.find(".value .r3").html(data.mpr3);
+		mprs.find(".value .r1").html(game >= 1 ? data.mpr1 : "-");
+		mprs.find(".value .r2").html(game >= 2 ? data.mpr2 : "-");
+		mprs.find(".value .r3").html(game >= 3 ? data.mpr3 : "-");
 	}
 
 });
