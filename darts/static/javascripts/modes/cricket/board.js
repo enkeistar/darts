@@ -9,6 +9,7 @@ $(function(){
 	}
 
 	var spectatorInterval;
+	var gameId = $("input[name=gameId]").val();
 
 	if(window.location.search == "?spectator"){
 		spectatorInterval = setInterval(spectate, 2500);
@@ -17,7 +18,7 @@ $(function(){
 
 	function spectate(data){
 
-		$.get("/games/270/modes/cricket/spectator/", function(data){
+		$.get("/games/" + gameId + "/modes/cricket/spectator/", function(data){
 
 			for(var i in data.teams){
 				var team = data.teams[i];
@@ -57,7 +58,7 @@ $(function(){
 
 	}
 
-	var gameId = $("input[name=gameId]").val();
+
 	var team1Id = $(".score").first().data("teamid");
 	var team2Id = $(".score").last().data("teamid");
 	var nextRoundModal = $(".modal-next-round");
