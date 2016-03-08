@@ -29,6 +29,9 @@ def cricket_create_num_players(id):
 
 @app.route("/games/<int:id>/modes/cricket/play/", methods = ["GET"])
 def cricket_board(id):
+	return render_template("games/modes/cricket/board.html", game = getGameData(id))
+
+def getGameData(id):
 	game = model.Model().selectById(gameModel.Game, id)
 	mode = model.Model().selectById(modeModel.Mode, game.modeId)
 	results = model.Model().select(resultModel.Result).filter_by(gameId = game.id)
@@ -41,10 +44,18 @@ def cricket_board(id):
 		"players": game.players,
 		"turn": game.turn,
 		"teams": [],
-		"results": results,
-		"complete": game.complete,
-		"mode": mode
+		"results": [],
+		"complete": game.complete
 	}
+
+	for result in results:
+		data["results"].append({
+			"game": result.game,
+			"teamId": result.teamId,
+			"score": result.score,
+			"win": result.win,
+			"loss": result.loss
+		})
 
 	for team in teams:
 
@@ -120,7 +131,11 @@ def cricket_board(id):
 
 		data["teams"].append(teamData)
 
-	return render_template("games/modes/cricket/board.html", game = data)
+	return data
+
+@app.route("/games/<int:id>/modes/cricket/spectator/")
+def cricket_spactator(id):
+	return Response(json.dumps(getGameData(id)), status = 200, mimetype = "application/json")
 
 @app.route("/games/<int:id>/modes/cricket/randomize/", methods = ["POST"])
 def cricket_randomize(id):

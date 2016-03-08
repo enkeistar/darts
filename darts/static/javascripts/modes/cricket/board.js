@@ -8,6 +8,56 @@ $(function(){
 		return;
 	}
 
+	if(window.location.search == "?spectator"){
+		var t = setInterval(spectate, 2500);
+
+		// $(".point-value[data-points=20]").on("click", function(){
+			// spectate();
+			// return false;
+		// });
+
+		return false;
+	}
+
+	function spectate(data){
+
+		$.get("/games/270/modes/cricket/spectator/", function(data){
+
+			for(var i in data.teams){
+				var team = data.teams[i];
+
+				for(points in team.marks){
+					$(".target.awarded[data-points=" + points + "][data-teamid=" + team.id + "]").attr("data-hits", team.marks[points]);
+				}
+
+				for(var j in team.players){
+					var player = team.players[j];
+
+					var mpr = $(".player[data-playerid=" + player.id + "]").find(".marks-per-round");
+					mpr.find(".val.all").html(player.mpr);
+					if(data.game >= 1) mpr.find(".val.r1").html(player.mpr1);
+					if(data.game >= 2) mpr.find(".val.r2").html(player.mpr2);
+					if(data.game >= 3) mpr.find(".val.r3").html(player.mpr3);
+				}
+
+				$(".score[data-teamid=" + team.id + "]").find(".current-round-points").html(team.marks.points);
+			}
+
+			for(var i in data.results){
+				var result = data.results[i];
+				if(data.game > result.game){
+
+				}
+			}
+
+			$(".player").removeClass("active");
+			$(".player-row").removeClass("highlight");
+			$(".player[data-playerid=" + data.turn + "]").addClass("active").parents(".player-row").addClass("highlight");
+
+		});
+
+	}
+
 	var gameId = $("input[name=gameId]").val();
 	var team1Id = $(".score").first().data("teamid");
 	var team2Id = $(".score").last().data("teamid");
