@@ -8,14 +8,10 @@ $(function(){
 		return;
 	}
 
+	var spectatorInterval;
+
 	if(window.location.search == "?spectator"){
-		var t = setInterval(spectate, 2500);
-
-		// $(".point-value[data-points=20]").on("click", function(){
-			// spectate();
-			// return false;
-		// });
-
+		spectatorInterval = setInterval(spectate, 2500);
 		return false;
 	}
 
@@ -54,6 +50,9 @@ $(function(){
 			$(".player-row").removeClass("highlight");
 			$(".player[data-playerid=" + data.turn + "]").addClass("active").parents(".player-row").addClass("highlight");
 
+			if(data.complete){
+				clearTimeout(spectatorInterval);
+			}
 		});
 
 	}
