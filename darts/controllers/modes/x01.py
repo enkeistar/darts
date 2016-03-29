@@ -1,5 +1,5 @@
 from darts import app, model
-from darts.entities import game as gameModel
+from darts.entities import match as matchModel
 from darts.entities import team as teamModel
 from darts.entities import mode as modeModel
 from darts.entities import mark as markModel
@@ -11,13 +11,13 @@ import json
 
 @app.route("/games/<int:id>/modes/x01/", methods = ["GET"])
 def x01_index(id):
-	game = model.Model().selectById(gameModel.Game, id)
+	game = model.Model().selectById(matchModel.Match, id)
 	return render_template("games/modes/x01/num-players.html", game = game)
 
 @app.route("/games/<int:id>/modes/x01/num-players/", methods = ["POST"])
 def x01_create_num_players(id):
-	game = model.Model().selectById(gameModel.Game, id)
-	model.Model().update(gameModel.Game, game.id, { "players": request.form["players"] })
+	game = model.Model().selectById(matchModel.Match, id)
+	model.Model().update(matchModel.Match, game.id, { "players": request.form["players"] })
 
 	for i in range(0, int(request.form["players"])):
 		newTeam = teamModel.Team(game.id)
@@ -27,7 +27,7 @@ def x01_create_num_players(id):
 
 @app.route("/games/<int:id>/modes/x01/players/", methods = ["GET"])
 def x01_players(id):
-	game = model.Model().selectById(gameModel.Game, id)
+	game = model.Model().selectById(matchModel.Match, id)
 	mode = model.Model().selectById(modeModel.Mode, game.modeId)
 	teamPlayers = getTeamPlayersByGameId(game.id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
@@ -53,13 +53,13 @@ def x01_players_redo(id):
 def x01_play_create(id):
 	team = model.Model().select(teamModel.Team).filter_by(gameId = id).first()
 	teamPlayer = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id).first()
-	game = model.Model().selectById(gameModel.Game, id)
-	model.Model().update(gameModel.Game, game.id, { "ready": True, "turn": teamPlayer.playerId })
+	game = model.Model().selectById(matchModel.Match, id)
+	model.Model().update(matchModel.Match, game.id, { "ready": True, "turn": teamPlayer.playerId })
 	return redirect("/games/%d/modes/x01/play/" % id)
 
 @app.route("/games/<int:id>/modes/x01/play/", methods = ["GET"])
 def x01_play(id):
-	game = model.Model().selectById(gameModel.Game, id)
+	game = model.Model().selectById(matchModel.Match, id)
 	mode = model.Model().selectById(modeModel.Mode, game.modeId)
 	teamPlayers = getTeamPlayersByGameId(game.id)
 	teams = model.Model().select(teamModel.Team).filter_by(gameId = game.id)
@@ -103,7 +103,7 @@ def x01_play(id):
 @app.route("/games/<int:gameId>/modes/x01/teams/<int:teamId>/players/<int:playerId>/games/<int:game>/rounds/<int:round>/marks/<int:mark>/", methods = ["POST"])
 def x01_score(gameId, teamId, playerId, game, round, mark):
 
-	model.Model().update(gameModel.Game, gameId, { "round": round })
+	model.Model().update(matchModel.Match, gameId, { "round": round })
 
 	newMark = markModel.Mark()
 	newMark.gameId = gameId
@@ -120,7 +120,7 @@ def x01_score(gameId, teamId, playerId, game, round, mark):
 
 @app.route("/games/<int:gameId>/modes/x01/players/<int:playerId>/turn/", methods = ["POST"])
 def x01_turn(gameId, playerId):
-	model.Model().update(gameModel.Game, gameId, { "turn": playerId })
+	model.Model().update(matchModel.Match, gameId, { "turn": playerId })
 	return Response(json.dumps({ "id": gameId }), status = 200, mimetype = "application/json")
 
 @app.route("/games/<int:gameId>/modes/x01/undo/", methods = ["POST"])
@@ -129,7 +129,7 @@ def x01_undo(gameId):
 
 	if marks.count() > 0:
 		mark = marks.first()
-		model.Model().update(gameModel.Game, gameId, { "turn": mark.playerId })
+		model.Model().update(matchModel.Match, gameId, { "turn": mark.playerId })
 		model.Model().delete(markModel.Mark, mark.id)
 		return Response(json.dumps({  "gameId": gameId, "playerId": mark.playerId, "value": mark.value, "valid": True }), status = 200, mimetype = "application/json")
 

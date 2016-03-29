@@ -4,9 +4,9 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 Base = declarative_base()
 
-class Game(Base):
+class Match(Base):
 
-	__tablename__ = "games"
+	__tablename__ = "matches"
 
 	id = Column(Integer, primary_key = True)
 	modeId = Column(Integer)

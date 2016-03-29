@@ -1,4 +1,4 @@
-{% extends "games/layout.html" %}
+{% extends "matches/layout.html" %}
 
 {% block title %}Select Game Type{% endblock %}
 
@@ -10,7 +10,7 @@
 
 		{% for mode in modes %}
 
-			<form action="/games/" method="POST">
+			<form action="/matches/" method="POST">
 				<input type="hidden" name="modes" value="{{ mode.id }}" />
 				<button class="btn btn-default btn-lg btn-block">{{ mode.name }}</button>
 			</form>

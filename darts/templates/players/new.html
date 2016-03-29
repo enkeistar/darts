@@ -19,7 +19,7 @@
 
 		<form action="/players/" method="POST">
 
-			<input type="hidden" name="gameId" value="{{ gameId }}" />
+			<input type="hidden" name="matchId" value="{{ matchId }}" />
 
 			<div class="form-group {% if error %}has-error{% endif %}">
 
@@ -29,10 +29,10 @@
 
 			<button type="submit" class="btn btn-default btn-primary">Create Player</button>
 
-			{% if gameId == 0 %}
+			{% if matchId == 0 %}
 				<a class="btn btn-default btn-sm" href="/players/">Cancel</a>
 			{% else %}
-				<a class="btn btn-default btn-sm" href="/games/{{ gameId }}/modes/cricket/players/">Cancel</a>
+				<a class="btn btn-default btn-sm" href="/games/{{ matchId }}/modes/cricket/players/">Cancel</a>
 			{% endif %}
 
 		</form>

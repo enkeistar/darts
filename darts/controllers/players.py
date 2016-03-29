@@ -1,7 +1,7 @@
 from darts import app
 from flask import request, render_template, redirect
 from darts.entities import player as playerModel
-from darts.entities import game as gameModel
+from darts.entities import match as matchModel
 from darts.entities import team as teamModel
 from darts.entities import team_player as teamPlayerModel
 from darts.entities import mark as markModel
@@ -16,29 +16,29 @@ def players_index():
 
 @app.route("/players/new/", methods = ["GET"])
 def players_new():
-	return render_template("players/new.html", gameId = 0, name = "", error = False)
+	return render_template("players/new.html", matchId = 0, name = "", error = False)
 
-@app.route("/players/games/<int:gameId>/new/", methods = ["GET"])
-def players_new_game(gameId):
-	return render_template("players/new.html", gameId = gameId)
+@app.route("/players/matches/<int:matchId>/new/", methods = ["GET"])
+def players_new_match(matchId):
+	return render_template("players/new.html", matchId = matchId)
 
 @app.route("/players/", methods = ["POST"])
 def players_create():
 
-	gameId = int(request.form["gameId"])
+	matchId = int(request.form["matchId"])
 
 	players = model.Model().select(playerModel.Player).filter_by(name = request.form["name"])
 
 	if players.count() > 0:
-		return render_template("players/new.html", gameId = gameId, name = request.form["name"], error = True)
+		return render_template("players/new.html", matchId = matchId, name = request.form["name"], error = True)
 
 	newPlayer = playerModel.Player(request.form["name"], datetime.now())
 	model.Model().create(newPlayer)
 
-	if gameId == 0:
+	if matchId == 0:
 		return redirect("/players/")
 	else:
-		return redirect("/games/" + str(gameId) + "/modes/cricket/players/")
+		return redirect("/matches/" + str(matchId) + "/modes/cricket/players/")
 
 @app.route("/players/<int:id>/", methods = ["GET"])
 def players_details(id):
@@ -47,8 +47,8 @@ def players_details(id):
 	marks = model.Model().select(markModel.Mark).filter_by(playerId = id)
 
 	session = model.Model().getSession()
-	query = session.query(markModel.Mark.gameId, markModel.Mark.teamId, markModel.Mark.game, markModel.Mark.round).filter_by(playerId = id)
-	query = query.distinct(markModel.Mark.gameId)
+	query = session.query(markModel.Mark.matchId, markModel.Mark.teamId, markModel.Mark.game, markModel.Mark.round).filter_by(playerId = id)
+	query = query.distinct(markModel.Mark.matchId)
 	query = query.distinct(markModel.Mark.teamId)
 	query = query.distinct(markModel.Mark.round)
 	query = query.distinct(markModel.Mark.game)
@@ -65,14 +65,14 @@ def players_details(id):
 
 	points = 0
 
-	game = 0
+	match = 0
 	round = 0
 	for mark in marks:
-		if game != mark.gameId and round != mark.round:
+		if match != mark.matchId and round != mark.round:
 			scored = {}
 			for i in range(0,26):
 				scored[i] = 0
-			game = mark.gameId
+			match = mark.matchId
 			round = mark.round
 
 		scored[mark.value] += 1

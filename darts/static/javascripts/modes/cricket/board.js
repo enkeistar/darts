@@ -9,7 +9,7 @@ $(function(){
 	}
 
 	var spectatorInterval;
-	var gameId = $("input[name=gameId]").val();
+	var matchId = $("input[name=matchId]").val();
 
 	if(window.location.search == "?spectator"){
 		spectatorInterval = setInterval(spectate, 2500);
@@ -18,7 +18,7 @@ $(function(){
 
 	function spectate(data){
 
-		$.get("/games/" + gameId + "/modes/cricket/spectator/", function(data){
+		$.get("/matches/" + matchId + "/modes/cricket/spectator/", function(data){
 
 			for(var i in data.teams){
 				var team = data.teams[i];
@@ -74,7 +74,7 @@ $(function(){
 	var numberOfMarks = 0;
 	var valueOfMark;
 
-	var baseUrl = "/games/" + gameId + "/modes/cricket";
+	var baseUrl = "/matches/" + matchId + "/modes/cricket";
 
 	highlightTeam();
 
@@ -98,7 +98,7 @@ $(function(){
 	$(".game-option .miss").on("click", function(){
 		var teamId =  $(".player.active").data("teamid");
 		var playerId = $(".player.active").data("playerid");
-		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/0/").done(function(response){
+		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/matches/" + game + "/rounds/" + round + "/marks/0/").done(function(response){
 			updateMarksPerRound(response);
 			nextTurn();
 		});
@@ -121,7 +121,7 @@ $(function(){
 
 		if( hits < 3 || !closed ){
 			source.attr("data-hits", hits + 1);
-			$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/" + point + "/", updateMarksPerRound);
+			$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/matches/" + game + "/rounds/" + round + "/marks/" + point + "/", updateMarksPerRound);
 
 			if(point != valueOfMark){
 				valueOfMark = point;

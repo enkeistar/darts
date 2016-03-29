@@ -1,6 +1,6 @@
 from darts import app
 from flask import Response, render_template, redirect, request
-from darts.entities import game as gameModel
+from darts.entities import match as matchModel
 from darts.entities import player as playerModel
 from darts.entities import team as teamModel
 from darts.entities import team_player as teamPlayerModel
@@ -29,22 +29,22 @@ def api_players():
 
 	return json_response(data)
 
-@app.route("/api/games/", methods = ["GET"])
+@app.route("/api/matches/", methods = ["GET"])
 def api_games():
-	games = model.Model().select(gameModel.Game)
+	matches = model.Model().select(matchModel.Match)
 
 	data = []
 
-	for game in games:
+	for match in matches:
 		data.append({
-			"id": game.id,
-			"players": game.players,
-			"game": game.game,
-			"round": game.round,
-			"ready": toBoolean(game.ready),
-			"turn": game.turn,
-			"complete": toBoolean(game.complete),
-			"createdAt": str(game.createdAt)
+			"id": match.id,
+			"players": match.players,
+			"game": match.game,
+			"round": match.round,
+			"ready": toBoolean(match.ready),
+			"turn": match.turn,
+			"complete": toBoolean(match.complete),
+			"createdAt": str(match.createdAt)
 		})
 
 	return json_response(data)
@@ -58,7 +58,7 @@ def api_marks():
 	for mark in marks:
 		data.append({
 			"id": mark.id,
-			"gameId": mark.gameId,
+			"matchId": mark.matchId,
 			"teamId": mark.teamId,
 			"playerId": mark.playerId,
 			"game": mark.game,
@@ -78,7 +78,7 @@ def api_teams():
 	for team in teams:
 		data.append({
 			"id": team.id,
-			"gameId": team.gameId,
+			"matchId": team.matchId,
 			"win": toBoolean(team.win),
 			"loss": toBoolean(team.loss)
 		})

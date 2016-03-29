@@ -7,7 +7,7 @@ assets = Environment(app)
 
 from darts.controllers import api
 from darts.controllers import brackets
-from darts.controllers import games
+from darts.controllers import matches
 from darts.controllers import leaderboard
 from darts.controllers import main
 from darts.controllers import players

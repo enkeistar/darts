@@ -8,9 +8,9 @@ class Team(Base):
 	__tablename__ = "teams"
 
 	id = Column(Integer, primary_key = True)
-	gameId = Column(Integer)
+	matchId = Column(Integer)
 	win = Column(Integer)
 	loss = Column(Integer)
 
-	def __init__(self, gameId):
-		self.gameId = gameId
+	def __init__(self, matchId):
+		self.matchId = matchId

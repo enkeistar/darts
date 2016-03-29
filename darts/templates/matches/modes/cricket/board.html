@@ -1,4 +1,4 @@
-{% extends "games/layout.html" %}
+{% extends "matches/layout.html" %}
 
 {% block title %}Score Board{% endblock %}
 
@@ -21,7 +21,7 @@
 			</div>
 
 			{% set teamOrder = 0 %}
-			{% for team in game["teams"] %}
+			{% for team in match["teams"] %}
 
 				<div class="players" data-teamid="{{ team.id }}" data-wins="" data-order="{{ teamOrder }}">
 					<div class="player-table">
@@ -30,21 +30,21 @@
 							{% set playerOrder = 0 %}
 							{% for player in team["players"] %}
 
-								<div class="player {% if player.id == game.turn %}active{% endif %}" data-playerid="{{ player.id }}" data-teamid="{{ team.id }}" data-order="{{ playerOrder }}">
+								<div class="player {% if player.id == match.turn %}active{% endif %}" data-playerid="{{ player.id }}" data-teamid="{{ team.id }}" data-order="{{ playerOrder }}">
 
 									<div class="marks-per-round">
 										<div class="label">M/R</div>
 										<div class="value">
 											<span class="rnd">1:</span>
-											<span class="val r1">{% if game.game >= 1 %}{{ player.mpr1 }}{% else %}-{% endif %}</span>
+											<span class="val r1">{% if match.game >= 1 %}{{ player.mpr1 }}{% else %}-{% endif %}</span>
 										</div>
 										<div class="value">
 											<span class="rnd">2:</span>
-											<span class="val r2">{% if game.game >= 2 %}{{ player.mpr2 }}{% else %}-{% endif %}</span>
+											<span class="val r2">{% if match.game >= 2 %}{{ player.mpr2 }}{% else %}-{% endif %}</span>
 										</div>
 										<div class="value">
 											<span class="rnd">3:</span>
-											<span class="val r3">{% if game.game >= 3 %}{{ player.mpr3 }}{% else %}-{% endif %}</span>
+											<span class="val r3">{% if match.game >= 3 %}{{ player.mpr3 }}{% else %}-{% endif %}</span>
 										</div>
 										<div class="value">
 											<span class="rnd">G:</span>
@@ -73,7 +73,7 @@
 			<div class="points">
 				<div class="point-value" data-points="{{ i }}">{{ i }}</div>
 
-				{% for team in game["teams"] %}
+				{% for team in match["teams"] %}
 					<div class="target awarded" data-teamid="{{ team.id }}" data-points="{{ i }}" data-hits="{{ team["marks"][i] }}"></div>
 				{% endfor %}
 
@@ -83,7 +83,7 @@
 
 		<div class="points">
 			<div class="point-value" data-points="25">B</div>
-			{% for team in game["teams"] %}
+			{% for team in match["teams"] %}
 				<div class="target awarded" data-teamid="{{ team.id }}" data-points="25" data-hits="{{ team["marks"][25] }}"></div>
 			{% endfor %}
 		</div>
@@ -94,7 +94,7 @@
 				<div class="target home">Home</div>
 			</div>
 
-			{% for team in game["teams"] %}
+			{% for team in match["teams"] %}
 				<div class="score" data-teamid="{{ team.id }}" data-score="{{ team["marks"]["points"] }}">
 
 					<div class="score-row">
@@ -102,7 +102,7 @@
 							{% for i in range(1, 3) %}
 								<span class="round-score">
 									<label>R{{ i }}:</label>
-									{% if game.game > i or game.complete %}
+									{% if match.game > i or match.complete %}
 										{{ team["results"][i - 1]["score"] }}
 									{% else %}
 										-
@@ -128,14 +128,14 @@
 
 	</div>
 
-	<input type="hidden" name="gameId" value="{{ game.id }}" />
-	<input type="hidden" name="game" value="{{ game.game }}" />
-	<input type="hidden" name="round" value="{{ game.round }}" />
-	<input type="hidden" name="players" value="{{ game.players }}" />
-	<input type="hidden" name="turn" value="{{ game.turn }}" />
-	<input type="hidden" name="complete" value="{{ game.complete }}" />
+	<input type="hidden" name="matchId" value="{{ match.id }}" />
+	<input type="hidden" name="game" value="{{ match.game }}" />
+	<input type="hidden" name="round" value="{{ match.round }}" />
+	<input type="hidden" name="players" value="{{ match.players }}" />
+	<input type="hidden" name="turn" value="{{ match.turn }}" />
+	<input type="hidden" name="complete" value="{{ match.complete }}" />
 
-	{% for result in game["results"] %}
+	{% for result in match["results"] %}
 		<input
 			type="hidden"
 			name="result"
@@ -151,7 +151,7 @@
 		<h1>{message}</h1>
 
 		<div class="button-group">
-			<form action="/games/{{ game.id }}/modes/cricket/next/" method="POST">
+			<form action="/matches/{{ match.id }}/modes/cricket/next/" method="POST">
 				<button class="btn btn-default btn-lg btn-block btn-next-round">
 					Next Round
 				</button>
@@ -160,7 +160,7 @@
 	</div>
 
 	<div class="modal-box modal-home">
-		<h1>Are you sure you want to quit this game?</h1>
+		<h1>Are you sure you want to quit this match?</h1>
 
 		<div class="button-group">
 			<a class="btn btn-default btn-lg home-yes">Yes</a>

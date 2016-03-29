@@ -9,7 +9,7 @@ class Result(Base):
 	__tablename__ = "results"
 
 	id = Column(Integer, primary_key = True)
-	gameId = Column(Integer)
+	matchId = Column(Integer)
 	teamId = Column(Integer)
 	game = Column(Integer)
 	score = Column(Integer)
@@ -17,8 +17,8 @@ class Result(Base):
 	loss = Column(Integer)
 	createdAt = Column(DateTime)
 
-	def __init__(self, gameId, teamId, game, score, win, loss, createdAt):
-		self.gameId = gameId
+	def __init__(self, matchId, teamId, game, score, win, loss, createdAt):
+		self.matchId = matchId
 		self.teamId = teamId
 		self.game = game
 		self.score = score

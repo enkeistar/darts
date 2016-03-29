@@ -1,7 +1,7 @@
 $(function(){
 
 	var current = -1;
-	var gameId = $("#gameId").val();
+	var matchId = $("#matchId").val();
 	var instructions = $(".select-player-instruction")
 	var teamPlayers = $(".team-player");
 	var existingPlayers = $(".existing-players");
@@ -19,7 +19,7 @@ $(function(){
 
 		players.prop("disabled", true);
 
-		$.post("/games/" + gameId + "/modes/cricket/players/", data, function(data){
+		$.post("/matches/" + matchId + "/modes/cricket/players/", data, function(data){
 			selectPlayer(source);
 			players.prop("disabled", false);
 		});

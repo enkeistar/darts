@@ -9,7 +9,7 @@ class Mark(Base):
 	__tablename__ = "marks"
 
 	id = Column(Integer, primary_key = True)
-	gameId = Column(Integer)
+	matchId = Column(Integer)
 	teamId = Column(Integer)
 	playerId = Column(Integer)
 	game = Column(Integer)

@@ -1,4 +1,4 @@
-{% extends "games/layout.html" %}
+{% extends "matches/layout.html" %}
 
 {% block title %}Games{% endblock %}
 
@@ -18,11 +18,11 @@
 		<table class="table">
 			<tbody>
 
-				{% set num = games|length %}
+				{% set num = matches|length %}
 
-				{% for game in games %}
+				{% for match in matches %}
 
-					<tr data-href="/games/{{ game["id"] }}/modes/cricket/play/">
+					<tr data-href="/matches/{{ match["id"] }}/modes/cricket/play/">
 
 						<td class="game-number">
 							Game: {{ num }}
@@ -30,12 +30,12 @@
 						</td>
 
 						<td class="game-date">
-							{{ game["date"] }}<br />
-							{{ game["time"] }}
+							{{ match["date"] }}<br />
+							{{ match["time"] }}
 						</td>
 
 						{% set used = False %}
-						{% for team in game["teams"] %}
+						{% for team in match["teams"] %}
 
 								<td class="game-team-players">
 									{% if team.win %}
@@ -50,9 +50,9 @@
 								</td>
 
 								<td class="game-rounds">
-									{% if results.has_key(game.id) and results[game.id].has_key(team.id) %}
+									{% if results.has_key(match.id) and results[match.id].has_key(team.id) %}
 										{% set round = 1 %}
-										{% for result in results[game.id][team.id] %}
+										{% for result in results[match.id][team.id] %}
 											<span>
 												<span class="game-rounds-round">R{{ round }}:</span>
 												<span class="game-rounds-score">{{ result.score }}</span>
@@ -80,7 +80,7 @@
 
 				{% if games|length == 0 %}
 					<tr>
-						<td colspan="10" class="text-center">No games have been played.</td>
+						<td colspan="10" class="text-center">No matches have been played.</td>
 					</tr>
 				{% endif %}
 

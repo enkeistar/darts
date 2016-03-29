@@ -1,6 +1,6 @@
 from darts import app
 from flask import Response, render_template, redirect, request
-from darts.entities import game as gameModel
+from darts.entities import match as matchModel
 from darts.entities import player as playerModel
 from darts.entities import team as teamModel
 from darts.entities import team_player as teamPlayerModel
@@ -31,7 +31,7 @@ def leaderboard_index():
 				SELECT COUNT(*)\
 				FROM teams_players tp\
 				LEFT JOIN teams t ON tp.teamId = t.id\
-				LEFT JOIN games g on t.gameId = g.id\
+				LEFT JOIN matches g on t.matchId = g.id\
 				WHERE tp.playerId = p.id AND g.modeId = 1 AND g.complete = 1\
 	"
 
@@ -49,7 +49,7 @@ def leaderboard_index():
 			(\
 				SELECT COUNT(*)\
 				FROM marks m\
-				LEFT JOIN games g on m.gameId = g.id\
+				LEFT JOIN matches g on m.matchId = g.id\
 				WHERE 1 = 1\
 					AND m.playerId = p.id\
 					AND m.value != 0\
@@ -71,9 +71,9 @@ def leaderboard_index():
 			(\
 				SELECT COUNT(playerId) \
 				FROM (\
-					SELECT r.playerId, r.gameId, r.teamId, r.game, r.round\
+					SELECT r.playerId, r.matchId, r.teamId, r.game, r.round\
 					FROM marks r\
-					LEFT JOIN games g on r.gameId = g.id\
+					LEFT JOIN matches g on r.matchId = g.id\
 					WHERE g.modeId = 1 AND g.complete = 1\
 	"
 
@@ -87,7 +87,7 @@ def leaderboard_index():
 		"
 
 	query += "\
-					GROUP BY r.playerId, r.gameId, r.teamId, r.round, r.game\
+					GROUP BY r.playerId, r.matchId, r.teamId, r.round, r.game\
 				) AS rounds\
 				WHERE playerId = p.id\
 			) AS rounds,\
@@ -96,7 +96,7 @@ def leaderboard_index():
 				FROM players p2\
 				LEFT JOIN teams_players tp2 on tp2.playerId = p2.id\
 				LEFT JOIN teams t2 on tp2.teamId = t2.id\
-				LEFT JOIN games g on t2.gameId = g.id\
+				LEFT JOIN matches g on t2.matchId = g.id\
 				WHERE g.modeId = 1 AND t2.win = 1 AND p2.id = p.id\
 	"
 
@@ -117,7 +117,7 @@ def leaderboard_index():
 				FROM players p2\
 				LEFT JOIN teams_players tp2 on tp2.playerId = p2.id\
 				LEFT JOIN teams t2 on tp2.teamId = t2.id\
-				LEFT JOIN games g on t2.gameId = g.id\
+				LEFT JOIN matches g on t2.matchId = g.id\
 				WHERE g.modeId = 1 AND t2.loss = 1 AND p2.id = p.id\
 	"
 
@@ -175,7 +175,7 @@ def getMarksPerRound(playerId, teamIds):
 	query = "SELECT (\
 		SELECT COUNT(*)\
 		FROM marks m\
-		LEFT JOIN games g ON m.gameId = g.id\
+		LEFT JOIN matches g ON m.matchId = g.id\
 		WHERE 1 = 1\
 			AND g.modeId = 1\
 			AND g.complete = 1\
@@ -185,14 +185,14 @@ def getMarksPerRound(playerId, teamIds):
 	) as marks,\
 	( SELECT COUNT(playerId) \
 		FROM (\
-			SELECT r.playerId, r.gameId, r.teamId, r.game, r.round\
+			SELECT r.playerId, r.matchId, r.teamId, r.game, r.round\
 			FROM marks r\
-			LEFT JOIN games g on r.gameId = g.id\
+			LEFT JOIN matches g on r.matchId = g.id\
 			WHERE 1 = 1\
 				AND g.modeId = 1\
 				AND g.complete = 1\
 				AND r.teamId IN (" + teamIds + ")\
-			GROUP BY r.playerId, r.gameId, r.teamId, r.round, r.game\
+			GROUP BY r.playerId, r.matchId, r.teamId, r.round, r.game\
 		) AS rounds\
 		WHERE playerId = :playerId\
 	) AS rounds\
@@ -214,7 +214,7 @@ def getPlayerTeams(player1Id, player2Id):
 		SELECT tp.teamId, count(tp.teamId) as num\
 		FROM teams_players tp\
 		LEFT JOIN teams t ON tp.teamId = t.id\
-		LEFT JOIN games g ON g.id = t.gameId\
+		LEFT JOIN matches g ON g.id = t.matchId\
 		WHERE tp.playerId IN(:player1Id, :player2Id) AND g.modeId = 1 AND g.complete = 1\
 		GROUP BY tp.teamId\
 		HAVING num > 1\
@@ -238,7 +238,7 @@ def getPlayerPoints(start, useStart, end, useEnd):
 	query = "\
 		SELECT m.*\
 		FROM marks m\
-		LEFT JOIN games g ON m.gameId = g.id\
+		LEFT JOIN matches g ON m.matchId = g.id\
 		WHERE g.modeId = 1 AND g.complete = 1\
 	"
 
@@ -263,21 +263,21 @@ def getPlayerPoints(start, useStart, end, useEnd):
 
 	for mark in marks:
 
-		if not data.has_key(mark.gameId):
-			data[mark.gameId] = {}
+		if not data.has_key(mark.matchId):
+			data[mark.matchId] = {}
 
-		if not data[mark.gameId].has_key(mark.teamId):
-			data[mark.gameId][mark.teamId] = {}
+		if not data[mark.matchId].has_key(mark.teamId):
+			data[mark.matchId][mark.teamId] = {}
 
-		if not data[mark.gameId][mark.teamId].has_key(mark.game):
-			data[mark.gameId][mark.teamId][mark.game] = {}
+		if not data[mark.matchId][mark.teamId].has_key(mark.game):
+			data[mark.matchId][mark.teamId][mark.game] = {}
 
-		if not data[mark.gameId][mark.teamId][mark.game].has_key(mark.value):
-			data[mark.gameId][mark.teamId][mark.game][mark.value] = 0
+		if not data[mark.matchId][mark.teamId][mark.game].has_key(mark.value):
+			data[mark.matchId][mark.teamId][mark.game][mark.value] = 0
 
-		data[mark.gameId][mark.teamId][mark.game][mark.value] += 1
+		data[mark.matchId][mark.teamId][mark.game][mark.value] += 1
 
-		if data[mark.gameId][mark.teamId][mark.game][mark.value] > 3:
+		if data[mark.matchId][mark.teamId][mark.game][mark.value] > 3:
 			points[mark.playerId] += mark.value
 
 	return points
@@ -294,17 +294,17 @@ def getTimePlayed(start, useStart, end, useEnd):
 		}
 
 	query = "\
-		SELECT DISTINCT p.id as playerId, g.id as gameId, UNIX_TIMESTAMP(g.createdAt) as gameTime, (\
+		SELECT DISTINCT p.id as playerId, g.id as matchId, UNIX_TIMESTAMP(g.createdAt) as gameTime, (\
 			SELECT UNIX_TIMESTAMP(r.createdAt)\
 			FROM results r\
-			WHERE r.gameId = g.id AND r.teamId = t.id\
+			WHERE r.matchId = g.id AND r.teamId = t.id\
 			ORDER BY r.id DESC\
 			LIMIT 1\
 		) as resultTime\
 		FROM players p\
 		LEFT JOIN teams_players tp ON p.id = tp.playerId\
 		LEFT JOIN teams t ON tp.teamId = t.id\
-		LEFT JOIN games g ON t.gameId = g.id\
+		LEFT JOIN matches g ON t.matchId = g.id\
 		WHERE g.complete = 1 AND g.modeId = 1\
 	"
 

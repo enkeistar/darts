@@ -1,4 +1,4 @@
-{% extends "games/layout.html" %}
+{% extends "matches/layout.html" %}
 
 {% block title %}Select Players{% endblock %}
 
@@ -20,7 +20,7 @@
 							<div class="selected" data-team="{{ team.id }}"></div>
 						</div>
 
-						{% if game.players == 4 %}
+						{% if match.players == 4 %}
 							<div class="team-player" data-teamid="{{ team.id }}">
 								<label>Player 2:</label>
 								<div class="selected" data-team="{{ team.id }}"></div>
@@ -37,12 +37,12 @@
 		<div class="instruction">
 
 			<div class="select-player-instruction">Select First Player for Team 1</div>
-			{% if game.players == 4 %}
+			{% if match.players == 4 %}
 				<div class="select-player-instruction">Select Second Player for Team 1</div>
 			{% endif %}
 
 			<div class="select-player-instruction">Select First Player for Team 2</div>
-			{% if game.players == 4 %}
+			{% if match.players == 4 %}
 				<div class="select-player-instruction">Select Second Player for Team 2</div>
 			{% endif %}
 
@@ -58,24 +58,24 @@
 
 		</div>
 
-		<form action="/games/{{ game.id }}/modes/cricket/play/" method="POST">
+		<form action="/matches/{{ match.id }}/modes/cricket/play/" method="POST">
 			<button class="btn btn-primary btn-lg btn-block play">Play</button>
 		</form>
-		{% if game.players == 4 %}
-			<form action="/games/{{ game.id }}/modes/cricket/randomize/" method="POST">
+		{% if match.players == 4 %}
+			<form action="/matches/{{ match.id }}/modes/cricket/randomize/" method="POST">
 				<button class="btn btn-warning btn-lg btn-block randomize">Randomize Players</button>
 			</form>
 		{% endif %}
 
-		<a class="btn btn-default add-player" href="/players/games/{{ game.id }}/new/">Add Player</a>
+		<a class="btn btn-default add-player" href="/players/matches/{{ match.id }}/new/">Add Player</a>
 
-		<form action="/games/{{ game.id }}/modes/cricket/players/redo/" method="POST">
+		<form action="/matches/{{ match.id }}/modes/cricket/players/redo/" method="POST">
 			<button class="redo btn btn-default">Redo</button>
 		</form>
 
 	</div>
 
-	<input type="hidden" id="gameId" value="{{ game.id }}" />
+	<input type="hidden" id="matchId" value="{{ match.id }}" />
 	{% for teamPlayer in teamPlayers %}
 		<input type="hidden" class="existing-players" value="{{ teamPlayer.playerId }}" />
 	{% endfor %}
