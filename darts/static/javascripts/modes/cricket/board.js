@@ -63,6 +63,7 @@ $(function(){
 	var team2Id = $(".score").last().data("teamid");
 	var nextRoundModal = $(".modal-next-round");
 	var homeModal = $(".modal-home");
+	var games = parseInt($("input[name=games]").val());
 	var game = parseInt($("input[name=game]").val());
 	var numPlayers = parseInt($("input[name=players]").val());
 	var round = parseInt($("input[name=round]").val());
@@ -238,11 +239,11 @@ $(function(){
 		$.post(baseUrl + "/teams/" + id + "/game/" + game + "/score/" + getScore(id) + "/loss/");
 	}
 
-	function gameWin(id){
+	function matchWin(id){
 		$.post(baseUrl + "/teams/" + id + "/win/");
 	}
 
-	function gameLoss(id){
+	function matchLoss(id){
 		$.post(baseUrl + "/teams/" + id + "/loss/");
 	}
 
@@ -250,11 +251,11 @@ $(function(){
 
 		nextRoundModal.show();
 
-		if($("input[name=result][data-win=1][data-teamid=" + winnerId + "]").length >= 1){
+		if($("input[name=result][data-win=1][data-teamid=" + winnerId + "]").length >= Math.floor(games / 2)){
 			nextRoundModal.find("h1").html("Team " + num + "<br />Wins The Game!");
 			nextRoundModal.find("button").html("Done");
-			gameWin(winnerId);
-			gameLoss(loserId);
+			matchWin(winnerId);
+			matchLoss(loserId);
 		} else {
 			nextRoundModal.find("h1").html("Team " + num + "<br />Wins Round " + game + "!");
 		}
@@ -315,6 +316,8 @@ $(function(){
 		mprs.find(".value .r1").html(game >= 1 ? data.mpr1 : "-");
 		mprs.find(".value .r2").html(game >= 2 ? data.mpr2 : "-");
 		mprs.find(".value .r3").html(game >= 3 ? data.mpr3 : "-");
+		mprs.find(".value .r4").html(game >= 4 ? data.mpr4 : "-");
+		mprs.find(".value .r5").html(game >= 5 ? data.mpr5 : "-");
 	}
 
 });

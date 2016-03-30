@@ -13,6 +13,21 @@ import json, random
 
 @app.route("/matches/<int:id>/modes/cricket/")
 def cricket_index(id):
+	return redirect("/matches/%d/modes/cricket/num-games/" % id)
+
+@app.route("/matches/<int:id>/modes/cricket/num-games/")
+def cricket_num_games(id):
+	match = model.Model().selectById(matchModel.Match, id)
+	return render_template("matches/modes/cricket/num-games.html", match = match)
+
+@app.route("/matches/<int:id>/modes/cricket/num-games/", methods = ["POST"])
+def cricket_num_games_create(id):
+	match = model.Model().selectById(matchModel.Match, id)
+	model.Model().update(matchModel.Match, match.id, { "games": request.form["games"] })
+	return redirect("/matches/%d/modes/cricket/num-players/" % id)
+
+@app.route("/matches/<int:id>/modes/cricket/num-players/")
+def cricket_num_players(id):
 	match = model.Model().selectById(matchModel.Match, id)
 	return render_template("matches/modes/cricket/num-players.html", match = match)
 
@@ -39,6 +54,7 @@ def getGameData(id):
 
 	data = {
 		"id": int(match.id),
+		"games": match.games,
 		"game": match.game,
 		"round": match.round,
 		"players": match.players,
@@ -76,7 +92,7 @@ def getGameData(id):
 			"results": []
 		}
 
-		for i in range(1, 4):
+		for i in range(1, 6):
 			results = model.Model().select(resultModel.Result).filter_by(matchId = match.id, teamId = team.id, game = i)
 			resultSet = {
 				"score": 0,
@@ -104,7 +120,9 @@ def getGameData(id):
 				"mpr": getMarksPerRound(match.id, player.playerId, None),
 				"mpr1": getMarksPerRound(match.id, player.playerId, 1),
 				"mpr2": getMarksPerRound(match.id, player.playerId, 2),
-				"mpr3": getMarksPerRound(match.id, player.playerId, 3)
+				"mpr3": getMarksPerRound(match.id, player.playerId, 3),
+				"mpr4": getMarksPerRound(match.id, player.playerId, 4),
+				"mpr5": getMarksPerRound(match.id, player.playerId, 5)
 			})
 
 		scored = {
@@ -214,9 +232,15 @@ def cricket_next(id):
 	teamPlayers = getTeamPlayersByGameId(match.id)
 
 	if match.players == 4:
-		if gameNum == 2:
+		if gameNum == 5:
+			turn = teamPlayers[0].playerId
+		elif gameNum == 4:
+			turn = teamPlayers[3].playerId
+		elif gameNum == 3:
+			turn = teamPlayers[1].playerId
+		elif gameNum == 2:
 			turn = teamPlayers[2].playerId
-		else:
+		elif gameNum == 1:
 			turn = teamPlayers[1].playerId
 	else:
 		if gameNum == 2:
@@ -248,8 +272,10 @@ def cricket_score(matchId, teamId, playerId, game, round, mark):
 	mpr1 = getMarksPerRound(matchId, playerId, 1)
 	mpr2 = getMarksPerRound(matchId, playerId, 2)
 	mpr3 = getMarksPerRound(matchId, playerId, 3)
+	mpr4 = getMarksPerRound(matchId, playerId, 4)
+	mpr5 = getMarksPerRound(matchId, playerId, 5)
 
-	return Response(json.dumps({ "id": int(newMark.id), "playerId": playerId, "mpr": mpr, "mpr1": mpr1, "mpr2": mpr2, "mpr3": mpr3 }), status = 200, mimetype = "application/json")
+	return Response(json.dumps({ "id": int(newMark.id), "playerId": playerId, "mpr": mpr, "mpr1": mpr1, "mpr2": mpr2, "mpr3": mpr3, "mpr4": mpr4, "mpr5": mpr5 }), status = 200, mimetype = "application/json")
 
 @app.route("/matches/<int:matchId>/modes/cricket/undo/", methods = ["POST"])
 def cricket_undo(matchId):

@@ -76,7 +76,7 @@ def matches_new():
 
 @app.route("/matches/", methods = ["POST"])
 def matches_create():
-	newMatch = matchModel.Match(request.form["modes"], None, 1, 1, False, 0, datetime.now())
+	newMatch = matchModel.Match(request.form["modes"], None, None, 1, 1, False, 0, datetime.now())
 	model.Model().create(newMatch)
 
 	mode = model.Model().selectById(modeModel.Mode, newMatch.modeId)

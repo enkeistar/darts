@@ -23,3 +23,10 @@ ALTER TABLE `results`
 	CHANGE COLUMN `gameId` `matchId` INT(11) NULL DEFAULT NULL AFTER `id`;
 ALTER TABLE `results`
 	ADD CONSTRAINT `fk_results_matches` FOREIGN KEY (`matchId`) REFERENCES `matches` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE `matches`
+	ADD COLUMN `games` INT(11) NULL DEFAULT NULL AFTER `players`;
+
+UPDATE `matches`
+SET `games` = 3
+WHERE `modeId` = 1;

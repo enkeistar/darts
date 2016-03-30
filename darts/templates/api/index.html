@@ -19,11 +19,11 @@
 	createdAt: '2016-01-01 12:01:01'
 }]</pre>
 
-<a href="/api/games/">
+<a href="/api/matches/">
 	<code>GET</code>
-	<kbd>/api/games/</kbd>
+	<kbd>/api/matches/</kbd>
 </a>
-<p class="text-muted">Array of game data Includes information about progress of rounds and player turns.</p>
+<p class="text-muted">Array of match data Includes information about progress of rounds and player turns.</p>
 <pre>[{
 	id: 1,
 	modeId: 2,
@@ -43,7 +43,7 @@
 <p class="text-muted">Player marks per round and what value was hit.</p>
 <pre>[{
 	id: 1,
-	gameId: 1,
+	matchId: 1,
 	teamId: 3,
 	playerId: 7,
 	game: 9,
@@ -59,7 +59,7 @@
 <p class="text-muted">Teams and their win/loss after a complete game.</p>
 <pre>[{
 	id: 1,
-	gameId: 1,
+	matchId: 1,
 	win: true,
 	loss: false
 }]</pre>
