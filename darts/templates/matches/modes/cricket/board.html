@@ -34,31 +34,29 @@
 
 									<div class="marks-per-round">
 										<div class="label">M/R</div>
-										{% if match.games > 1 %}
-											<div class="value">
-												<span class="rnd">1:</span>
-												<span class="val r1">{% if match.game >= 1 %}{{ player.mpr1 }}{% else %}-{% endif %}</span>
-											</div>
-										{% endif %}
-										{% if match.games > 2 %}
+										<div class="value">
+											<span class="rnd">1:</span>
+											<span class="val r1">{% if match.game >= 1 %}{{ player.mpr1 }}{% else %}-{% endif %}</span>
+										</div>
+										{% if match.games >= 2 %}
 											<div class="value">
 												<span class="rnd">2:</span>
 												<span class="val r2">{% if match.game >= 2 %}{{ player.mpr2 }}{% else %}-{% endif %}</span>
 											</div>
 										{% endif %}
-										{% if match.games > 3 %}
+										{% if match.games >= 3 %}
 											<div class="value">
 												<span class="rnd">3:</span>
 												<span class="val r3">{% if match.game >= 3 %}{{ player.mpr3 }}{% else %}-{% endif %}</span>
 											</div>
 										{% endif %}
-										{% if match.games > 4 %}
+										{% if match.games >= 4 %}
 											<div class="value">
 												<span class="rnd">4:</span>
 												<span class="val r4">{% if match.game >= 4 %}{{ player.mpr4 }}{% else %}-{% endif %}</span>
 											</div>
 										{% endif %}
-										{% if match.games > 5 %}
+										{% if match.games >= 5 %}
 											<div class="value">
 												<span class="rnd">5:</span>
 												<span class="val r5">{% if match.game >= 5 %}{{ player.mpr5 }}{% else %}-{% endif %}</span>

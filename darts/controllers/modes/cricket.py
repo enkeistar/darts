@@ -383,7 +383,6 @@ def cricket_again(id):
 			model.Model().create(newTeamPlayer)
 			playerIds.append(teamPlayer.playerId)
 
-	random.shuffle(playerIds)
 	model.Model().update(matchModel.Match, newMatch.id, { "turn": playerIds[0] })
 
 	return redirect("/matches/%d/modes/cricket/play/" % newMatch.id)
