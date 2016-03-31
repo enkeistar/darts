@@ -223,31 +223,7 @@ def cricket_players_redo(id):
 @app.route("/matches/<int:id>/modes/cricket/next/", methods = ["POST"])
 def cricket_next(id):
 	match = model.Model().selectById(matchModel.Match, id)
-
-	gameNum = match.game + 1
-
-	if match.complete:
-		return redirect("/")
-
-	teamPlayers = getTeamPlayersByGameId(match.id)
-
-	if match.players == 4:
-		if gameNum == 5:
-			turn = teamPlayers[0].playerId
-		elif gameNum == 4:
-			turn = teamPlayers[3].playerId
-		elif gameNum == 3:
-			turn = teamPlayers[1].playerId
-		elif gameNum == 2:
-			turn = teamPlayers[2].playerId
-		elif gameNum == 1:
-			turn = teamPlayers[1].playerId
-	else:
-		if gameNum == 2:
-			turn = teamPlayers[1].playerId
-		else:
-			turn = teamPlayers[0].playerId
-
+	turn = cricket_get_turn(match)
 	model.Model().update(matchModel.Match, match.id, { "game": gameNum, "round": 1, "turn": turn })
 
 	return redirect("/matches/%d/modes/cricket/play/" % match.id)
@@ -341,7 +317,6 @@ def getTeamPlayersByGameId(matchId):
 
 	return teamPlayers
 
-
 def getMarksPerRound(matchId, playerId, game):
 
 	query = "SELECT (\
@@ -388,3 +363,55 @@ def getMarksPerRound(matchId, playerId, game):
 		marksPerRound = float(data.marks) / float(data.rounds)
 
 	return "{:.2f}".format(marksPerRound)
+
+@app.route("/matches/<int:id>/modes/cricket/again/", methods = ["POST"])
+def cricket_again(id):
+	match = model.Model().selectById(matchModel.Match, id)
+	newMatch = matchModel.Match(match.modeId, match.players, request.form["games"], 1, 1, True, 0, datetime.now())
+	model.Model().create(newMatch)
+
+	playerIds = []
+
+	teams = model.Model().select(teamModel.Team).filter_by(matchId = id)
+	for team in teams:
+		newTeam = teamModel.Team(newMatch.id)
+		model.Model().create(newTeam)
+
+		teamPlayers = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id)
+		for teamPlayer in teamPlayers:
+			newTeamPlayer = teamPlayerModel.TeamPlayer(newTeam.id, teamPlayer.playerId)
+			model.Model().create(newTeamPlayer)
+			playerIds.append(teamPlayer.playerId)
+
+	random.shuffle(playerIds)
+	model.Model().update(matchModel.Match, newMatch.id, { "turn": playerIds[0] })
+
+	return redirect("/matches/%d/modes/cricket/play/" % newMatch.id)
+
+def cricket_get_turn(match):
+
+	gameNum = match.game + 1
+
+	if match.complete:
+		return redirect("/")
+
+	teamPlayers = getTeamPlayersByGameId(match.id)
+
+	if match.players == 4:
+		if gameNum == 5:
+			turn = teamPlayers[0].playerId
+		elif gameNum == 4:
+			turn = teamPlayers[3].playerId
+		elif gameNum == 3:
+			turn = teamPlayers[1].playerId
+		elif gameNum == 2:
+			turn = teamPlayers[2].playerId
+		elif gameNum == 1:
+			turn = teamPlayers[0].playerId
+	else:
+		if gameNum == 2:
+			turn = teamPlayers[1].playerId
+		else:
+			turn = teamPlayers[0].playerId
+
+	return turn

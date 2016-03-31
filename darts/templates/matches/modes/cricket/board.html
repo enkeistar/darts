@@ -177,6 +177,33 @@
 					Next Round
 				</button>
 			</form>
+
+			<form action="/matches/{{ match.id }}/modes/cricket/again/" method="POST">
+				<input type="hidden" name="games" value="{{ match.games }}" />
+				<button class="btn btn-default btn-lg btn-block btn-next-round hidden">
+					Play Again
+				</button>
+			</form>
+			<form action="/matches/{{ match.id }}/modes/cricket/again/" method="POST">
+				<input type="hidden" name="games" value="1" />
+				<button class="btn btn-default btn-lg btn-block btn-next-round hidden">
+					Best of 1
+				</button>
+			</form>
+			<form action="/matches/{{ match.id }}/modes/cricket/again/" method="POST">
+				<input type="hidden" name="games" value="3" />
+				<button class="btn btn-default btn-lg btn-block btn-next-round hidden">
+					Best of 3
+				</button>
+			</form>
+			<form action="/matches/{{ match.id }}/modes/cricket/again/" method="POST">
+				<input type="hidden" name="games" value="5" />
+				<button class="btn btn-default btn-lg btn-block btn-next-round hidden">
+					Best of 5
+				</button>
+			</form>
+
+
 		</div>
 	</div>
 

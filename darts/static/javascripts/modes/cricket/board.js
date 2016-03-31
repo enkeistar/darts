@@ -253,7 +253,7 @@ $(function(){
 
 		if($("input[name=result][data-win=1][data-teamid=" + winnerId + "]").length >= Math.floor(games / 2)){
 			nextRoundModal.find("h1").html("Team " + num + "<br />Wins The Game!");
-			nextRoundModal.find("button").html("Done");
+			nextRoundModal.find("button").removeClass("hidden").first().html("Done");
 			matchWin(winnerId);
 			matchLoss(loserId);
 		} else {
