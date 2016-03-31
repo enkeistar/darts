@@ -8,8 +8,8 @@ $(function(){
 		return;
 	}
 
-	var gameId = $("input[name=gameId]").val();
-	var baseUrl = "/games/" + gameId + "/modes/x01";
+	var matchId = $("input[name=matchId]").val();
+	var baseUrl = "/matches/" + matchId + "/modes/x01";
 	var round = parseInt($("input[name=round").val());
 	var game = parseInt($("input[name=game").val());
 	var quiteGameModal = $(".modal-quit-game");
@@ -28,7 +28,7 @@ $(function(){
 
 		turns++;
 
-		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/" + points + "/");
+		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/matches/" + game + "/rounds/" + round + "/marks/" + points + "/");
 
 		changeScore(activePlayer, -points);
 
@@ -83,7 +83,7 @@ $(function(){
 		var activePlayer = $(".player.active");
 		var playerId = activePlayer.data("playerid");
 		var teamId = activePlayer.data("teamid");
-		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/games/" + game + "/rounds/" + round + "/marks/0/").done(nextTurn);
+		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/matches/" + game + "/rounds/" + round + "/marks/0/").done(nextTurn);
 	}
 
 	function undo(){

@@ -1,12 +1,12 @@
 $(function(){
 
 	var current = 0;
-	var gameId = $("#gameId").val();
+	var matchId = $("#matchId").val();
 	var teams = $(".team");
 	var existingPlayers = $(".existing-players");
 	var players = $(".player");
 
-	var baseUrl = "/games/" + gameId + "/modes/x01";
+	var baseUrl = "/matches/" + matchId + "/modes/x01";
 
 	players.on("click", function(){
 

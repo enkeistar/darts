@@ -31,19 +31,19 @@
 
 		</div>
 
-		<form action="/games/{{ game.id }}/modes/x01/play/" method="POST">
+		<form action="/matches/{{ match.id }}/modes/x01/play/" method="POST">
 			<button class="btn btn-primary btn-lg btn-block play">Play</button>
 		</form>
 
-		<a class="btn btn-default add-player" href="/players/games/{{ game.id }}/new/">Add Player</a>
+		<a class="btn btn-default add-player" href="/players/matches/{{ match.id }}/new/">Add Player</a>
 
-		<form action="/games/{{ game.id }}/modes/x01/players/redo/" method="POST">
+		<form action="/matches/{{ match.id }}/modes/x01/players/redo/" method="POST">
 			<button class="redo btn btn-default btn-block">Redo</button>
 		</form>
 
 	</div>
 
-	<input type="hidden" id="gameId" value="{{ game.id }}" />
+	<input type="hidden" id="matchId" value="{{ match.id }}" />
 	{% for teamPlayer in teamPlayers %}
 		<input type="hidden" class="existing-players" value="{{ teamPlayer.playerId }}" />
 	{% endfor %}
