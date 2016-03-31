@@ -224,7 +224,7 @@ def cricket_players_redo(id):
 def cricket_next(id):
 	match = model.Model().selectById(matchModel.Match, id)
 	turn = cricket_get_turn(match)
-	model.Model().update(matchModel.Match, match.id, { "game": gameNum, "round": 1, "turn": turn })
+	model.Model().update(matchModel.Match, match.id, { "game": match.game + 1, "round": 1, "turn": turn })
 
 	return redirect("/matches/%d/modes/cricket/play/" % match.id)
 
@@ -409,7 +409,7 @@ def cricket_get_turn(match):
 		elif gameNum == 1:
 			turn = teamPlayers[0].playerId
 	else:
-		if gameNum == 2:
+		if gameNum == 2 or gameNum == 4:
 			turn = teamPlayers[1].playerId
 		else:
 			turn = teamPlayers[0].playerId
