@@ -1,6 +1,6 @@
 {% extends "matches/layout.html" %}
 
-{% block title %}Games{% endblock %}
+{% block title %}Matches{% endblock %}
 
 {% block head %}
 	{{ super() }}
@@ -13,7 +13,7 @@
 
 	<div class="games-list">
 
-		<h1>Games</h1>
+		<h1>Matches</h1>
 
 		<table class="table">
 			<tbody>
@@ -25,7 +25,7 @@
 					<tr data-href="/matches/{{ match["id"] }}/modes/cricket/play/">
 
 						<td class="game-number">
-							Game: {{ num }}
+							Match: {{ num }}
 							{% set num = num - 1 %}
 						</td>
 
