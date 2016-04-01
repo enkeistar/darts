@@ -6,9 +6,11 @@ from darts.entities import team_player as teamPlayerModel
 from darts.entities import mark as markModel
 from darts.entities import result as resultModel
 from darts.entities import mode as modeModel
+from darts.entities import mark_style as markStyleModel
 from flask import Response, render_template, redirect, request
 from datetime import datetime
 from sqlalchemy import text
+from sqlalchemy.sql.expression import func
 import json, random
 
 @app.route("/matches/<int:id>/modes/cricket/")
@@ -44,7 +46,8 @@ def cricket_create_num_players(id):
 
 @app.route("/matches/<int:id>/modes/cricket/play/", methods = ["GET"])
 def cricket_board(id):
-	return render_template("matches/modes/cricket/board.html", match = getGameData(id))
+	markStyle = model.Model().select(markStyleModel.MarkStyle).filter_by(approved = 1).order_by(func.rand()).first()
+	return render_template("matches/modes/cricket/board.html", match = getGameData(id), markStyle = markStyle)
 
 def getGameData(id):
 	match = model.Model().selectById(matchModel.Match, id)

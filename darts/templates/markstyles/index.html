@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}Mark Styles{% endblock %}
+
+{% block head %}
+	{{ super() }}
+	{% assets output="gen/markstyles.css", "stylesheets/markstyles.css" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}
+{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid mark-styles">
+
+		<a class="btn btn-default btn-sm action" href="/mark-styles/new/">
+			<span class="glyphicon glyphicon-star"></span>
+			Create Mark Style
+		</a>
+
+		<h1 class="with-action">Mark Styles</h1>
+
+		<table class="table">
+
+			<tbody>
+
+				{% for markStyle in markStyles %}
+
+					<tr>
+
+						<td>{{ markStyle.one|safe }}</td>
+						<td>{{ markStyle.two|safe }}</td>
+						<td>{{ markStyle.three|safe }}</td>
+
+					</tr>
+
+				{% endfor %}
+
+				{% if markStyles.count() == 0 %}
+
+					<tr>
+						<td class="text-center">No mark styles have been added.<td>
+					</td>
+
+				{% endif %}
+
+			</tbody>
+
+		</table>
+
+	</div>
+
+{% endblock %}
+

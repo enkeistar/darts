@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}Create Mark Style{% endblock %}
+
+{% block head %}
+	{{ super() }}
+	{% assets output="gen/markstyles.css", "stylesheets/markstyles.css" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}
+{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid mark-styles form">
+
+		<h1>Create Mark Style</h1>
+
+		<canvas id="mark-style" width="320" height="240"></canvas>
+
+		<div class="controls">
+			<div class="form-group">
+				<label for="drawing-line-width">Line width:</label>
+				<span id="drawing-line-width-info" class="info">10</span>
+				<input type="range" id="drawing-line-width" max="30" min="1" value="10" />
+			</div>
+
+			<div class="form-group">
+				<label for="drawing-color">Line color:</label>
+				<input type="color" id="drawing-color" value="#000" />
+			</div>
+
+			<div class="form-group">
+				<button class="btn btn-info" id="clear-canvas">Clear</button>
+			</div>
+		</div>
+
+		<div class="layer-container">
+			<div id="layer-0" class="layers"></div>
+			<div id="layer-1" class="layers"></div>
+			<div id="layer-2" class="layers"></div>
+		</div>
+
+		<form action="/mark-styles/" method="POST">
+			<input type="hidden" name="one" />
+			<input type="hidden" name="two" />
+			<input type="hidden" name="three" />
+
+			<button class="btn btn-default btn-primary" type="submit" disabled>Create Mark Style</button>
+			<a href="/mark-styles/" class="btn btn-default btn-sm">Cancel</a>
+		</form>
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	{% assets output="gen/draw.js", "libraries/fabric/fabric.js", "javascripts/mark_styles.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
+{% endblock %}

@@ -201,7 +201,6 @@
 				</button>
 			</form>
 
-
 		</div>
 	</div>
 
@@ -213,6 +212,26 @@
 			<a class="btn btn-default btn-lg home-no">No</a>
 		</div>
 	</div>
+
+	{% if markStyle != None %}
+		<style>
+			.awarded[data-hits] {
+				background-image: url("/mark-styles/{{ markStyle.id }}/three.svg");
+			}
+
+			.awarded[data-hits="0"] {
+				background-image: none;
+			}
+
+			.awarded[data-hits="1"] {
+				background-image: url("/mark-styles/{{ markStyle.id }}/one.svg");
+			}
+
+			.awarded[data-hits="2"] {
+				background-image: url("/mark-styles/{{ markStyle.id }}/two.svg");
+			}
+		</style>
+	{% endif %}
 
 {% endblock %}
 
