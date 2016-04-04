@@ -42,6 +42,13 @@ $(function(){
 		return false;
 	});
 
+	canvas.on("mouse:up", function(){
+		alert("mouse:up");
+	});
+	canvas.on("mouse:out", function(){
+		alert("mouse:out");
+	});
+
 	canvas.on("mouse:up", function(options) {
 		console.log(this);
 		layers.push({
