@@ -9,6 +9,8 @@ class Player(Base):
 
 	id = Column(Integer, primary_key = True)
 	name = Column(String)
+	username = Column(String)
+	password = Column(String)
 	createdAt = Column(DateTime)
 
 	def __init__(self, name, createdAt):

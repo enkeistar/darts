@@ -1,11 +1,15 @@
 from darts import app
-from flask import Response, request, render_template, redirect
+from flask import Response, request, render_template, redirect, session
 from darts.entities import mark_style as markStyleModel
 from darts import model
 from sqlalchemy.sql.expression import func
 
 @app.route("/mark-styles/")
 def mark_styles_index():
+
+	print(session.has_key("authenticated"))
+
+
 	markStyles = model.Model().select(markStyleModel.MarkStyle).filter_by(approved = 1)
 	return render_template("markstyles/index.html", markStyles = markStyles)
 
