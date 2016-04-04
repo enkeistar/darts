@@ -43,21 +43,21 @@ $(function(){
 	});
 
 	canvas.on("mouse:up", function(options) {
-		layers.push(canvas.toSVG());
+		console.log(this);
+		layers.push({
+			png: canvas.toDataURL(),
+			svg: canvas.toSVG()
+		});
 		if(layers.length >= 3){
 			disableDrawing();
 		}
 		renderLayers();
 	});
 
-	$("#done-canvas").on("click", function(){
-		console.log("done");
-	});
-
 	function renderLayers(){
 		$(".layers").empty();
 		for(var idx in layers){
-			$("#layer-" + idx).html($("<img />").html(layers[idx]));
+			$("#layer-" + idx).html($("<img />").attr("src", layers[idx]["png"]));
 		}
 	}
 
@@ -82,9 +82,9 @@ $(function(){
 		}
 
 		var source = $(this);
-		source.find("input[name=one]").val(layers[0]);
-		source.find("input[name=two]").val(layers[1]);
-		source.find("input[name=three]").val(layers[2]);
+		source.find("input[name=one]").val(layers[0]["svg"]);
+		source.find("input[name=two]").val(layers[1]["svg"]);
+		source.find("input[name=three]").val(layers[2]["svg"]);
 	});
 
 });
