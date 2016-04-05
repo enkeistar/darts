@@ -27,6 +27,7 @@
 				{% for markStyle in markStyles %}
 
 					<tr>
+
 						{% if admin %}
 							<td>
 								{% if markStyle.approved %}
@@ -41,7 +42,7 @@
 							</td>
 						{% endif %}
 
-
+						<td>{{ markStyle.name }}</td>
 						<td>{{ markStyle.one|safe }}</td>
 						<td>{{ markStyle.two|safe }}</td>
 						<td>{{ markStyle.three|safe }}</td>

@@ -23,11 +23,12 @@ def mark_styles_new():
 
 @app.route("/mark-styles/", methods = ["POST"])
 def mark_styles_create():
+	name = request.form["name"]
 	one = request.form["one"].replace('width="320" height="240"', 'viewBox="0 0 320 240"')
 	two = request.form["two"].replace('width="320" height="240"', 'viewBox="0 0 320 240"')
 	three = request.form["three"].replace('width="320" height="240"', 'viewBox="0 0 320 240"')
 
-	newMarkStyle = markStyleModel.MarkStyle(one, two, three, 0, datetime.now())
+	newMarkStyle = markStyleModel.MarkStyle(name, one, two, three, 0, datetime.now())
 	model.Model().create(newMarkStyle)
 	return redirect("/mark-styles/")
 
