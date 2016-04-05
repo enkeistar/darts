@@ -43,7 +43,6 @@ $(function(){
 	});
 
 	canvas.on("mouse:up", function(options) {
-		console.log(this);
 		layers.push({
 			png: canvas.toDataURL(),
 			svg: canvas.toSVG()
@@ -67,16 +66,16 @@ $(function(){
 		canvas.forEachObject(function(o) {
 			o.selectable = false;
 		});
-		$("form").find("button[type=submit]").prop("disabled", false);
+		$("#mark-style-form").find("button[type=submit]").prop("disabled", false);
 	}
 
 	function enableDrawing(){
 		canvas.isDrawingMode = true;
-		$("form").find("button[type=submit]").prop("disabled", true);
+		$("#mark-style-form").find("button[type=submit]").prop("disabled", true);
 	}
 
 
-	$("form").on("submit", function(){
+	$("#mark-style-form").on("submit", function(){
 		if(layers.length != 3){
 			return false;
 		}
@@ -85,6 +84,10 @@ $(function(){
 		source.find("input[name=one]").val(layers[0]["svg"]);
 		source.find("input[name=two]").val(layers[1]["svg"]);
 		source.find("input[name=three]").val(layers[2]["svg"]);
+	});
+
+	$(".form-delete").on("submit", function(){
+		return confirm("Are you sure you want to delete this mark style?");
 	});
 
 });

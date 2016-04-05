@@ -6,8 +6,15 @@ from sqlalchemy.sql.expression import func
 
 @app.route("/mark-styles/")
 def mark_styles_index():
-	markStyles = model.Model().select(markStyleModel.MarkStyle).filter_by(approved = 1)
-	return render_template("markstyles/index.html", markStyles = markStyles)
+	admin = False
+	if request.remote_addr == "10.9.1.207":
+		admin = True
+
+	markStyles = model.Model().select(markStyleModel.MarkStyle)
+	if not admin:
+		markStyles = markStyles.filter_by(approved = 1)
+
+	return render_template("markstyles/index.html", markStyles = markStyles, admin = admin)
 
 @app.route("/mark-styles/new/")
 def mark_styles_new():
@@ -23,6 +30,20 @@ def mark_styles_create():
 	model.Model().create(newMarkStyle)
 	return redirect("/mark-styles/")
 
+@app.route("/mark-styles/<int:id>/approve/", methods = ["POST"])
+def mark_styles_approve(id):
+	model.Model().update(markStyleModel.MarkStyle, id, { "approved": 1 })
+	return redirect("/mark-styles/")
+
+@app.route("/mark-styles/<int:id>/reject/", methods = ["POST"])
+def mark_styles_reject(id):
+	model.Model().update(markStyleModel.MarkStyle, id, { "approved": 0 })
+	return redirect("/mark-styles/")
+
+@app.route("/mark-styles/<int:id>/delete/", methods = ["POST"])
+def mark_styles_delete(id):
+	model.Model().delete(markStyleModel.MarkStyle, id)
+	return redirect("/mark-styles/")
 
 @app.route("/mark-styles/<int:id>/<path:num>.svg")
 def mark_styles_svg(id, num):

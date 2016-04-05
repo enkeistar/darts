@@ -27,10 +27,41 @@
 				{% for markStyle in markStyles %}
 
 					<tr>
+						{% if admin %}
+							<td>
+								{% if markStyle.approved %}
+									<span class="btn btn-success">
+										<span class="glyphicon glyphicon-ok"></span>
+									</span>
+								{% else %}
+									<span class="btn btn-warning">
+										<span class="glyphicon glyphicon-ok"></span>
+									</span>
+								{% endif %}
+							</td>
+						{% endif %}
+
 
 						<td>{{ markStyle.one|safe }}</td>
 						<td>{{ markStyle.two|safe }}</td>
 						<td>{{ markStyle.three|safe }}</td>
+
+						{% if admin %}
+							<td>
+								{% if markStyle.approved %}
+									<form action="/mark-styles/{{ markStyle.id }}/reject/" method="POST">
+										<button type="submit" class="btn btn-warning">Reject</button>
+									</form>
+								{% else %}
+									<form action="/mark-styles/{{ markStyle.id }}/approve/" method="POST" style="display: inline;">
+										<button type="submit" class="btn btn-success">Approve</button>
+									</form>
+									<form action="/mark-styles/{{ markStyle.id }}/delete/" method="POST" class="form-delete" style="display: inline;">
+										<button type="submit" class="btn btn-danger">Delete</button>
+									</form>
+								{% endif %}
+							</td>
+						{% endif %}
 
 					</tr>
 
@@ -52,3 +83,9 @@
 
 {% endblock %}
 
+{% block footer %}
+	{{ super() }}
+	{% assets output="gen/draw.js", "libraries/fabric/fabric.js", "javascripts/mark_styles.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
+{% endblock %}
