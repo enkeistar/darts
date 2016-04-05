@@ -21,7 +21,7 @@ canvas {
 }
 
 .controls {
-	margin-top: 40px;
+	margin-top: 20px;
 	margin-left: 20px;
 	float: left;
 }
@@ -48,4 +48,9 @@ canvas {
 
 .layers:nth-child(n + 2){
 	border-left: none;
+}
+
+.clear-btn,
+.add-layer {
+	width: 140px;
 }

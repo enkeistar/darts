@@ -19,9 +19,16 @@
 
 		<div class="controls">
 			<div class="form-group">
+				<button class="btn btn-info btn-sm clear-btn" id="clear-canvas">Clear All</button>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-info btn-sm clear-btn" id="clear-layer">Clear Layer</button>
+			</div>
+
+			<div class="form-group">
 				<label for="drawing-line-width">Line width:</label>
 				<span id="drawing-line-width-info" class="info">10</span>
-				<input type="range" id="drawing-line-width" max="30" min="1" value="10" />
+				<input type="range" id="drawing-line-width" max="100" min="1" value="10" />
 			</div>
 
 			<div class="form-group">
@@ -30,7 +37,7 @@
 			</div>
 
 			<div class="form-group">
-				<button class="btn btn-info" id="clear-canvas">Clear</button>
+				<button class="btn btn-success add-layer" id="add-layer">Add</button>
 			</div>
 		</div>
 

@@ -4,8 +4,3 @@ from flask import render_template, request
 @app.route("/")
 def main_index():
 	return render_template("main/index.html")
-
-@app.route("/test/")
-def main_test():
-	return request.remote_addr
-

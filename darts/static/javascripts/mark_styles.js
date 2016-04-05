@@ -13,18 +13,16 @@ $(function(){
 	var $drawingColor = $("#drawing-color");
 	var $drawingLineWidth = $("#drawing-line-width");
 
-
-
 	canvas.freeDrawingBrush = new fabric['PencilBrush'](canvas);
 
 	$drawingColor.on("change", function(){
 		canvas.freeDrawingBrush.color = this.value;
 	});
 
-	$drawingLineWidth.on("change", function() {
+	$drawingLineWidth.on("input", function() {
 		canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
 		$("#drawing-line-width-info").html(this.value);
-	}).trigger("change");
+	}).trigger("input");
 
 	if (canvas.freeDrawingBrush) {
 		canvas.freeDrawingBrush.color = $drawingColor.val();
@@ -38,11 +36,11 @@ $(function(){
 		renderLayers();
 	});
 
-	canvas.on("mouse:down", function(options){
-		return false;
+	$("#clear-layer").on("click", function(){
+		canvas.clear();
 	});
 
-	canvas.on("mouse:up", function(options) {
+	$("#add-layer").on("click", function() {
 		layers.push({
 			png: canvas.toDataURL(),
 			svg: canvas.toSVG()
@@ -67,11 +65,13 @@ $(function(){
 			o.selectable = false;
 		});
 		$("#mark-style-form").find("button[type=submit]").prop("disabled", false);
+		$("#add-layer, #clear-layer").prop("disabled", true);
 	}
 
 	function enableDrawing(){
 		canvas.isDrawingMode = true;
 		$("#mark-style-form").find("button[type=submit]").prop("disabled", true);
+		$("#add-layer, #clear-layer").prop("disabled", false);
 	}
 
 
