@@ -3,6 +3,7 @@ from flask import Response, request, render_template, redirect
 from darts.entities import mark_style as markStyleModel
 from darts import model
 from sqlalchemy.sql.expression import func
+from datetime import datetime
 
 @app.route("/mark-styles/")
 def mark_styles_index():
@@ -26,7 +27,7 @@ def mark_styles_create():
 	two = request.form["two"].replace('width="320" height="240"', 'viewBox="0 0 320 240"')
 	three = request.form["three"].replace('width="320" height="240"', 'viewBox="0 0 320 240"')
 
-	newMarkStyle = markStyleModel.MarkStyle(one, two, three, 0)
+	newMarkStyle = markStyleModel.MarkStyle(one, two, three, 0, datetime.now())
 	model.Model().create(newMarkStyle)
 	return redirect("/mark-styles/")
 

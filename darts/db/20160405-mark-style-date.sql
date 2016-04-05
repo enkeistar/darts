@@ -1,0 +1,2 @@
+ALTER TABLE `mark_styles`
+	ADD COLUMN `createdAt` DATETIME NULL DEFAULT NULL AFTER `approved`;

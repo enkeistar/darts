@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -12,9 +12,11 @@ class MarkStyle(Base):
 	two = Column(String)
 	three = Column(String)
 	approved = Column(Integer)
+	createdAt = Column(DateTime)
 
-	def __init__(self, one, two, three, approved):
+	def __init__(self, one, two, three, approved, createdAt):
 		self.one = one
 		self.two = two
 		self.three = three
 		self.approved = approved
+		self.createdAt = createdAt
