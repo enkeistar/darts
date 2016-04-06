@@ -1,7 +1,8 @@
 $(function(){
 
-
 	var layers = [];
+	var history = [];
+	var addHistory = true;
 
 	var canvas = this.__canvas = new fabric.Canvas("mark-style", {
 		isDrawingMode: true,
@@ -34,10 +35,12 @@ $(function(){
 		layers = [];
 		enableDrawing();
 		renderLayers();
+		history = [];
 	});
 
 	$("#clear-layer").on("click", function(){
 		canvas.clear();
+		history.push(JSON.stringify(canvas));
 	});
 
 	$("#add-layer").on("click", function() {
@@ -88,6 +91,24 @@ $(function(){
 
 	$(".form-delete").on("submit", function(){
 		return confirm("Are you sure you want to delete this mark style?");
+	});
+
+
+	canvas.on("object:added", function(){
+		if(!addHistory) return;
+		history.push(JSON.stringify(canvas));
+	});
+
+	$("#undo-btn").on("click", function(){
+		addHistory = false;
+		history.pop();
+		if(history.length > 0){
+			canvas.loadFromJSON(history[history.length - 1]);
+		} else {
+			canvas.clear();
+		}
+		canvas.renderAll();
+		addHistory = true;
 	});
 
 });

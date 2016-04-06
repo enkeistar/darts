@@ -51,6 +51,10 @@ canvas {
 }
 
 .clear-btn,
-.add-layer {
+.undo-btn {
 	width: 140px;
+}
+
+.add-layer {
+	margin-top: 12px;
 }

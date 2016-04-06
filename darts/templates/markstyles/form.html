@@ -15,31 +15,37 @@
 
 		<h1>Create Mark Style</h1>
 
-		<canvas id="mark-style" width="320" height="240"></canvas>
+		<div style="overflow: hidden;">
 
-		<div class="controls">
-			<div class="form-group">
-				<button class="btn btn-info btn-sm clear-btn" id="clear-canvas">Clear All</button>
-			</div>
-			<div class="form-group">
-				<button class="btn btn-info btn-sm clear-btn" id="clear-layer">Clear Layer</button>
+			<canvas id="mark-style" width="320" height="240"></canvas>
+
+			<div class="controls">
+				<div class="form-group">
+					<button class="btn btn-info btn-sm clear-btn" id="clear-canvas">Clear All</button>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-info btn-sm clear-btn" id="clear-layer">Clear Layer</button>
+				</div>
+
+				<div class="form-group">
+					<label for="drawing-line-width">Line width:</label>
+					<span id="drawing-line-width-info" class="info">10</span>
+					<input type="range" id="drawing-line-width" max="100" min="1" value="10" />
+				</div>
+
+				<div class="form-group">
+					<label for="drawing-color">Line color:</label>
+					<input type="color" id="drawing-color" value="#000" />
+				</div>
+
+				<div class="form-group">
+					<button class="btn btn-warning undo-btn" id="undo-btn">Undo</button>
+				</div>
 			</div>
 
-			<div class="form-group">
-				<label for="drawing-line-width">Line width:</label>
-				<span id="drawing-line-width-info" class="info">10</span>
-				<input type="range" id="drawing-line-width" max="100" min="1" value="10" />
-			</div>
-
-			<div class="form-group">
-				<label for="drawing-color">Line color:</label>
-				<input type="color" id="drawing-color" value="#000" />
-			</div>
-
-			<div class="form-group">
-				<button class="btn btn-success add-layer" id="add-layer">Add</button>
-			</div>
 		</div>
+
+		<button class="btn btn-block btn-success add-layer" id="add-layer">Add</button>
 
 		<div class="layer-container">
 			<div id="layer-0" class="layers"></div>
