@@ -18,6 +18,7 @@ canvas {
 .canvas-container {
 	margin-top: 20px;
 	float: left;
+	background: #fff;
 }
 
 .controls {
@@ -29,25 +30,33 @@ canvas {
 .layer-container {
 	width: 960px;
 	margin: auto;
-	padding: 20px 0;
+	padding: 10px 0 20px;
 	overflow: hidden;
 }
 
-.layers {
+.layer-preview {
 	width: 160px;
 	height: 120px;
 	border: solid 1px #bbb;
 	float: left;
+	background: #fff;
+	cursor: pointer;
 }
 
-.layers img {
+.layer-preview:nth-child(1){
+	border-right-width: 0px;
+}
+.layer-preview:nth-child(3){
+	border-left-width: 0;
+}
+
+.layer-preview:active {
+	background: #eee;
+}
+
+.layer-preview img {
 	width: 100%;
 	height: 100%;
-
-}
-
-.layers:nth-child(n + 2){
-	border-left: none;
 }
 
 .clear-btn,
@@ -56,5 +65,6 @@ canvas {
 }
 
 .add-layer {
-	margin-top: 12px;
+	margin-top: 8px;
+	width: 157px;
 }

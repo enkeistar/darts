@@ -43,22 +43,27 @@ $(function(){
 		history.push(JSON.stringify(canvas));
 	});
 
-	$("#add-layer").on("click", function() {
-		layers.push({
+	$(".add-layer").on("click", function() {
+		var source = $(this);
+		layers[source.data("layer")] = {
 			png: canvas.toDataURL(),
-			svg: canvas.toSVG()
-		});
-		if(layers.length >= 3){
-			disableDrawing();
-		}
+			svg: canvas.toSVG(),
+			json: JSON.stringify(canvas)
+		};
 		renderLayers();
 	});
 
 	function renderLayers(){
-		$(".layers").empty();
-		for(var idx in layers){
-			$("#layer-" + idx).html($("<img />").attr("src", layers[idx]["png"]));
+		$(".layer-preview").empty();
+		var enabled = true;
+		for(var i = 0; i < 3; i++){
+			if(typeof layers[i] == "undefined"){
+				enabled = enabled && false;
+			} else {
+				$(".layer-preview[data-layer=" + i + "]").html($("<img />").attr("src", layers[i]["png"]));
+			}
 		}
+		$("#create-mark-style").prop("disabled", !enabled);
 	}
 
 	function disableDrawing(){
@@ -67,22 +72,13 @@ $(function(){
 		canvas.forEachObject(function(o) {
 			o.selectable = false;
 		});
-		$("#mark-style-form").find("button[type=submit]").prop("disabled", false);
-		$("#add-layer, #clear-layer").prop("disabled", true);
 	}
 
 	function enableDrawing(){
 		canvas.isDrawingMode = true;
-		$("#mark-style-form").find("button[type=submit]").prop("disabled", true);
-		$("#add-layer, #clear-layer").prop("disabled", false);
 	}
 
-
 	$("#mark-style-form").on("submit", function(){
-		if(layers.length != 3){
-			return false;
-		}
-
 		var source = $(this);
 		source.find("input[name=one]").val(layers[0]["svg"]);
 		source.find("input[name=two]").val(layers[1]["svg"]);
@@ -108,6 +104,14 @@ $(function(){
 			canvas.clear();
 		}
 		canvas.renderAll();
+		addHistory = true;
+	});
+
+	$(".layer-preview").on("click", function(){
+		addHistory = false;
+		canvas.loadFromJSON(layers[$(this).data("layer")]["json"]);
+		canvas.renderAll();
+		history = [];
 		addHistory = true;
 	});
 

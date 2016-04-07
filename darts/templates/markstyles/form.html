@@ -45,12 +45,14 @@
 
 		</div>
 
-		<button class="btn btn-block btn-success add-layer" id="add-layer">Add</button>
+		<button class="btn btn-success add-layer" data-layer="0">Set 1</button>
+		<button class="btn btn-success add-layer" data-layer="1">Set 2</button>
+		<button class="btn btn-success add-layer" data-layer="2">Set 3</button>
 
 		<div class="layer-container">
-			<div id="layer-0" class="layers"></div>
-			<div id="layer-1" class="layers"></div>
-			<div id="layer-2" class="layers"></div>
+			<div class="layer-preview" data-layer="0"></div>
+			<div class="layer-preview" data-layer="1"></div>
+			<div class="layer-preview" data-layer="2"></div>
 		</div>
 
 		<form id="mark-style-form" action="/mark-styles/" method="POST">
@@ -63,7 +65,7 @@
 				<input type="text" id="mark-style-name" name="name" class="form-control" required />
 			</div>
 
-			<button class="btn btn-default btn-primary" type="submit" disabled>Create Mark Style</button>
+			<button class="btn btn-default btn-primary" type="submit" id="create-mark-style" disabled>Create Mark Style</button>
 			<a href="/mark-styles/" class="btn btn-default btn-sm">Cancel</a>
 		</form>
 
