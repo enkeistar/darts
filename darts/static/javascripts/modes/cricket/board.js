@@ -1,5 +1,6 @@
 $(function(){
 
+	indicateClosedPoints();
 	var complete = $("input[name=complete]").val() == "1";
 	if(complete){
 		$(".game-option .home").on("click", function(){
@@ -40,16 +41,11 @@ $(function(){
 				$(".score[data-teamid=" + team.id + "]").find(".current-round-points").html(team.marks.points);
 			}
 
-			for(var i in data.results){
-				var result = data.results[i];
-				if(data.game > result.game){
-
-				}
-			}
-
 			$(".player").removeClass("active");
 			$(".player-row").removeClass("highlight");
 			$(".player[data-playerid=" + data.turn + "]").addClass("active").parents(".player-row").addClass("highlight");
+
+			indicateClosedPoints();
 
 			if(data.complete){
 				clearTimeout(spectatorInterval);
@@ -151,6 +147,7 @@ $(function(){
 			current.find(".current-round-points").html(current.data("score"));
 		}
 
+		indicateClosedPoints();
 		determineWinner();
 
 		clearTimeout(turnTimeout);
@@ -320,4 +317,15 @@ $(function(){
 		mprs.find(".value .r5").html(game >= 5 ? data.mpr5 : "-");
 	}
 
+	function indicateClosedPoints(){
+		$(".points").each(function(){
+			var source = $(this);
+			var point = source.find(".point-value");
+			var team1 = source.find(".awarded").first();
+			var team2 = source.find(".awarded ").last();
+			if(team1.attr("data-hits") >= 3 && team2.attr("data-hits") >= 3){
+				point.addClass("closed");
+			}
+		});
+	}
 });

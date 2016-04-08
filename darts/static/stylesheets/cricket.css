@@ -159,6 +159,9 @@ header {
 	border-top: solid 1px #fff;
 	border-bottom: solid 1px #e0e0e0;
 }
+.point-value.closed {
+	color: #ddd;
+}
 
 .awarded {
 	background-position: center center;
