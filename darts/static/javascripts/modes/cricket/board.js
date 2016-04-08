@@ -318,13 +318,12 @@ $(function(){
 	}
 
 	function indicateClosedPoints(){
-		$(".points").each(function(){
+		$(".points:not(.closed)").each(function(){
 			var source = $(this);
-			var point = source.find(".point-value");
 			var team1 = source.find(".awarded").first();
 			var team2 = source.find(".awarded ").last();
 			if(team1.attr("data-hits") >= 3 && team2.attr("data-hits") >= 3){
-				point.addClass("closed");
+				source.addClass("closed");
 			}
 		});
 	}
