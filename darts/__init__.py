@@ -1,9 +1,20 @@
 import os
 from flask import Flask, request, render_template
 from flask.ext.assets import Environment, Bundle
+from flask_mail import Mail
 
 app = Flask(__name__)
 assets = Environment(app)
+
+app.config["MAIL_SERVER"] = ""
+app.config["MAIL_PORT"] = ""
+app.config["MAIL_USE_SSL"] = ""
+app.config["MAIL_USERNAME"] = ""
+app.config["MAIL_PASSWORD"] = ""
+
+app.config.from_pyfile("config_mail.cfg")
+
+mail = Mail(app)
 
 from darts.controllers import api
 from darts.controllers import brackets

@@ -4,6 +4,7 @@ from darts.entities import mark_style as markStyleModel
 from darts import model
 from sqlalchemy.sql.expression import func
 from datetime import datetime
+from darts.entities import mailer
 
 @app.route("/mark-styles/")
 def mark_styles_index():
@@ -30,6 +31,9 @@ def mark_styles_create():
 
 	newMarkStyle = markStyleModel.MarkStyle(name, one, two, three, 0, datetime.now())
 	model.Model().create(newMarkStyle)
+
+	mailer.Mailer().send("A new mark style has been submitted.", "A new mark style has been submitted by " + name + " for your review.\nIt may be approved or rejected here: http://10.10.0.130:5000/mark-styles/." )
+
 	return redirect("/mark-styles/")
 
 @app.route("/mark-styles/<int:id>/approve/", methods = ["POST"])
