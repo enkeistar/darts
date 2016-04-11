@@ -42,7 +42,10 @@
 							</td>
 						{% endif %}
 
-						<td>{{ markStyle.name }}</td>
+						<td>
+							{{ markStyle.name }}<br />
+							{{ dates[markStyle.id] }}
+						</td>
 						<td>{{ markStyle.one|safe }}</td>
 						<td>{{ markStyle.two|safe }}</td>
 						<td>{{ markStyle.three|safe }}</td>

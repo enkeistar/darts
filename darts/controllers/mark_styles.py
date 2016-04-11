@@ -3,6 +3,7 @@ from flask import Response, request, render_template, redirect
 from darts.entities import mark_style as markStyleModel
 from darts import model
 from sqlalchemy.sql.expression import func
+from sqlalchemy import desc
 from datetime import datetime
 from darts.entities import mailer
 
@@ -12,11 +13,15 @@ def mark_styles_index():
 	if request.remote_addr == "10.9.1.207":
 		admin = True
 
-	markStyles = model.Model().select(markStyleModel.MarkStyle)
+	markStyles = model.Model().select(markStyleModel.MarkStyle).order_by(desc("createdAt"))
 	if not admin:
 		markStyles = markStyles.filter_by(approved = 1)
 
-	return render_template("markstyles/index.html", markStyles = markStyles, admin = admin)
+	dates = {}
+	for markStyle in markStyles:
+		dates[markStyle.id] = "{:%b %d, %Y} ".format(markStyle.createdAt)
+
+	return render_template("markstyles/index.html", markStyles = markStyles, dates = dates, admin = admin)
 
 @app.route("/mark-styles/new/")
 def mark_styles_new():
