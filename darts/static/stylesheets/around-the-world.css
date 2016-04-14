@@ -1,0 +1,61 @@
+html, body {
+	height: 100%;
+}
+
+header {
+	display: none;
+}
+
+.around-the-world-board {
+	width: 100%;
+	height: 100%;
+	display: table;
+}
+
+.player {
+	display: table-row;
+}
+
+.name, .point {
+	display: table-cell;
+	text-align: center;
+	width: 50%;
+	border-top: solid 1px #fff;
+	border-bottom: solid 1px #e0e0e0;
+	vertical-align: middle;
+}
+
+.name {
+	font-size: 7vh;
+	border-right: solid 1px #fff;
+}
+
+.point {
+	font-family: digital;
+	font-size: 8vh;
+	border-left: solid 1px #e0e0e0;
+}
+
+.point:active {
+	background: #ddd;
+}
+
+.controls {
+	display: table-row;
+	vertical-align: middle;
+}
+
+.ctrl {
+	font-size: 4vh;
+	display: table-cell;
+	vertical-align: middle;
+	width: 50%;
+	text-align: center;
+	border-right: solid 1px #fff;
+	border-left: solid 1px #e0e0e0;
+	cursor: pointer;
+}
+
+.ctrl:active {
+	background: #ddd;
+}

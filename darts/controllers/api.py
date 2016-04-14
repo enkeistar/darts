@@ -30,7 +30,7 @@ def api_players():
 	return json_response(data)
 
 @app.route("/api/matches/", methods = ["GET"])
-def api_games():
+def api_matches():
 	matches = model.Model().select(matchModel.Match)
 
 	data = []

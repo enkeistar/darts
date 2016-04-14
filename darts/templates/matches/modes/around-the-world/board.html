@@ -1,0 +1,48 @@
+{% extends "matches/layout.html" %}
+
+{% block title %}Score Board{% endblock %}
+
+{% block head %}
+	{{ super() }}
+	{% assets output="gen/around-the-world.css", "stylesheets/around-the-world.css" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}
+{% endblock %}
+
+{% block body %}
+
+	<div class="around-the-world-board" data-matchid="{{ data["match"].id }}">
+
+		{% for player in data["players"] %}
+
+			<div class="player" data-teamid="{{ player.teamId }}" data-playerid="{{ player.id }}" data-point="{{ player.points }}">
+				<div class="name">{{ player.name }}</div>
+				<div class="point">{{ player.points }}</div>
+			</div>
+
+		{% endfor %}
+
+		<div class="controls">
+			<div class="ctrl undo">Undo</div>
+			<div class="ctrl home">Home</div>
+		</div>
+
+	</div>
+
+	<div class="modal-box modal-home">
+		<h1>Are you sure you want to quit this match?</h1>
+
+		<div class="button-group">
+			<a class="btn btn-default btn-lg home-yes">Yes</a>
+			<a class="btn btn-default btn-lg home-no">No</a>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	{% assets output="gen/around-the-world-board.js", "javascripts/modes/around-the-world/board.js" %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
+{% endblock %}

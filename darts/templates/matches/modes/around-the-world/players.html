@@ -31,13 +31,13 @@
 
 		</div>
 
-		<form action="/matches/{{ match.id }}/modes/{{ mode.alias }}/play/" method="POST">
+		<form action="/matches/{{ match.id }}/modes/x01/play/" method="POST">
 			<button class="btn btn-primary btn-lg btn-block play">Play</button>
 		</form>
 
 		<a class="btn btn-default add-player" href="/players/matches/{{ match.id }}/new/">Add Player</a>
 
-		<form action="/matches/{{ match.id }}/modes/{{ mode.alias }}/players/redo/" method="POST">
+		<form action="/matches/{{ match.id }}/modes/x01/players/redo/" method="POST">
 			<button class="redo btn btn-default btn-block">Redo</button>
 		</form>
 

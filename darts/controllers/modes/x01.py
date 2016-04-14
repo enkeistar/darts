@@ -12,7 +12,8 @@ import json
 @app.route("/matches/<int:id>/modes/x01/", methods = ["GET"])
 def x01_index(id):
 	match = model.Model().selectById(matchModel.Match, id)
-	return render_template("matches/modes/x01/num-players.html", match = match)
+	mode = model.Model().selectById(modeModel.Mode, match.modeId)
+	return render_template("matches/modes/x01/num-players.html", match = match, mode = mode)
 
 @app.route("/matches/<int:id>/modes/x01/num-players/", methods = ["POST"])
 def x01_create_num_players(id):
@@ -29,10 +30,10 @@ def x01_create_num_players(id):
 def x01_players(id):
 	match = model.Model().selectById(matchModel.Match, id)
 	mode = model.Model().selectById(modeModel.Mode, match.modeId)
-	teamPlayers = getTeamPlayersByGameId(match.id)
+	teamPlayers = getTeamPlayersByMatchId(match.id)
 	teams = model.Model().select(teamModel.Team).filter_by(matchId = match.id)
 	players = model.Model().select(playerModel.Player).order_by(playerModel.Player.name)
-	return render_template("matches/modes/x01/players.html", match = match, teams = teams, players = players, teamPlayers = teamPlayers)
+	return render_template("matches/modes/x01/players.html", match = match, mode = mode, teams = teams, players = players, teamPlayers = teamPlayers)
 
 @app.route("/matches/<int:id>/modes/x01/players/", methods = ["POST"])
 def x01_players_create(id):
@@ -42,7 +43,7 @@ def x01_players_create(id):
 
 @app.route("/matches/<int:id>/modes/x01/players/redo/", methods = ["POST"])
 def x01_players_redo(id):
-	teamPlayers = getTeamPlayersByGameId(id)
+	teamPlayers = getTeamPlayersByMatchId(id)
 
 	for teamPlayer in teamPlayers:
 		model.Model().delete(teamPlayerModel.TeamPlayer, teamPlayer.id)
@@ -61,7 +62,7 @@ def x01_play_create(id):
 def x01_play(id):
 	match = model.Model().selectById(matchModel.Match, id)
 	mode = model.Model().selectById(modeModel.Mode, match.modeId)
-	teamPlayers = getTeamPlayersByGameId(match.id)
+	teamPlayers = getTeamPlayersByMatchId(match.id)
 	teams = model.Model().select(teamModel.Team).filter_by(matchId = match.id)
 
 	data = {
@@ -135,7 +136,7 @@ def x01_undo(matchId):
 
 	return Response(json.dumps({ "id": matchId, "valid": False }), status = 200, mimetype = "application/json")
 
-def getTeamPlayersByGameId(matchId):
+def getTeamPlayersByMatchId(matchId):
 	teams = model.Model().select(teamModel.Team).filter_by(matchId = matchId)
 
 	teamIds = []

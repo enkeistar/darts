@@ -26,6 +26,7 @@ from darts.controllers import mark_styles
 
 from darts.controllers.modes import cricket
 from darts.controllers.modes import x01
+from darts.controllers.modes import around_the_world
 
 @app.errorhandler(404)
 def not_found(error):
