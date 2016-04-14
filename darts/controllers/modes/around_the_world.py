@@ -69,12 +69,13 @@ def around_the_world_play(id):
 		players = model.Model().select(teamPlayerModel.TeamPlayer).filter_by(teamId = team.id)
 		for player in players:
 			user = model.Model().selectById(playerModel.Player, player.playerId)
-			data["players"].append({
+			playerData = {
 				"id": user.id,
 				"name": user.name,
-				"teamId": team.id,
-				"points": getPoints(id, user.id)
-			})
+				"teamId": team.id
+			}
+			playerData["points"], playerData["bulls"] = getPoints(id, user.id)
+			data["players"].append(playerData)
 
 	return render_template("matches/modes/around-the-world/board.html", data = data)
 
@@ -89,7 +90,6 @@ def getTeamPlayersByMatchId(matchId):
 
 	return teamPlayers
 
-
 @app.route("/matches/<int:matchId>/modes/around-the-world/teams/<int:teamId>/players/<int:playerId>/marks/<int:mark>/", methods = ["POST"])
 def around_the_world_score(matchId, teamId, playerId, mark):
 
@@ -97,11 +97,17 @@ def around_the_world_score(matchId, teamId, playerId, mark):
 	newMark.matchId = matchId
 	newMark.teamId = teamId
 	newMark.playerId = playerId
-	newMark.value = int(mark)
 	newMark.createdAt = datetime.now()
+	newMark.value = int(mark) + 1
+
+	if newMark.value > 25:
+		newMark.value = 25
+
 	model.Model().create(newMark)
 
-	return Response(json.dumps({ "id": int(newMark.id), "playerId": playerId, "mark": mark + 1 }), status = 200, mimetype = "application/json")
+	points, bulls = getPoints(matchId, playerId)
+
+	return Response(json.dumps({ "id": int(newMark.id), "playerId": playerId, "points": points, "bulls": bulls }), status = 200, mimetype = "application/json")
 
 @app.route("/matches/<int:matchId>/modes/around-the-world/undo/", methods = ["POST"])
 def around_the_world_undo(matchId):
@@ -112,7 +118,9 @@ def around_the_world_undo(matchId):
 	mark = marks.first()
 	model.Model().delete(markModel.Mark, mark.id)
 
-	return Response(json.dumps({ "id": int(mark.id), "playerId": mark.playerId, "mark": mark.value }), status = 200, mimetype = "application/json")
+	points, bulls = getPoints(matchId, mark.playerId)
+
+	return Response(json.dumps({ "id": int(mark.id), "playerId": mark.playerId, "points": points, "bulls": bulls }), status = 200, mimetype = "application/json")
 
 @app.route("/matches/<int:matchId>/modes/around-the-world/players/<int:playerId>/triple/", methods = ["POST"])
 def around_the_world_triple(matchId, playerId):
@@ -123,7 +131,9 @@ def around_the_world_triple(matchId, playerId):
 	mark = marks.first()
 	model.Model().delete(markModel.Mark, mark.id)
 
-	return Response(json.dumps({ "id": int(mark.id), "playerId": mark.playerId, "mark": mark.value }), status = 200, mimetype = "application/json")
+	points, bulls = getPoints(matchId, playerId)
+
+	return Response(json.dumps({ "id": int(mark.id), "playerId": mark.playerId, "points": points, "bulls": bulls }), status = 200, mimetype = "application/json")
 
 def getPoints(matchId, playerId):
 	query = "\
@@ -134,8 +144,23 @@ def getPoints(matchId, playerId):
 	"
 	session = model.Model().getSession()
 	connection = session.connection()
-	data = connection.execute(text(query), matchId = matchId, playerId = playerId).first()
-	if data.points == None:
-		return 1
+	points = connection.execute(text(query), matchId = matchId, playerId = playerId).first()
+
+	query = "\
+		SELECT COUNT(Value) as bulls\
+		FROM marks\
+		WHERE matchId = :matchId\
+			AND playerId = :playerId\
+			AND value = 25\
+	"
+	session = model.Model().getSession()
+	connection = session.connection()
+	bulls = connection.execute(text(query), matchId = matchId, playerId = playerId).first()
+
+	if points.points == None:
+		return 1, 0
 	else:
-		return data.points + 1
+		pts = points.points
+		if pts > 20:
+			pts = 25
+		return pts, bulls.bulls

@@ -15,9 +15,14 @@
 
 		{% for player in data["players"] %}
 
-			<div class="player" data-teamid="{{ player.teamId }}" data-playerid="{{ player.id }}" data-point="{{ player.points }}">
+			<div class="player {% if player.bulls >=3 %}disabled{% endif %}" data-teamid="{{ player.teamId }}" data-playerid="{{ player.id }}" data-points="{{ player.points }}" data-bulls="{{ player.bulls }}">
 				<div class="name">{{ player.name }}</div>
-				<div class="point">{{ player.points }}</div>
+				<div class="point">
+					{{ player.points }}
+					{% if player.bulls > 0 %}
+						<span class="bulls">x {{ player.bulls }}</span>
+					{% endif %}
+				</div>
 			</div>
 
 		{% endfor %}

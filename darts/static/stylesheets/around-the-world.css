@@ -23,6 +23,7 @@ header {
 	border-top: solid 1px #fff;
 	border-bottom: solid 1px #e0e0e0;
 	vertical-align: middle;
+	line-height: 0.5;
 }
 
 .name {
@@ -52,6 +53,7 @@ header {
 .control-panels {
 	display: table-row;
 	vertical-align: middle;
+	height: 60px;
 }
 .control-panel {
 	display: table-cell;
@@ -80,4 +82,8 @@ header {
 
 .ctrl:active {
 	background: #ddd;
+}
+
+.bulls {
+	font-size: 4vh;
 }
