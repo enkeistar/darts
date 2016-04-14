@@ -18,6 +18,7 @@ class Match(Base):
 	turn = Column(Integer)
 	complete = Column(Integer)
 	createdAt = Column(DateTime)
+	completedAt = Column(DateTime)
 
 	def __init__(self, modeId, players, games, game, round, ready, complete, createdAt):
 		self.modeId = modeId

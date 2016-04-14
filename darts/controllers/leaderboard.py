@@ -294,13 +294,7 @@ def getTimePlayed(start, useStart, end, useEnd):
 		}
 
 	query = "\
-		SELECT DISTINCT p.id as playerId, g.id as matchId, UNIX_TIMESTAMP(g.createdAt) as gameTime, (\
-			SELECT UNIX_TIMESTAMP(r.createdAt)\
-			FROM results r\
-			WHERE r.matchId = g.id AND r.teamId = t.id\
-			ORDER BY r.id DESC\
-			LIMIT 1\
-		) as resultTime\
+		SELECT DISTINCT p.id as playerId, g.id as matchId, UNIX_TIMESTAMP(g.createdAt) as gameTime, UNIX_TIMESTAMP(g.completedAt) as resultTime\
 		FROM players p\
 		LEFT JOIN teams_players tp ON p.id = tp.playerId\
 		LEFT JOIN teams t ON tp.teamId = t.id\

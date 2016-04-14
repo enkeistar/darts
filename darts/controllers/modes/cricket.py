@@ -310,7 +310,7 @@ def result(matchId, teamId, game, score, win, loss):
 def gameResult(matchId, teamId, win, loss):
 	model.Model().update(teamModel.Team, teamId, { "win": win, "loss": loss })
 	if win == 1:
-		model.Model().update(matchModel.Match, matchId, { "complete": 1 })
+		model.Model().update(matchModel.Match, matchId, { "complete": 1, "completedAt": datetime.now() })
 	return Response(json.dumps({ "id": teamId }), status = 200, mimetype = "application/json")
 
 def getTeamPlayersByGameId(matchId):
