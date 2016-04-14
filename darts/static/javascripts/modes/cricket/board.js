@@ -303,6 +303,7 @@ $(function(){
 					current.data("score", current.data("score") - response.value);
 					current.find(".current-round-points").html(current.data("score"));
 				}
+				indicateClosedPoints();
 			}
 		});
 	}
@@ -318,8 +319,8 @@ $(function(){
 	}
 
 	function indicateClosedPoints(){
-		$(".points:not(.closed)").each(function(){
-			var source = $(this);
+		$(".points").each(function(){
+			var source = $(this).removeClass("closed");
 			var team1 = source.find(".awarded").first();
 			var team2 = source.find(".awarded ").last();
 			if(team1.attr("data-hits") >= 3 && team2.attr("data-hits") >= 3){
