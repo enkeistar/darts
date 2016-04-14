@@ -2,7 +2,7 @@
 
 {% block head %}
 	{{ super() }}
-	{% assets output="gen/games.css", "stylesheets/games.css" %}
+	{% assets filters="cssmin", output="gen/games.css", "stylesheets/games.css" %}
 		<link href="{{ ASSET_URL }}" rel="stylesheet">
 	{% endassets %}
 {% endblock %}

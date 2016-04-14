@@ -53,7 +53,7 @@
 
 {% block footer %}
 	{{ super() }}
-	{% assets output="gen/x01-players.js", "javascripts/modes/x01/players.js" %}
+	{% assets filters="jsmin", output="gen/x01-players.js", "javascripts/modes/x01/players.js" %}
 		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 	{% endassets %}
 {% endblock %}

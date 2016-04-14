@@ -4,7 +4,9 @@
 
 {% block head %}
 	{{ super() }}
-	<link href="{{ url_for('static', filename='stylesheets/main.css') }}" rel="stylesheet">
+	{% assets filters="cssmin", output="gen/main.css", "stylesheets/main.css" %}
+		<link href="{{ ASSET_URL }}" rel="stylesheet">
+	{% endassets %}
 {% endblock %}
 
 {% block body %}

@@ -11,7 +11,7 @@
 			<title>Darts | {% block title %}{% endblock %}</title>
 			<link rel="shortcut icon" href="/static/images/icon.png" type="image/x-icon" />
 			<link href="{{ url_for('static', filename='libraries/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-			{% assets output="gen/layout.css", "stylesheets/all.css" %}
+			{% assets filters="cssmin", output="gen/layout.css", "stylesheets/all.css" %}
 				<link href="{{ ASSET_URL }}" rel="stylesheet">
 			{% endassets %}
 
@@ -43,7 +43,7 @@
 
 		{% block body %}{% endblock %}
 
-		{% assets output="gen/layout.js", "libraries/jquery/jquery.min.js", "javascripts/all.js" %}
+		{% assets filters="jsmin", output="gen/layout.js", "libraries/jquery/jquery.min.js", "javascripts/all.js" %}
 			<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 		{% endassets %}
 

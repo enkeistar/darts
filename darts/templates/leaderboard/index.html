@@ -35,7 +35,7 @@
 
 {% block footer %}
 	{{ super() }}
-	{% assets output="gen/leaderboard.js", "libraries/stupid-table/stupidtable.min.js", "libraries/bootstrap-datepicker/js/bootstrap-datepicker.min.js", "javascripts/leaderboard.js" %}
+	{% assets filters="jsmin", output="gen/leaderboard.js", "libraries/stupid-table/stupidtable.min.js", "libraries/bootstrap-datepicker/js/bootstrap-datepicker.min.js", "javascripts/leaderboard.js" %}
 		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 	{% endassets %}
 {% endblock %}

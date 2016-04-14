@@ -4,7 +4,7 @@
 
 {% block head %}
 	{{ super() }}
-	{% assets output="gen/brackets.css", "stylesheets/brackets.css" %}
+	{% assets filters="cssmin", output="gen/brackets.css", "stylesheets/brackets.css" %}
 		<link href="{{ ASSET_URL }}" rel="stylesheet">
 	{% endassets %}
 {% endblock %}
@@ -68,7 +68,7 @@
 
 {% block footer %}
 	{{ super() }}
-	{% assets output="gen/bracket.js", "javascripts/bracket.js" %}
+	{% assets filters="jsmin", output="gen/bracket.js", "javascripts/bracket.js" %}
 		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 	{% endassets %}
 {% endblock %}

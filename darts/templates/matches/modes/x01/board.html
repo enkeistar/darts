@@ -4,7 +4,7 @@
 
 {% block head %}
 	{{ super() }}
-	{% assets output="gen/x01.css", "stylesheets/x01.css" %}
+	{% assets filters="cssmin", output="gen/x01.css", "stylesheets/x01.css" %}
 		<link href="{{ ASSET_URL }}" rel="stylesheet">
 	{% endassets %}
 {% endblock %}
@@ -73,7 +73,7 @@
 
 {% block footer %}
 	{{ super() }}
-	{% assets output="gen/x01-board.js", "javascripts/modes/x01/board.js" %}
+	{% assets filters="jsmin", output="gen/x01-board.js", "javascripts/modes/x01/board.js" %}
 		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 	{% endassets %}
 {% endblock %}

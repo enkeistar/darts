@@ -4,7 +4,7 @@
 
 {% block head %}
 	{{ super() }}
-	{% assets output="gen/around-the-world.css", "stylesheets/around-the-world.css" %}
+	{% assets filters="cssmin", output="gen/around-the-world.css", "stylesheets/around-the-world.css" %}
 		<link href="{{ ASSET_URL }}" rel="stylesheet">
 	{% endassets %}
 {% endblock %}
@@ -60,7 +60,7 @@
 
 {% block footer %}
 	{{ super() }}
-	{% assets output="gen/around-the-world-board.js", "javascripts/modes/around-the-world/board.js" %}
+	{% assets filters="jsmin", output="gen/around-the-world-board.js", "javascripts/modes/around-the-world/board.js" %}
 		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 	{% endassets %}
 {% endblock %}

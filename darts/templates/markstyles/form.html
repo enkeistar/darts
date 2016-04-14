@@ -4,7 +4,7 @@
 
 {% block head %}
 	{{ super() }}
-	{% assets output="gen/markstyles.css", "stylesheets/markstyles.css" %}
+	{% assets filters="cssmin", output="gen/markstyles.css", "stylesheets/markstyles.css" %}
 		<link href="{{ ASSET_URL }}" rel="stylesheet">
 	{% endassets %}
 {% endblock %}
@@ -75,7 +75,7 @@
 
 {% block footer %}
 	{{ super() }}
-	{% assets output="gen/draw.js", "libraries/fabric/fabric.js", "javascripts/mark_styles.js" %}
+	{% assets filters="jsmin", output="gen/draw.js", "libraries/fabric/fabric.js", "javascripts/mark_styles.js" %}
 		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 	{% endassets %}
 {% endblock %}

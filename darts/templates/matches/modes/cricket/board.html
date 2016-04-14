@@ -4,7 +4,7 @@
 
 {% block head %}
 	{{ super() }}
-	{% assets output="gen/cricket.css", "stylesheets/cricket.css" %}
+	{% assets filters="cssmin", output="gen/cricket.css", "stylesheets/cricket.css" %}
 		<link href="{{ ASSET_URL }}" rel="stylesheet">
 	{% endassets %}
 {% endblock %}
@@ -237,7 +237,7 @@
 
 {% block footer %}
 	{{ super() }}
-	{% assets output="gen/cricket-board.js", "javascripts/modes/cricket/board.js" %}
+	{% assets filters="jsmin", output="gen/cricket-board.js", "javascripts/modes/cricket/board.js" %}
 		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
 	{% endassets %}
 {% endblock %}
