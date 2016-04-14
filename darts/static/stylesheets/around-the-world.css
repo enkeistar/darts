@@ -30,6 +30,15 @@ header {
 	border-right: solid 1px #fff;
 }
 
+.name.selectable {
+	cursor: pointer;
+	background: #fafafa;
+}
+
+.name.selectable:active {
+	background: #ddd;
+}
+
 .point {
 	font-family: digital;
 	font-size: 8vh;
@@ -40,9 +49,22 @@ header {
 	background: #ddd;
 }
 
-.controls {
+.control-panels {
 	display: table-row;
 	vertical-align: middle;
+}
+.control-panel {
+	display: table-cell;
+}
+
+.control-table {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+.control-row {
+	display: table-row;
 }
 
 .ctrl {

@@ -114,6 +114,17 @@ def around_the_world_undo(matchId):
 
 	return Response(json.dumps({ "id": int(mark.id), "playerId": mark.playerId, "mark": mark.value }), status = 200, mimetype = "application/json")
 
+@app.route("/matches/<int:matchId>/modes/around-the-world/players/<int:playerId>/triple/", methods = ["POST"])
+def around_the_world_triple(matchId, playerId):
+	marks = model.Model().select(markModel.Mark).filter_by(matchId = matchId, playerId = playerId).order_by(markModel.Mark.id.desc())
+	if marks.count() == 0:
+		return ""
+
+	mark = marks.first()
+	model.Model().delete(markModel.Mark, mark.id)
+
+	return Response(json.dumps({ "id": int(mark.id), "playerId": mark.playerId, "mark": mark.value }), status = 200, mimetype = "application/json")
+
 def getPoints(matchId, playerId):
 	query = "\
 		SELECT MAX(Value) as points\

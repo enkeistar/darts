@@ -1,8 +1,6 @@
 $(function(){
 
-
 	var matchId = $(".around-the-world-board").data("matchid");
-
 
 	$(".ctrl.home").on("click", function(){
 		$(".modal-home").show();
@@ -24,6 +22,9 @@ $(function(){
 		$.post("/matches/" + matchId + "/modes/around-the-world/teams/" + teamId + "/players/" + playerId + "/marks/" + point + "/", score);
 	});
 
+	$(".ctrl.undo").on("click", function(){
+		$.post("/matches/" + matchId + "/modes/around-the-world/undo/", score);
+	});
 
 	function score(response){
 		var player = $(".player[data-playerid=" + response.playerId + "]");
@@ -32,13 +33,16 @@ $(function(){
 		player.find(".point").html(points);
 	}
 
-
-	$(".ctrl.undo").on("click", function(){
-		$.post("/matches/" + matchId + "/modes/around-the-world/undo/", score);
+	$(".ctrl.triple").on("click", function(){
+		$(".name").addClass("selectable");
 	});
 
-	function undo(response){
+	$(".name").on("click", function(){
+		var source = $(this);
+		if(!source.hasClass("selectable")) return;
+		var player = source.parent(".player");
 
-	}
-
+		$.post("/matches/" + matchId + "/modes/around-the-world/players/" + player.data("playerid") + "/triple/", score);
+		$(".name").removeClass("selectable");
+	});
 });
