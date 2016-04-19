@@ -37,7 +37,7 @@ def mark_styles_create():
 	newMarkStyle = markStyleModel.MarkStyle(name, one, two, three, 0, datetime.now())
 	model.Model().create(newMarkStyle)
 
-	mailer.Mailer().send("A new mark style has been submitted.", "A new mark style has been submitted by " + name + " for your review.\nIt may be approved or rejected here: http://10.10.0.130:5000/mark-styles/." )
+	mailer.Mailer().send("A new mark style has been submitted.", "A new mark style has been submitted by " + name + " for your review.\nIt may be approved or rejected here: " + request.url_root + "mark-styles/." )
 
 	return redirect("/mark-styles/")
 
