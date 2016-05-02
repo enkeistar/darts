@@ -77,7 +77,7 @@
 
 				<td><a href="/leaderboard/players/{{ row.id }}/">{{ row.name }}</a></td>
 				<td data-sort-value="{{ winPercentage }}">{{ winPercentage }}%</td>
-				<!-- <td data-sort-value="{{ marksPerRound }}">{{ marksPerRoundFormatted }}</td> -->
+				<td data-sort-value="{{ marksPerRound }}">{{ marksPerRoundFormatted }}</td>
 				<td>{{ row.games }}</td>
 				<td data-sort-value="{{ points[row.id] }}">{{ "{:,}".format(points[row.id]) }}</td>
 				<td data-sort-value="{{ pointsPerGame }}">{{ pointsPerGame }}</td>
