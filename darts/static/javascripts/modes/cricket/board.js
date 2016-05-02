@@ -63,6 +63,7 @@ $(function(){
 	var game = parseInt($("input[name=game]").val());
 	var numPlayers = parseInt($("input[name=players]").val());
 	var round = parseInt($("input[name=round]").val());
+	var createdAt = new Date($("input[name=createdAt]").val());
 
 	var turnTimeout;
 	var turnDelay = 5000;
@@ -328,4 +329,14 @@ $(function(){
 			}
 		});
 	}
+
+	var intervals = 900;
+
+	setInterval(function(){
+		var diff = Math.floor((new Date() - createdAt) / 1000);
+		if(diff > 0 && (diff % intervals) == 0){
+			alert("Alarm!!! It's been " + (diff / 60) + " minutes.");
+		}
+	}, 200);
+
 });

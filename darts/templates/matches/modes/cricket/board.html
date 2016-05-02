@@ -153,6 +153,7 @@
 	<input type="hidden" name="players" value="{{ match.players }}" />
 	<input type="hidden" name="turn" value="{{ match.turn }}" />
 	<input type="hidden" name="complete" value="{{ match.complete }}" />
+	<input type="hidden" name="createdAt" value="{{ match.createdAt }}" />
 
 	{% for result in match["results"] %}
 		<input

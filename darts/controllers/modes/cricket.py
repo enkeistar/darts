@@ -64,7 +64,8 @@ def getGameData(id):
 		"turn": match.turn,
 		"teams": [],
 		"results": [],
-		"complete": match.complete
+		"complete": match.complete,
+		"createdAt": str(match.createdAt).replace("-", "/")
 	}
 
 	for result in results:
