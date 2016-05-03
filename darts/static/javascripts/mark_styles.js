@@ -4,6 +4,16 @@ $(function(){
 	var history = [];
 	var addHistory = true;
 
+	// if(svgs){
+	// 	for(var i in svgs){
+	// 		layers[i] = {
+	// 			png: null,
+	// 			svg: svgs[i],
+	// 			json: null
+	// 		};
+	// 	}
+	// }
+
 	var canvas = this.__canvas = new fabric.Canvas("mark-style", {
 		isDrawingMode: true,
 		selection: false
@@ -114,5 +124,23 @@ $(function(){
 		history = [];
 		addHistory = true;
 	});
+
+	if(typeof markStyleId != "undefined"){
+		loadMark(0);
+	}
+
+	function loadMark(mark){
+		fabric.loadSVGFromString(svgs[mark], function(objects, options){
+			var obj = fabric.util.groupSVGElements(objects, options);
+			canvas.add(obj).centerObject(obj).renderAll();
+			obj.setCoords();
+			$(".add-layer[data-layer=" + mark + "]").click();
+			$("#clear-layer").click();
+
+			if(mark < svgs.length - 1){
+				loadMark(mark + 1);
+			}
+		});
+	}
 
 });
