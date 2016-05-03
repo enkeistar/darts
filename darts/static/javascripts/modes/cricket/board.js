@@ -334,13 +334,19 @@ $(function(){
 		});
 	}
 
-	var intervals = 900;
+	$(".time-label").last().remove();
+	var timeLabel = $(".time-label");
 
-	setInterval(function(){
-		var diff = Math.floor((new Date() - createdAt) / 1000);
-		if(diff > 0 && (diff % intervals) == 0){
-			alert("Alarm!!! It's been " + (diff / 60) + " minutes.");
-		}
-	}, 200);
+	calculateTime();
+	setInterval(calculateTime, 1000);
+
+	function calculateTime(){
+		var total = Math.floor((new Date() - createdAt) / 1000);
+		var hours = Math.floor(total / 60 / 60);
+		var minutes = Math.floor(total / 60);
+		var seconds = total % 60;
+		var time = ((hours < 10) ? ("0" + hours) : hours) + ":" + ((minutes < 10) ? ("0" + minutes) : minutes) + ":" + ((seconds < 10) ? ("0" + seconds) : seconds);
+		timeLabel.html(time);
+	}
 
 });

@@ -219,8 +219,8 @@ header {
 }
 
 .current-round-points {
-	font-size: 13vh;
-	line-height: 10vh;
+	font-size: 11vh;
+	line-height: 8vh;
 	text-align: center;
 }
 
@@ -243,11 +243,19 @@ header {
 	user-select: none;
 }
 
-.button-label {
+.button-label,
+.time-label {
 	position: absolute;
-	left: 4px;
-	bottom: 0;
 	font-family: Arial;
 	font-size: 10px;
 	color: #aaa;
+	bottom: 0;
+}
+
+.button-label {
+	left: 4px;
+}
+
+.time-label {
+	right: 4px;
 }
