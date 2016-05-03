@@ -67,6 +67,7 @@ $(function(){
 	var game = parseInt($("input[name=game]").val());
 	var numPlayers = parseInt($("input[name=players]").val());
 	var round = parseInt($("input[name=round]").val());
+	var createdAt = new Date($("input[name=createdAt]").val());
 
 	var turnTimeout;
 	var turnDelay = 5000;
@@ -332,4 +333,20 @@ $(function(){
 			}
 		});
 	}
+
+	$(".time-label").last().remove();
+	var timeLabel = $(".time-label");
+
+	calculateTime();
+	setInterval(calculateTime, 1000);
+
+	function calculateTime(){
+		var total = Math.floor((new Date() - createdAt) / 1000);
+		var hours = Math.floor(total / 60 / 60);
+		var minutes = Math.floor(total / 60);
+		var seconds = total % 60;
+		var time = ((hours < 10) ? ("0" + hours) : hours) + ":" + ((minutes < 10) ? ("0" + minutes) : minutes) + ":" + ((seconds < 10) ? ("0" + seconds) : seconds);
+		timeLabel.html(time);
+	}
+
 });

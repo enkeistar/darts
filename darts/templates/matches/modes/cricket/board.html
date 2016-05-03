@@ -111,6 +111,7 @@
 			{% for team in match["teams"] %}
 				<div class="score" data-teamid="{{ team.id }}" data-score="{{ team["marks"]["points"] }}">
 					<span class="button-label"></span>
+					<span class="time-label"></span>
 
 					<div class="score-row">
 						<div class="round-scores">
@@ -152,6 +153,7 @@
 	<input type="hidden" name="players" value="{{ match.players }}" />
 	<input type="hidden" name="turn" value="{{ match.turn }}" />
 	<input type="hidden" name="complete" value="{{ match.complete }}" />
+	<input type="hidden" name="createdAt" value="{{ match.createdAt }}" />
 
 	{% for result in match["results"] %}
 		<input
