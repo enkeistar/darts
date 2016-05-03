@@ -10,15 +10,24 @@ from darts.entities import mode as modeModel
 from darts import model
 from datetime import datetime
 from sqlalchemy import desc
-import operator
-import json
+import operator, json, math
 
-@app.route("/matches/", methods = ["GET"])
-def matches_index():
+@app.route("/matches/", methods = ["GET"], defaults = { "page": 1 })
+@app.route("/matches/<int:page>/", methods = ["GET"])
+def matches_index(page):
+
+	paging = {
+		"total": 0,
+		"page": page,
+		"limit": 20,
+		"pages": 0
+	}
 
 	data = []
 
 	matches = model.Model().select(matchModel.Match).filter_by(ready = True, modeId = 1).order_by(desc("createdAt"))
+	paging["total"] = matches.count()
+	matches = matches.limit(paging["limit"]).offset((page - 1) * paging["limit"]).all()
 
 	players = model.Model().select(playerModel.Player)
 	playerDict = {}
@@ -67,7 +76,10 @@ def matches_index():
 
 		matchData["teams"].sort(key = operator.itemgetter("mark"), reverse = True)
 
-	return render_template("matches/index.html", matches = data, results = resultDict)
+	paging["pages"] = int(math.ceil(paging["total"] / float(paging["limit"])))
+	print(paging)
+
+	return render_template("matches/index.html", matches = data, results = resultDict, paging = paging)
 
 @app.route("/matches/new/", methods = ["GET"])
 def matches_new():
