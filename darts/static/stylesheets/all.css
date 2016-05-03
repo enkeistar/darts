@@ -134,6 +134,7 @@ header a:focus {
 .button-group {
 	width: 80%;
 	margin: auto;
+	padding-bottom: 20px;
 }
 
 .button-group .btn {

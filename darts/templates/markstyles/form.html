@@ -55,21 +55,35 @@
 			<div class="layer-preview" data-layer="2"></div>
 		</div>
 
-		<form id="mark-style-form" action="/mark-styles/" method="POST">
+		<form id="mark-style-form" action="/mark-styles/{% if markStyle.id != None %}{{ markStyle.id }}/{% endif %}" method="POST">
 			<input type="hidden" name="one" />
 			<input type="hidden" name="two" />
 			<input type="hidden" name="three" />
 
 			<div class="form-group">
 			<label for="mark-style-name">Your Name:</label>
-				<input type="text" id="mark-style-name" name="name" class="form-control" required />
+				<input type="text" id="mark-style-name" name="name" class="form-control" required value="{{ markStyle.name }}" />
 			</div>
 
-			<button class="btn btn-default btn-primary" type="submit" id="create-mark-style" disabled>Create Mark Style</button>
+			<button class="btn btn-default btn-primary" type="submit" id="create-mark-style" disabled>
+				{% if markStyle.id == None %}
+					Create Mark Style
+				{% else %}
+					Update Mark Style
+				{% endif %}
+			</button>
+
 			<a href="/mark-styles/" class="btn btn-default btn-sm">Cancel</a>
 		</form>
 
 	</div>
+
+	<script>
+		{% if markStyle.id != None %}
+			var svgs = {{ svgs|safe }};
+			var markStyleId = {{ markStyle.id }};
+		{% endif %}
+	</script>
 
 {% endblock %}
 

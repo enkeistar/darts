@@ -52,16 +52,25 @@
 
 						{% if admin %}
 							<td>
+								<a href="/mark-styles/{{ markStyle.id }}/edit/" class="btn btn-info visible-sm-inline-block" title="Edit">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
 								{% if markStyle.approved %}
-									<form action="/mark-styles/{{ markStyle.id }}/reject/" method="POST">
-										<button type="submit" class="btn btn-warning">Reject</button>
+									<form action="/mark-styles/{{ markStyle.id }}/reject/" method="POST" class="visible-sm-inline-block">
+										<button type="submit" class="btn btn-warning" title="Reject">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
 									</form>
 								{% else %}
-									<form action="/mark-styles/{{ markStyle.id }}/approve/" method="POST" style="display: inline;">
-										<button type="submit" class="btn btn-success">Approve</button>
+									<form action="/mark-styles/{{ markStyle.id }}/approve/" method="POST" class="visible-sm-inline-block">
+										<button type="submit" class="btn btn-success" title="Approve">
+											<span class="glyphicon glyphicon-ok"></span>
+										</button>
 									</form>
-									<form action="/mark-styles/{{ markStyle.id }}/delete/" method="POST" class="form-delete" style="display: inline;">
-										<button type="submit" class="btn btn-danger">Delete</button>
+									<form action="/mark-styles/{{ markStyle.id }}/delete/" method="POST" class="form-delete visible-sm-inline-block">
+										<button type="submit" class="btn btn-danger" title="Delete">
+											<span class="glyphicon glyphicon-trash"></span>
+										</button>
 									</form>
 								{% endif %}
 							</td>

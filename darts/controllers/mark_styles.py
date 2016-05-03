@@ -6,6 +6,8 @@ from sqlalchemy.sql.expression import func
 from sqlalchemy import desc
 from datetime import datetime
 from darts.entities import mailer
+import json
+
 
 @app.route("/mark-styles/")
 def mark_styles_index():
@@ -25,7 +27,8 @@ def mark_styles_index():
 
 @app.route("/mark-styles/new/")
 def mark_styles_new():
-	return render_template("markstyles/form.html")
+	markStyle = markStyleModel.MarkStyle("", "", "", "", "", "")
+	return render_template("markstyles/form.html", markStyle = markStyle)
 
 @app.route("/mark-styles/", methods = ["POST"])
 def mark_styles_create():
@@ -40,6 +43,34 @@ def mark_styles_create():
 	mailer.Mailer().send("A new mark style has been submitted.", "A new mark style has been submitted by " + name + " for your review.\nIt may be approved or rejected here: " + request.url_root + "mark-styles/." )
 
 	return redirect("/mark-styles/")
+
+@app.route("/mark-styles/<int:id>/", methods = ["POST"])
+def mark_styles_update(id):
+	model.Model().update(markStyleModel.MarkStyle, id, { "approved": 0 })
+
+	name = request.form["name"]
+	one = request.form["one"].replace('width="320" height="240"', 'viewBox="0 0 320 240"')
+	two = request.form["two"].replace('width="320" height="240"', 'viewBox="0 0 320 240"')
+	three = request.form["three"].replace('width="320" height="240"', 'viewBox="0 0 320 240"')
+
+	newMarkStyle = markStyleModel.MarkStyle(name, one, two, three, 0, datetime.now())
+	model.Model().create(newMarkStyle)
+
+	mailer.Mailer().send("A mark style has been updated.", "A mark style has been updated by " + name + " and requires your review.\nIt may be approved or rejected here: " + request.url_root + "mark-styles/." )
+
+	return redirect("/mark-styles/")
+
+@app.route("/mark-styles/<int:id>/edit/", methods = ["GET"])
+def mark_styles_edit(id):
+	markStyle = model.Model().selectById(markStyleModel.MarkStyle, id)
+
+	svgs = json.dumps([
+		markStyle.one,
+		markStyle.two,
+		markStyle.three
+	])
+
+	return render_template("markstyles/form.html", markStyle = markStyle, svgs = svgs)
 
 @app.route("/mark-styles/<int:id>/approve/", methods = ["POST"])
 def mark_styles_approve(id):
