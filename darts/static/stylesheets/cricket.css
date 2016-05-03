@@ -33,25 +33,16 @@ header {
 	border-right: solid 1px #fff;
 }
 
-.game-option .turn {
-	border-top: solid 1px #fff;
-}
-
 .game-option .miss,
 .game-option .turn {
 	border-bottom: 1px solid #e0e0e0;
 }
-.game-option .undo,
-.game-option .home {
-	border-top: 1px solid #fff;
-}
 
 .game-option .miss,
-.game-option .undo,
-.game-option .turn,
-.game-option .home {
-	height: 50%;
-	line-height: 7vh;
+.game-option .undo {
+	height: 100%;
+	border: none;
+	line-height: 14vh;
 }
 
 .target:active,
@@ -210,6 +201,7 @@ header {
 	border-left: solid 1px #e0e0e0;
 	border-right: solid 1px #fff;
 	border-top: solid 1px #fff;
+	position: relative;
 }
 
 .round-scores {
@@ -249,4 +241,13 @@ header {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.button-label {
+	position: absolute;
+	left: 4px;
+	bottom: 0;
+	font-family: Arial;
+	font-size: 10px;
+	color: #aaa;
 }

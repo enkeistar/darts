@@ -17,7 +17,6 @@
 
 			<div class="game-option">
 				<div class="target miss">Miss</div>
-				<div class="target undo">Undo</div>
 			</div>
 
 			{% set teamOrder = 0 %}
@@ -106,12 +105,12 @@
 
 		<div class="scores">
 			<div class="game-option">
-				<div class="target turn">Turn</div>
-				<div class="target home">Home</div>
+				<div class="target undo">Undo</div>
 			</div>
 
 			{% for team in match["teams"] %}
 				<div class="score" data-teamid="{{ team.id }}" data-score="{{ team["marks"]["points"] }}">
+					<span class="button-label"></span>
 
 					<div class="score-row">
 						<div class="round-scores">

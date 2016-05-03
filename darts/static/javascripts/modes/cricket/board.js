@@ -1,9 +1,13 @@
 $(function(){
 
+	$(".score").first().addClass("target turn").find(".button-label").html("Turn");
+	$(".score").last().addClass("target home").find(".button-label").html("Home");
+
+
 	indicateClosedPoints();
 	var complete = $("input[name=complete]").val() == "1";
 	if(complete){
-		$(".game-option .home").on("click", function(){
+		$(".home").on("click", function(){
 			window.location = "/";
 		});
 		return;
@@ -75,7 +79,7 @@ $(function(){
 
 	highlightTeam();
 
-	$(".game-option .home").on("click", function(){
+	$(".home").on("click", function(){
 		homeModal.show();
 	});
 	$(".home-yes").on("click", function(){
@@ -85,14 +89,14 @@ $(function(){
 		homeModal.hide();
 	});
 
-	$(".game-option .undo").on("click", undo);
+	$(".undo").on("click", undo);
 
-	$(".game-option .turn").on("click", function(){
+	$(".turn").on("click", function(){
 		nextTurn();
 		clearTimeout(turnTimeout);
 	});
 
-	$(".game-option .miss").on("click", function(){
+	$(".miss").on("click", function(){
 		var teamId =  $(".player.active").data("teamid");
 		var playerId = $(".player.active").data("playerid");
 		$.post(baseUrl + "/teams/" + teamId + "/players/" + playerId + "/matches/" + game + "/rounds/" + round + "/marks/0/").done(function(response){
