@@ -149,7 +149,17 @@ $(function(){
 		if(!closed){
 			var current = $('.score[data-teamid="' + teamId + '"]');
 			current.data("score", current.data("score") + points);
-			current.find(".current-round-points").html(current.data("score"));
+
+			if(getScore(team1Id) - getScore(team2Id) > 100){
+				$('.score[data-teamid="' + team1Id + '"]').find(".current-round-points").html(getScore(team2Id) + 100 + "+");
+				$('.score[data-teamid="' + team2Id + '"]').find(".current-round-points").html(getScore(team2Id));
+			} else if(getScore(team2Id) - getScore(team1Id) > 100) {
+				$('.score[data-teamid="' + team2Id + '"]').find(".current-round-points").html(getScore(team1Id) + 100 + "+");
+				$('.score[data-teamid="' + team1Id + '"]').find(".current-round-points").html(getScore(team1Id));
+			} else {
+				$('.score[data-teamid="' + team1Id + '"]').find(".current-round-points").html(getScore(team1Id));
+				$('.score[data-teamid="' + team2Id + '"]').find(".current-round-points").html(getScore(team2Id));
+			}
 		}
 
 		indicateClosedPoints();
