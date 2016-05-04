@@ -32,6 +32,10 @@ a:focus {
 	outline: none;
 }
 
+.inline-block {
+	display: inline-block !important;
+}
+
 .btn.action {
 	float: right;
 	margin-top: 15px;
