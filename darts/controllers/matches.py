@@ -77,7 +77,6 @@ def matches_index(page):
 		matchData["teams"].sort(key = operator.itemgetter("mark"), reverse = True)
 
 	paging["pages"] = int(math.ceil(paging["total"] / float(paging["limit"])))
-	print(paging)
 
 	return render_template("matches/index.html", matches = data, results = resultDict, paging = paging)
 
